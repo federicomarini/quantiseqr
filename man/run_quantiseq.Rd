@@ -42,6 +42,9 @@ Default: "lsei".}
 \item{btotalcells}{compute cell densities instead of fractions
 Default: FALSE}
 
+\item{column}{Character, specifies which column contains the information of the
+gene symbol identifiers}
+
 \item{rmgenes}{Default: "default" for RNAseq, "none" for microArray data}
 }
 \description{
