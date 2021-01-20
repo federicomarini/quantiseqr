@@ -19,6 +19,7 @@ NULL
 #' @export
 eset_to_matrix <- function(eset, column) {
   expr_mat <- exprs(eset)
+  # TODO: could be done also without dplyr code to reduce dependencies to minimum!
   rownames(expr_mat) <- fData(eset) %>% pull(!!column)
   return(expr_mat)
 }
@@ -42,6 +43,15 @@ eset_to_matrix <- function(eset, column) {
 
 
 
+#' Title
+#'
+#' @param mix.mat TODO
+#' @param arrays TODO
+#'
+#' @return TODO
+#'
+#' @examples
+#' # TODO
 fixMixture <- function(mix.mat, arrays = FALSE) {
 
   # Map gene names
@@ -61,6 +71,14 @@ fixMixture <- function(mix.mat, arrays = FALSE) {
   return(mix.mat)
 }
 
+#' Title
+#'
+#' @param mix.mat TODO
+#'
+#' @return TODO
+#'
+#' @examples
+#' # TODO
 makeQN <- function(mix.mat) {
   cnames <- colnames(mix.mat)
   rnames <- rownames(mix.mat)
@@ -73,6 +91,14 @@ makeQN <- function(mix.mat) {
 
 
 ## TODO: maybe this can be cleverly handled with orgDb packages?
+#' Title TODO
+#'
+#' @param mydata TODO
+#'
+#' @return TODO
+#'
+#' @examples
+#' # TODO
 mapGenes <- function(mydata) {
   HGNC <- read.csv(system.file("extdata", "HGNC_genenames_20170418.txt", package = "quantiseqr", mustWork = TRUE),
     header = TRUE, sep = "\t"
@@ -145,6 +171,17 @@ mapGenes <- function(mydata) {
   return(outdata)
 }
 
+#' Title
+#'
+#' @param currsig TODO
+#' @param currmix TODO
+#' @param scaling TODO
+#' @param method TODO
+#'
+#' @return TODO
+#'
+#' @examples
+#' # TODO
 quanTIseq <- function(currsig, currmix, scaling, method) {
   method <- match.arg(method, c("lsei", "hampel", "huber", "bisquare"))
 
@@ -179,6 +216,18 @@ quanTIseq <- function(currsig, currmix, scaling, method) {
   return(results)
 }
 
+#' Title
+#'
+#' @param b TODO
+#' @param A TODO
+#' @param G TODO
+#' @param H TODO
+#' @param scaling TODO
+#'
+#' @return TODO
+#'
+#' @examples
+#' # TODO
 DClsei <- function(b, A, G, H, scaling) {
   sc <- norm(A, "2")
   A <- A / sc
@@ -202,6 +251,17 @@ DClsei <- function(b, A, G, H, scaling) {
   return(est)
 }
 
+#' Title
+#'
+#' @param b TODO
+#' @param A TODO
+#' @param method TODO
+#' @param scaling TODO
+#'
+#' @return TODO
+#'
+#' @examples
+#' # TODO
 DCrr <- function(b, A, method, scaling) {
 
   # Robust regression
@@ -232,6 +292,14 @@ DCrr <- function(b, A, method, scaling) {
   return(est)
 }
 
+#' Title
+#'
+#' @param DCres TODO
+#'
+#' @return TODO
+#'
+#' @examples
+#' # TODO
 celldensities <- function(DCres) {
   # TODO: this one is not available?
   imageinfo <- system.file("extdata", "quantiseq", "totalcells.txt", package = "immunedeconv", mustWork = TRUE)
