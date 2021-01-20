@@ -96,6 +96,8 @@ deconvolute_quantiseq <- function(gene_expression_matrix,
                                   arrays,
                                   scale_mrna,
                                   ...) {
+
+  # TODO: we might not even need this way of calling the function
   arguments <- rlang::dots_list(gene_expression_matrix, tumor = tumor, arrays = arrays, mRNAscale = scale_mrna, ..., .homonyms = "last")
   call <- rlang::call2(run_quantiseq, !!!arguments)
   res <- eval(call)
