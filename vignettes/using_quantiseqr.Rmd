@@ -1,0 +1,29 @@
+---
+title: >
+  Using quantiseqr
+output: rmarkdown::html_vignette
+bibliography: references_quantiseqr.bib
+vignette: >
+  %\VignetteIndexEntry{Using quantiseqr}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  # eval = FALSE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(quantiseqr)
+```
+
+
+
+
+# References
+
+
