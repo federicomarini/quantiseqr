@@ -147,6 +147,8 @@ deconvolute_quantiseq <- function(gene_expression_matrix,
 #'     Default: "lsei".
 #' @param btotalcells compute cell densities instead of fractions
 #'     Default: FALSE
+#' @param column Character, specifies which column contains the information of the
+#' gene symbol identifiers
 #' @param rmgenes Default: "default" for RNAseq, "none" for microArray data
 #'
 #' @export
