@@ -13,3 +13,15 @@
 #' @name quantiseqr-pkg
 #' @docType package
 NULL
+
+
+
+#' An exemplary dataset
+#'
+#' @details TODO
+#'
+#' @references
+#'
+#' @name dataset_racle
+#' @docType data
+NULL
