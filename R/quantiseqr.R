@@ -126,32 +126,22 @@ deconvolute_quantiseq <- function(gene_expression_matrix,
 #' Source code from https://github.com/FFinotello/quanTIseq
 #'
 #' F. Finotello, C. Mayer, C. Plattner, G. Laschober, D. Rieder,
-#' H. Hackl, A. Krogsdam, W. Posch, D. Wilflingseder, S. Sopper, M. Jsselsteijn,
-#' D. Johnsons, Y. Xu, Y. Wang, M. E. Sanders, M. V. Estrada, P. Ericsson-Gonzalez,
-#' J. Balko, N. F. de Miranda, Z. Trajanoski. "quanTIseq: quantifying immune contexture of human tumors".
-#' bioRxiv 223180. https://doi.org/10.1101/223180.
+#' H. Hackl, A. Krogsdam, Z. Loncova, W. Posch, D. Wilflingseder, S. Sopper, M. Jsselsteijn,
+#' T. P. Brouwer, D. Johnsons, Y. Xu, Y. Wang, M. E. Sanders, M. V. Estrada, P. Ericsson-Gonzalez,
+#' P. Charoentong, J. Balko, N. F. d. C. C. de Miranda, Z. Trajanoski. 
+#' "Molecular and pharmacological modulators of the tumor immune contexture revealed by deconvolution of RNA-seq data".
+#' Genome Medicine 2019;11(1):34. doi: 10.1186/s13073-019-0638-6.
 #'
-#' @param mix.mat table with the gene TPM (or microarray expression values) for all samples to be deconvoluted
-#'     (Gene symbols on the first column and sample IDs on the first row). Expression data must be on non-log scale
-#' @param arrays specifies whether expression data are from microarrays (instead of RNA-seq).
-#'     If TRUE, the "--rmgenes" parameter is set to "none".
+#' @param mix.mat table with the gene TPM or microarray expression values for all samples to be deconvoluted
+#'     (Gene symbols on the first column and sample IDs on the first row). Expression data should be on non-log scale
+#' @param arrays Set to TRUE if the expression data are from microarrays instead of RNA-seq. If TRUE, the "rmgenes" parameter is set to "none". Default: FALSE
 #' @param signame name of the signature matrix. Currently only `TIL10` is available.
-#' @param tumor 	specifies whether expression data are from tumor samples. If TRUE, signature genes
-#'     with high expression in tumor samples are removed.
-#'     Default: FALSE.
-#' @param mRNAscale specifies whether cell fractions must be scaled to account for cell-type-specific
-#'     mRNA content.
-#'     Default: TRUE.
-#' @param method deconvolution method to be used: "hampel", "huber", or "bisquare" for robust regression
-#'     with Huber, Hampel, or Tukey bisquare estimators, respectively, or "lsei" for constrained
-#'     least squares regression. The fraction of uncharacterized cells ("other") is computed only
-#'     by the "lsei" method.
-#'     Default: "lsei".
-#' @param btotalcells compute cell densities instead of fractions
-#'     Default: FALSE
-#' @param column Character, specifies which column contains the information of the
-#' gene symbol identifiers
-#' @param rmgenes Default: "default" for RNAseq, "none" for microArray data
+#' @param tumor 	Set to TRUE if the expression data is from tumor samples. Deafult: FALSE
+#' @param mRNAscale Set to FALSE to disable the correction of cell-type-specific mRNA content bias. Default: TRUE
+#' @param method deconvolution method to be used: "lsei" for constrained least squares regression, "hampel", "huber", or "bisquare" for robust regression with Huber, Hampel, or Tukey bisquare estimators. Default: "lsei".
+#' @param column Character, specifies which column contains the information of the gene symbol identifiers
+#' @param rmgenes Specifies which genes have to be removed from the deconvolution analysis.
+#'  Can be a vector of gene symbols or a string among "none" (no genes are removed) and "default" (a list of genes with noisy expression RNA-seq data is removed as explained in quanTIseq paper). Default: "default" for RNA-seq data, "none" for microarrrays.
 #'
 #' @export
 run_quantiseq <- function(mix.mat,
@@ -160,7 +150,6 @@ run_quantiseq <- function(mix.mat,
                           tumor = FALSE,
                           mRNAscale = TRUE,
                           method = "lsei",
-                          btotalcells = FALSE,
                           column = "gene_symbol",
                           rmgenes = "unassigned") {
 
@@ -300,35 +289,9 @@ run_quantiseq <- function(mix.mat,
   results <- results / apply(results, 1, sum)
 
   message("Deconvolution sucessful!")
-
-
-
-  # Save results using user's output ID
-  DCres <- results
-
-
-  if (btotalcells == TRUE) {
-    celldens <- data.frame(celldensities(DCres))
-    # fileout2 <- paste0(output, prefix, "_cell_densities.txt")
-    celldens <- cbind(rownames(celldens), celldens)
-    colnames(celldens)[1] <- "Sample"
-    return(celldens)
-    # write.table(celldens,
-    #             sep="\t",
-    #             row.names=FALSE,
-    #             quote=FALSE,
-    #             file=fileout2)
-  } else {
-    # fileout<-paste0(output, prefix, "_cell_fractions.txt")
-    # cast to dataframe, otherwise cbind will cast to character.
-    results <- data.frame(results)
-    results <- cbind(rownames(results), results)
-    colnames(results)[1] <- "Sample"
-    return(results)
-    # write.table(results,
-    #             sep="\t",
-    #             row.names=FALSE,
-    #             quote=FALSE,
-    #             file=fileout)
+  
+  return(results)
+  
   }
+
 }
