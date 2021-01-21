@@ -78,15 +78,15 @@
 
 
 
-#' Deconvolute using quanTIseq
+#' Deconvolute using quanTIseq (only needed for immunedeconv, not for quantiseqr -> can be removed)
 #'
-#' @param gene_expression_matrix a m x n matrix with m genes and n samples
+#' @param gene_expression_matrix a m x n matrix with m genes and n samples. Mandatory.
 #' @param tumor Set to TRUE if dealing with a tumor samples. if TRUE, signature genes with
-#'   high expression in tumor samles are removed.
-#' @param arrays Set to TRUE if working with Microarray data instead of RNA-seq
+#'   high expression in tumor samples are removed. Default: FALSE
+#' @param arrays Set to TRUE if working with Microarray data instead of RNA-seq. Default: FALSE
 #' @param scale_mrna Set to FALSE to disable correction for cell type-specific differences
-#'  in mRNA content
-#' @param ... passed through to original quantiseq method. A native argument takes precedence
+#'  in mRNA content. Default: TRUE
+#' @param ... passed through to original quanTIseq method. A native argument takes precedence
 #'   over an immunedeconv argument (e.g. `mRNAscale` takes precedence over `scale_mrna`)
 #'   See `deconvolute_quantiseq.default()`.
 #'
