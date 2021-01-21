@@ -295,13 +295,24 @@ DCrr <- function(b, A, method, scaling) {
 #' Title
 #'
 #' @param DCres TODO
+#' @param density_info TODO
 #'
 #' @return TODO
 #'
 #' @examples
 #' # TODO
-celldensities <- function(DCres) {
+celldensities <- function(DCres,
+                          density_info) {
+
+  # checks:
+  ## DCres should be formatted as output coming from quantiseqr
+  ## density info should have the same samples included
+    ## think of which format this needs to be provided
+
+
+
   # TODO: this one is not available?
+  ## TODO: if we provide this with the package, it is good for showing which format is expected
   imageinfo <- system.file("extdata", "quantiseq", "totalcells.txt", package = "immunedeconv", mustWork = TRUE)
   csbj <- intersect(rownames(DCres), imageinfo[, 1])
   imageinfo <- imageinfo[imageinfo[, 1] %in% csbj, , drop = FALSE]

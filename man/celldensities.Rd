@@ -4,10 +4,12 @@
 \alias{celldensities}
 \title{Title}
 \usage{
-celldensities(DCres)
+celldensities(DCres, density_info)
 }
 \arguments{
 \item{DCres}{TODO}
+
+\item{density_info}{TODO}
 }
 \value{
 TODO
