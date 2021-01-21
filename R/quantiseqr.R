@@ -123,12 +123,12 @@ deconvolute_quantiseq <- function(gene_expression_matrix,
 
 #' Use quanTIseq to deconvolute a gene expression matrix.
 #'
-#' Source code from https://github.com/FFinotello/quanTIseq
+#' Source code from https://github.com/FFinotello/quanTIseq - TODO: will need to update link?
 #'
 #' F. Finotello, C. Mayer, C. Plattner, G. Laschober, D. Rieder,
 #' H. Hackl, A. Krogsdam, Z. Loncova, W. Posch, D. Wilflingseder, S. Sopper, M. Jsselsteijn,
 #' T. P. Brouwer, D. Johnsons, Y. Xu, Y. Wang, M. E. Sanders, M. V. Estrada, P. Ericsson-Gonzalez,
-#' P. Charoentong, J. Balko, N. F. d. C. C. de Miranda, Z. Trajanoski. 
+#' P. Charoentong, J. Balko, N. F. d. C. C. de Miranda, Z. Trajanoski.
 #' "Molecular and pharmacological modulators of the tumor immune contexture revealed by deconvolution of RNA-seq data".
 #' Genome Medicine 2019;11(1):34. doi: 10.1186/s13073-019-0638-6.
 #'
@@ -136,7 +136,7 @@ deconvolute_quantiseq <- function(gene_expression_matrix,
 #'     (Gene symbols on the first column and sample IDs on the first row). Expression data should be on non-log scale
 #' @param arrays Set to TRUE if the expression data are from microarrays instead of RNA-seq. If TRUE, the "rmgenes" parameter is set to "none". Default: FALSE
 #' @param signame name of the signature matrix. Currently only `TIL10` is available.
-#' @param tumor 	Set to TRUE if the expression data is from tumor samples. Deafult: FALSE
+#' @param tumor 	Set to TRUE if the expression data is from tumor samples. Default: FALSE
 #' @param mRNAscale Set to FALSE to disable the correction of cell-type-specific mRNA content bias. Default: TRUE
 #' @param method deconvolution method to be used: "lsei" for constrained least squares regression, "hampel", "huber", or "bisquare" for robust regression with Huber, Hampel, or Tukey bisquare estimators. Default: "lsei".
 #' @param column Character, specifies which column contains the information of the gene symbol identifiers
@@ -153,10 +153,18 @@ run_quantiseq <- function(mix.mat,
                           column = "gene_symbol",
                           rmgenes = "unassigned") {
 
+
+
+
   # convert expression set to matrix, if required.
   if (is(mix.mat, "ExpressionSet")) {
     mix.mat <- mix.mat %>% eset_to_matrix(column)
   }
+
+
+
+
+
 
   if (!is.null(rmgenes)) {
     mix.mat <- mix.mat[!rownames(mix.mat) %in% rmgenes, ]
@@ -288,10 +296,11 @@ run_quantiseq <- function(mix.mat,
   results <- results1
   results <- results / apply(results, 1, sum)
 
-  message("Deconvolution sucessful!")
-  
-  return(results)
-  
-  }
+  results = data.frame(results)
+  results<-cbind(rownames(results), results)
+  colnames(results)[1]<-"Sample"
 
+  message("Deconvolution sucessful!")
+
+  return(results)
 }
