@@ -132,19 +132,22 @@ deconvolute_quantiseq <- function(gene_expression_matrix,
 #' "Molecular and pharmacological modulators of the tumor immune contexture revealed by deconvolution of RNA-seq data".
 #' Genome Medicine 2019;11(1):34. doi: 10.1186/s13073-019-0638-6.
 #'
-#' @param mix.mat table with the gene TPM or microarray expression values for all samples to be deconvoluted
+#' @param expression_data table with the gene TPM or microarray expression values for all samples to be deconvoluted
 #'     (Gene symbols on the first column and sample IDs on the first row). Expression data should be on non-log scale
-#' @param arrays Set to TRUE if the expression data are from microarrays instead of RNA-seq. If TRUE, the "rmgenes" parameter is set to "none". Default: FALSE
+#' @param arrays Logical value. Set to TRUE if the expression data are from microarrays instead of RNA-seq. If TRUE, the "rmgenes" parameter is set to "none". Default: FALSE
 #' @param signame name of the signature matrix. Currently only `TIL10` is available.
-#' @param tumor 	Set to TRUE if the expression data is from tumor samples. Default: FALSE
-#' @param mRNAscale Set to FALSE to disable the correction of cell-type-specific mRNA content bias. Default: TRUE
-#' @param method deconvolution method to be used: "lsei" for constrained least squares regression, "hampel", "huber", or "bisquare" for robust regression with Huber, Hampel, or Tukey bisquare estimators. Default: "lsei".
+#' TODO: if passed as a file/matrix, we need to define some ways of handling this upstream of things
+#' @param tumor Logical value. Set to TRUE if the expression data is from tumor samples. Default: FALSE
+#' @param mRNAscale Logical value. Set to FALSE to disable the correction of cell-type-specific mRNA content bias. Default: TRUE
+#' @param method Character string, defining the deconvolution method to be used:
+#' "lsei" for constrained least squares regression, "hampel", "huber", or "bisquare"
+#' for robust regression with Huber, Hampel, or Tukey bisquare estimators. Default: "lsei".
 #' @param column Character, specifies which column contains the information of the gene symbol identifiers
 #' @param rmgenes Specifies which genes have to be removed from the deconvolution analysis.
 #'  Can be a vector of gene symbols or a string among "none" (no genes are removed) and "default" (a list of genes with noisy expression RNA-seq data is removed as explained in quanTIseq paper). Default: "default" for RNA-seq data, "none" for microarrrays.
 #'
 #' @export
-run_quantiseq <- function(mix.mat,
+run_quantiseq <- function(expression_data,
                           arrays = FALSE,
                           signame = "TIL10",
                           tumor = FALSE,
@@ -153,24 +156,38 @@ run_quantiseq <- function(mix.mat,
                           column = "gene_symbol",
                           rmgenes = "unassigned") {
 
-
+  ## TODO
+  ## handle case of SummarizedExperiment
+  if (is(expression_data, "SummarizedExperiment")) {
+    mix.mat <- se_to_matrix(expression_data)
+  }
 
 
   # convert expression set to matrix, if required.
-  if (is(mix.mat, "ExpressionSet")) {
-    mix.mat <- mix.mat %>% eset_to_matrix(column)
+  if (is(expression_data, "ExpressionSet")) {
+    mix.mat <- expression_data %>% eset_to_matrix(column)
+  }
+
+  if (is(expression_data, "matrix")) {
+    mix.mat <- expression_data
   }
 
 
 
+  # automatically handles that a right option is passed
+  stopifnot(is.character(method))
+  method <- match.arg(method, c("lsei", "hampel", "huber", "bisquare"))
 
+  stopifnot(is.logical(arrays))
+  stopifnot(is.logical(tumor))
+  stopifnot(is.logical(mRNAscale))
+
+  # TODO - slightly trickier to see how rmgenes should be structured
 
 
   if (!is.null(rmgenes)) {
     mix.mat <- mix.mat[!rownames(mix.mat) %in% rmgenes, ]
   }
-
-
 
 
 
@@ -211,8 +228,12 @@ run_quantiseq <- function(mix.mat,
   } else {
     sig.mat.file <- paste0(signame, "_signature.txt")
     mRNA.file <- paste0(signame, "_mRNA_scaling.txt")
+    # TODO: would need to check that these files
+      ## exist
+      ## are formatted as expected?
   }
 
+  # TODO: probably move the check above
   if (is.numeric(mix.mat[[1, 1]]) != TRUE) {
     stop("Wrong input format for the mixture matrix! Please follow the instructions of the documentation.")
   }
@@ -296,6 +317,8 @@ run_quantiseq <- function(mix.mat,
   results <- results1
   results <- results / apply(results, 1, sum)
 
+
+  # TODO: maybe rewrite these last lines once expected format is clarified
   results = data.frame(results)
   results<-cbind(rownames(results), results)
   colnames(results)[1]<-"Sample"

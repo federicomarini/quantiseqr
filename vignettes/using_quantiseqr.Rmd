@@ -70,7 +70,7 @@ res_quantiseq_id = immunedeconv::deconvolute(dataset_racle$expr_mat, "quantiseq"
 This one would be the way we should use to call it!
 
 ```{r, message=FALSE, warning=FALSE}
-res_quantiseq_run <- quantiseqr::run_quantiseq(mix.mat = dataset_racle$expr_mat, 
+res_quantiseq_run <- quantiseqr::run_quantiseq(expression_data = dataset_racle$expr_mat, 
                                                signame = "TIL10",
                                                tumor = TRUE,
                                                mRNAscale = TRUE,

@@ -5,55 +5,46 @@
 \title{Use quanTIseq to deconvolute a gene expression matrix.}
 \usage{
 run_quantiseq(
-  mix.mat,
+  expression_data,
   arrays = FALSE,
   signame = "TIL10",
   tumor = FALSE,
   mRNAscale = TRUE,
   method = "lsei",
-  btotalcells = FALSE,
   column = "gene_symbol",
   rmgenes = "unassigned"
 )
 }
 \arguments{
-\item{mix.mat}{table with the gene TPM (or microarray expression values) for all samples to be deconvoluted
-(Gene symbols on the first column and sample IDs on the first row). Expression data must be on non-log scale}
+\item{expression_data}{table with the gene TPM or microarray expression values for all samples to be deconvoluted
+(Gene symbols on the first column and sample IDs on the first row). Expression data should be on non-log scale}
 
-\item{arrays}{specifies whether expression data are from microarrays (instead of RNA-seq).
-If TRUE, the "--rmgenes" parameter is set to "none".}
+\item{arrays}{Logical value. Set to TRUE if the expression data are from microarrays instead of RNA-seq. If TRUE, the "rmgenes" parameter is set to "none". Default: FALSE}
 
-\item{signame}{name of the signature matrix. Currently only \code{TIL10} is available.}
+\item{signame}{name of the signature matrix. Currently only \code{TIL10} is available.
+TODO: if passed as a file/matrix, we need to define some ways of handling this upstream of things}
 
-\item{tumor}{specifies whether expression data are from tumor samples. If TRUE, signature genes
-with high expression in tumor samples are removed.
-Default: FALSE.}
+\item{tumor}{Logical value. Set to TRUE if the expression data is from tumor samples. Default: FALSE}
 
-\item{mRNAscale}{specifies whether cell fractions must be scaled to account for cell-type-specific
-mRNA content.
-Default: TRUE.}
+\item{mRNAscale}{Logical value. Set to FALSE to disable the correction of cell-type-specific mRNA content bias. Default: TRUE}
 
-\item{method}{deconvolution method to be used: "hampel", "huber", or "bisquare" for robust regression
-with Huber, Hampel, or Tukey bisquare estimators, respectively, or "lsei" for constrained
-least squares regression. The fraction of uncharacterized cells ("other") is computed only
-by the "lsei" method.
-Default: "lsei".}
+\item{method}{Character string, defining the deconvolution method to be used:
+"lsei" for constrained least squares regression, "hampel", "huber", or "bisquare"
+for robust regression with Huber, Hampel, or Tukey bisquare estimators. Default: "lsei".}
 
-\item{btotalcells}{compute cell densities instead of fractions
-Default: FALSE}
+\item{column}{Character, specifies which column contains the information of the gene symbol identifiers}
 
-\item{column}{Character, specifies which column contains the information of the
-gene symbol identifiers}
-
-\item{rmgenes}{Default: "default" for RNAseq, "none" for microArray data}
+\item{rmgenes}{Specifies which genes have to be removed from the deconvolution analysis.
+Can be a vector of gene symbols or a string among "none" (no genes are removed) and "default" (a list of genes with noisy expression RNA-seq data is removed as explained in quanTIseq paper). Default: "default" for RNA-seq data, "none" for microarrrays.}
 }
 \description{
-Source code from https://github.com/FFinotello/quanTIseq
+Source code from https://github.com/FFinotello/quanTIseq - TODO: will need to update link?
 }
 \details{
 F. Finotello, C. Mayer, C. Plattner, G. Laschober, D. Rieder,
-H. Hackl, A. Krogsdam, W. Posch, D. Wilflingseder, S. Sopper, M. Jsselsteijn,
-D. Johnsons, Y. Xu, Y. Wang, M. E. Sanders, M. V. Estrada, P. Ericsson-Gonzalez,
-J. Balko, N. F. de Miranda, Z. Trajanoski. "quanTIseq: quantifying immune contexture of human tumors".
-bioRxiv 223180. https://doi.org/10.1101/223180.
+H. Hackl, A. Krogsdam, Z. Loncova, W. Posch, D. Wilflingseder, S. Sopper, M. Jsselsteijn,
+T. P. Brouwer, D. Johnsons, Y. Xu, Y. Wang, M. E. Sanders, M. V. Estrada, P. Ericsson-Gonzalez,
+P. Charoentong, J. Balko, N. F. d. C. C. de Miranda, Z. Trajanoski.
+"Molecular and pharmacological modulators of the tumor immune contexture revealed by deconvolution of RNA-seq data".
+Genome Medicine 2019;11(1):34. doi: 10.1186/s13073-019-0638-6.
 }

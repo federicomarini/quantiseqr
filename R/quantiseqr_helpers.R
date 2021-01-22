@@ -25,6 +25,10 @@ eset_to_matrix <- function(eset, column) {
 }
 
 
+## TODO: potential arguments: which assay should I pick if more are available?
+se_to_matrix <- function(se) {
+  # TODO: define all behavior and edge cases
+}
 
 
 #' TODO: something similar, but for the SummarizedExperiment class?
