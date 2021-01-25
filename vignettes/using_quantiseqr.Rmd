@@ -46,8 +46,200 @@ To estimate immune cell fractions, we simply have to invoke the `deconvolute` fu
 of one of the following methods for deconvolution:
 
 ```{r}
-immunedeconv::deconvolution_methods
+##### immunedeconv::deconvolution_methods
 ```
+
+# Plattner et al analysis, example 1
+
+
+```{}
+wget -c ftp://ftp.ncbi.nlm.nih.gov/geo/series/GSE107nnn/GSE107572/suppl/GSE107572%5Ftpm%5FPBMC%5FRNAseq%2Etxt%2Egz
+unzip GSE107572_tpm_PBMC_RNAseq.txt.gz
+read.table("GSE107572_tpm_PBMC_RNAseq.txt", header = TRUE)
+
+```
+
+
+
+
+```{r}
+library(GEOquery)
+
+tpmdata <- 
+  read.table("GSE107572_tpm_PBMC_RNAseq.txt", header = TRUE)
+
+tpm_genesymbols <- tpmdata$GENE
+tpmdata <- as.matrix(tpmdata[, -1])
+rownames(tpmdata) <- tpm_genesymbols
+
+ti_quant <- quantiseqr::run_quantiseq(expression_data = tpmdata, 
+                                               signame = "TIL10",
+                                               tumor = FALSE,
+                                               mRNAscale = TRUE,
+                                               arrays = FALSE)
+
+ti_quant
+
+DCdata <- ti_quant
+
+
+library(GEOquery) 
+GEOid<-"GSE107572" 
+gds<-getGEO(GEOid) 
+GEOinfo<-pData(gds[[1]]) 
+FACSdata<-data.frame(
+  B.cells=GEOinfo$`b cells:ch1`,
+  T.cells.CD4=GEOinfo$`cd4+ t cells:ch1`,
+  T.cells.CD8=GEOinfo$`cd8+ t cells:ch1`, 
+  Monocytes=GEOinfo$`monocytes:ch1`, 
+  Dendritic.cells=GEOinfo$`myeloid dendritic cells:ch1`, 
+  NK.cells=GEOinfo$`natural killer cells:ch1`, 
+  Neutrophils=GEOinfo$`neutrophils:ch1`, 
+  Tregs=GEOinfo$`tregs:ch1`
+) 
+rownames(FACSdata)<-gsub("Blood-derived immune-cell mixture from donor ", "pbmc", GEOinfo$title) # Load deconvolution data obtained by running quanTIseq (--pipelinestart=decon)
+
+# DCdata<-read.table(paste0(dir,”/GSE107572_cell_fractions.txt"), header=TRUE, sep="\t", row.names=1) 
+
+rownames(DCdata)<-gsub("_.*$", "", sub("_", "", rownames(DCdata)))
+
+ccells<-intersect(colnames(DCdata),colnames(FACSdata)) 
+csbjs<-intersect(rownames(DCdata),rownames(FACSdata)) 
+
+DCdata<-DCdata[csbjs,ccells] 
+FACSdata<-FACSdata[csbjs,ccells] # Compare cell fractions for single cell types and all cell types together 
+palette<-c("#451C87", "#b3b300", "#CE0648", "#2363C5", "#AB4CA1", "#0A839B", "#DD8C24", "#ED6D42") 
+
+names(palette)<-c("T.cells.CD4", "Dendritic.cells", "Monocytes", "T.cells.CD8", "Tregs", "B.cells", "NK.cells", "Neutrophils") 
+
+
+```
+
+
+```{r fig.width=10, fig.height=10}
+par(mfrow=c(3,3)) 
+colall<-c()
+for (i in 1:(ncol(DCdata)+1)) { 
+  if (i<=ncol(DCdata)) { 
+    x<-as.numeric(as.character(FACSdata[,i]))
+    y<-DCdata[,i] 
+    ccell<-colnames(DCdata)[i] 
+    col<-palette[ccell]
+  } else {
+    x<-as.numeric(as.vector(as.matrix(FACSdata))) 
+    y<-as.vector(as.matrix(DCdata)) 
+    ccell<-"All cells" 
+    col<-colall
+  }
+  res.cor<-cor.test(y,x) 
+  R<-round(res.cor$estimate, digits=2) 
+  p<-format.pval(res.cor$p.value, digits=2) 
+  RMSE<-round(sqrt(mean((y-x)^2, na.rm=TRUE)), digits=2) 
+  
+  regl<-lm(y~x)
+  ymax<-max(round(max(y),digits=2)*1.3,0.01)
+  xmax<-max(round(max(x),digits=2),0.01)
+  plot(x, y, 
+       main=gsub("(\\.)", " ", ccell), pch=19, 
+       xlab="Flow cytometry cell fractions", 
+       ylab="quanTIseq cell fractions", 
+       col=col, cex.main=1.3, ylim=c(0,ymax), xlim=c(0,xmax), las=1)
+  abline(regl)
+  text(0, ymax*0.98, cex=1, paste0("r = ", R, ", p = ", p), pos=4)
+  text(0, ymax*0.9, cex=1, paste0("RMSE = ", RMSE), pos=4) 
+  
+  colall<-c(colall, rep(col, length(x)))
+}
+  
+```
+
+
+# Plattner et al, example 2
+
+```{r eval=FALSE}
+
+
+tpmdata <- ...
+
+... run_quantiseq()
+
+
+cdata <- -...
+
+
+library(GEOquery)
+library(ggplot2)
+library(reshape2)
+library(ggpubr)
+
+### Load file with estimated cell fractions by quanTIseq:
+cdata <- read.csv(paste0(path,"/SRP066571_cell_fractions.txt"), header=TRUE, sep="\t", stringsAsFactors = FALSE, row.names=1)
+
+
+### Annotation
+gds <-getGEO("GSE75299")
+pdata <-pData(gds[[1]])
+
+sraInfo <- read.csv(paste0(sra,"/SraRunTable.txt"), header = TRUE, sep="\t", stringsAsFactors = FALSE)
+
+cdata <- cbind(cdata, sraInfo[, "Sample_Name"][match(rownames
+                                                     (cdata), sraInfo$Run)])
+
+colnames(cdata)[length(cdata)] <- "geo_accession"
+pdata<-pdata[grep("^Pt", pdata[,1]),]
+cdata <- cbind(cdata, pdata[, "title"][match(cdata$geo_accession, pdata$geo_accession)])
+rownames(cdata) <- cdata[,length(cdata)]
+
+
+### Remove other cells and the last two columns 
+
+cdata<-cdata[,-grep("Other", colnames(cdata))] 
+
+cdata<-cdata[,-grep("geo_accession", colnames(cdata))]
+
+
+
+### Transpose
+
+cdata <-t(cdata)
+### Boxplots and wilcoxon's test pre/post 
+
+groups<-rep("POST", ncol(cdata)) 
+
+groups[grep("baseline", colnames(cdata))]<-"PRE" 
+groups<-factor(groups, levels=c("PRE", "POST")) 
+names(groups)<-colnames(cdata)
+
+
+dataset <- cdata
+colnames(dataset) <- as.vector(groups)
+dataset <- melt(dataset)
+
+ggplot(dataset, aes(Var1, value, fill=Var2))+
+  geom_boxplot()+
+  ylab("cell fractions") +
+  xlab("")+ theme(axis.text=element_text(size=17),
+                  axis.title = element_text(size = 19))+ theme(legend.text = element_text(size = 17),
+                                                               legend.title = element_text(size = 19))+ scale_fill_discrete(name="Treatment")+ theme(axis.text.x= element_text(angle=45, hjust = 1 ))+ stat_compare_means(aes(group = Var2),
+                                                                                                                                                                                                                          symnum.args=list(cutpoints = c(0, 0.001, 0.01, 0.05, 0.1, 1), symbols = c("****", "***", "**", "*", "ns")),
+                                                                                                                                                                                                                          label ="p.signif",
+                                                                                                                                                                                                                          hide.ns=TRUE, cex=10) #default: Wilcoxon Test
+
+
+
+
+
+
+
+
+
+```
+
+
+# General calls and tests 
+
+to see that everything returns the same proportions...
+
 
 
 For this example, we use `quanTIseq`. As a result, we obtain a cell_type x sample data frame with cell-type scores for each sample.
@@ -64,7 +256,7 @@ res_quantiseq <- quantiseqr::deconvolute_quantiseq(dataset_racle$expr_mat,
 in there for checking vs `run_quantiseq`
 
 ```{r, message=FALSE, warning=FALSE}
-res_quantiseq_id = immunedeconv::deconvolute(dataset_racle$expr_mat, "quantiseq", tumor = TRUE)
+res_quantiseq_immunedeconv = immunedeconv::deconvolute(dataset_racle$expr_mat, "quantiseq", tumor = TRUE)
 ```
 
 This one would be the way we should use to call it!
@@ -78,9 +270,9 @@ res_quantiseq_run <- quantiseqr::run_quantiseq(expression_data = dataset_racle$e
 
 sample_names <- res_quantiseq_run$Sample
 res_mat <- res_quantiseq_run %>%
-    as_tibble() %>%
-    select(-Sample) %>%
-    as.matrix()
+  as_tibble() %>%
+  select(-Sample) %>%
+  as.matrix()
 rownames(res_mat) <- sample_names
 
 res_mat <- t(res_mat)
@@ -92,8 +284,8 @@ some checks here...
 ```{r, message=FALSE, warning=FALSE}
 identical(res_mat, res_quantiseq)
 
-all.equal(as.matrix(res_quantiseq_id[,-1]), res_mat)
-as.matrix(res_quantiseq_id[,-1]) - res_mat
+all.equal(as.matrix(res_quantiseq_immunedeconv[,-1]), res_mat)
+as.matrix(res_quantiseq_immunedeconv[,-1]) - res_mat
 ```
 
 
@@ -120,6 +312,9 @@ We observe that
 * the last sample (LAU125) appears to contain no CD8+ T cells, often associated with bad prognosis. 
 
 Estimating the amount of "uncharacterized cells" is a novel feature introduced by quanTIseq and EPIC [@EPIC2017, @quantiseq2017]. This estimate often corresponds to the fraction of tumor cells in the sample. 
+
+
+
 
 
 Let's now apply MCP-counter to the same dataset.
@@ -163,7 +358,7 @@ Let's now compare the results with 'gold standard' FACS data obtained for the fo
 # only include the cell-types that are measured using FACS
 cell_types = c("B cell", "T cell CD4+", "T cell CD8+", "NK cell")
 
-tmp_quantiseq = res_quantiseq_id %>% map_result_to_celltypes(cell_types, "quantiseq") %>% 
+tmp_quantiseq = res_quantiseq_immunedeconv %>% map_result_to_celltypes(cell_types, "quantiseq") %>% 
   rownames_to_column("cell_type") %>%
   gather("sample", "estimate", -cell_type) %>% 
   mutate(method="quanTIseq") 
