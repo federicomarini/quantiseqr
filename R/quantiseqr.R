@@ -169,6 +169,9 @@ run_quantiseq <- function(expression_data,
   }
 
   if (is(expression_data, "matrix")) {
+
+    ## TODO: check that rownames are available, needed in mapGenes
+
     mix.mat <- expression_data
   }
 
@@ -185,6 +188,7 @@ run_quantiseq <- function(expression_data,
   # TODO - slightly trickier to see how rmgenes should be structured
 
 
+  ## TODO: this needs to be done later, otherwise no entries remain?
   if (!is.null(rmgenes)) {
     mix.mat <- mix.mat[!rownames(mix.mat) %in% rmgenes, ]
   }
@@ -193,6 +197,9 @@ run_quantiseq <- function(expression_data,
 
 
   message("\nRunning quanTIseq deconvolution module\n")
+
+  #' TODO: a thought: after the checks, what about printing out all
+  #' options and explain in brief what they should do?
 
   # List of genes to be discarded
   if (rmgenes == "unassigned" && arrays == TRUE) { # For Microarrays
