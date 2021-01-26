@@ -1,6 +1,19 @@
 ---
-title: "Using quantiseqr"
-output: rmarkdown::html_vignette
+title: >
+  Using quantiseqr
+author:
+- name: Federico Marini^[marinif@uni-mainz.de]
+  affiliation: Institute of Medical Biostatistics, Epidemiology and Informatics ([IMBEI, Mainz](https://www.unimedizin-mainz.de/imbei/imbei/welcome-page.html?L=1))
+- name: Francesce Finotello^[ff@ff.ff]
+  affiliation: ..., Innsbruck
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_document:
+    toc: true
+    toc_float: true
+    number_sections: true
+    code_folding: show
+    theme: lumen
 bibliography: references_quantiseqr.bib
 vignette: >
   %\VignetteIndexEntry{Using quantiseqr}
@@ -9,7 +22,13 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
+<style type="text/css">
+.smaller {
+  font-size: 10px
+}
+</style>
+
+```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   # eval = FALSE,
@@ -17,9 +36,28 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
-library(quantiseqr)
+# Introduction {#introduction}
+
+This vignette describes how to use the `r BiocStyle::Biocpkg("quantiseqr")` package for ... .
+
+# Getting started {#gettingstarted}
+
+To install this package, start R and enter:
+
+```{r install, eval=FALSE}
+if (!requireNamespace("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
+
+BiocManager::install("quantiseqr")
 ```
+
+Once installed, the package can be loaded and attached to your current workspace as follows:
+
+```{r loadlib, eval = TRUE}
+library("quantiseqr")
+```
+
+
 
 ```{r, message=FALSE, warning=FALSE}
 library(dplyr)
@@ -51,6 +89,7 @@ of one of the following methods for deconvolution:
 
 # Plattner et al analysis, example 1
 
+Lorem ipsum description of the use case...
 
 ```{}
 wget -c ftp://ftp.ncbi.nlm.nih.gov/geo/series/GSE107nnn/GSE107572/suppl/GSE107572%5Ftpm%5FPBMC%5FRNAseq%2Etxt%2Egz
@@ -155,6 +194,8 @@ for (i in 1:(ncol(DCdata) + 1)) {
 
 
 # Plattner et al, example 2
+
+Lorem ipsum description of the use case...
 
 ```{r}
 tpmdata <- read.table("tpm_GSE75299.txt", header = TRUE)
@@ -422,5 +463,23 @@ result %>%
 ```
 
 (MCP counter does not provide estimates for CD4+ T cells.)
+
+# Additional Information {#additionalinfo}
+
+...
+
+# FAQs {#faqs}
+
+**Q: MyQ?**
+
+A: MyA
+
+# Session Info {- .smaller}
+
+```{r sessioninfo}
+sessionInfo()
+```
+
+
 
 # References {-}
