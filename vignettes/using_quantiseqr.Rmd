@@ -156,16 +156,32 @@ for (i in 1:(ncol(DCdata) + 1)) {
 
 # Plattner et al, example 2
 
-```{r eval=FALSE}
+```{r}
+tpmdata <- read.table("tpm_GSE75299.txt", header = TRUE)
+
+tpm_genesymbols <- tpmdata$GENE
+tpmdata <- as.matrix(tpmdata[, -1])
+rownames(tpmdata) <- tpm_genesymbols
+
+ti_quant <- quantiseqr::run_quantiseq(
+  expression_data = tpmdata,
+  signame = "TIL10",
+  tumor = TRUE,
+  mRNAscale = TRUE,
+  arrays = FALSE
+)
+
+dim(ti_quant)
+rownames(ti_quant)
+colnames(ti_quant)
+```
 
 
-tpmdata <- ...
-
-... run_quantiseq()
-
-
-cdata <- -...
-
+```{r fig.height=8, fig.width=8}
+# download.file(
+#   url = paste0("http://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?save=efetch&db=sra&rettype=runinfo&term=",
+#                "SRP066571"),
+#   destfile = "SRP066571runtable.txt",quiet = TRUE)
 
 library(GEOquery)
 library(ggplot2)
@@ -173,67 +189,84 @@ library(reshape2)
 library(ggpubr)
 
 ### Load file with estimated cell fractions by quanTIseq:
-cdata <- read.csv(paste0(path, "/SRP066571_cell_fractions.txt"), header = TRUE, sep = "\t", stringsAsFactors = FALSE, row.names = 1)
+cdata <- # read.csv(paste0(path, "/SRP066571_cell_fractions.txt"), header = TRUE, sep = "\t", stringsAsFactors = FALSE, row.names = 1)
+  ti_quant
 
 
 ### Annotation
 gds <- getGEO("GSE75299")
 pdata <- pData(gds[[1]])
 
-sraInfo <- read.csv(paste0(sra, "/SraRunTable.txt"), header = TRUE, sep = "\t", stringsAsFactors = FALSE)
+sraInfo <- read.csv("SRP066571runtable.txt", header = TRUE, sep = ",", stringsAsFactors = FALSE)
 
-cdata <- cbind(cdata, sraInfo[, "Sample_Name"][match(rownames
+cdata <- cbind(cdata, sraInfo[, "SampleName"][match(rownames
 (cdata), sraInfo$Run)])
 
 colnames(cdata)[length(cdata)] <- "geo_accession"
+dim(pdata)
 pdata <- pdata[grep("^Pt", pdata[, 1]), ]
-cdata <- cbind(cdata, pdata[, "title"][match(cdata$geo_accession, pdata$geo_accession)])
-rownames(cdata) <- cdata[, length(cdata)]
 
+pt_matchedinfo <- pdata[, "title"][match(cdata$geo_accession, pdata$geo_accession)]
+cdata$pt_info <- pt_matchedinfo
+# rownames(cdata) <- cdata[, length(cdata)]
+
+cdata$groups <- "POST"
+cdata$groups[grep("baseline", cdata$pt_info)] <- "PRE"
+
+class(cdata)
+
+cdata
+
+library(tidyr)
+cellfracs <- pivot_longer(cdata, cols = B.cells:Other)
+
+cellfracs$name <- factor(cellfracs$name,
+                         levels = c("B.cells", "Macrophages.M1", "Macrophages.M2",
+                                    "Monocytes", "Neutrophils", "NK.cells",   
+                                    "T.cells.CD4", "T.cells.CD8", "Tregs", 
+                                    "Dendritic.cells", "Other"))
+
+ggplot(cellfracs, aes(fill = name, y = value, x = Sample)) + 
+  geom_bar(position = "fill", stat = "identity") + 
+  scale_fill_brewer(palette = "PuOr") + 
+  # viridis::scale_fill_viridis(discrete = TRUE) +
+  xlab("") + 
+  ylab("Cell Fractions") + 
+  theme_minimal() + 
+  theme(axis.text.x = element_text(angle = 45, hjust=1))
+
+
+prepost_data <- cdata[!is.na(cdata$pt_info),]
+prepost_data <- prepost_data[-grep("Other", colnames(prepost_data))]
 
 ### Remove other cells and the last two columns
 
-cdata <- cdata[, -grep("Other", colnames(cdata))]
+# cdata <- cdata[, -grep("Other", colnames(cdata))]
 
-cdata <- cdata[, -grep("geo_accession", colnames(cdata))]
+# cdata <- cdata[, -grep("geo_accession", colnames(cdata))]
 
+prepost_data <- pivot_longer(prepost_data, cols = B.cells:Dendritic.cells)
 
+prepost_data$groups <- factor(prepost_data$groups, levels = c("PRE", "POST"))
 
-### Transpose
+prepost_data$name <- factor(prepost_data$name,
+                            levels = c("B.cells", "Macrophages.M1", "Macrophages.M2",
+                                       "Monocytes", "Neutrophils", "NK.cells",   
+                                       "T.cells.CD4", "T.cells.CD8", "Tregs", 
+                                       "Dendritic.cells"))
 
-cdata <- t(cdata)
-### Boxplots and wilcoxon's test pre/post
-
-groups <- rep("POST", ncol(cdata))
-
-groups[grep("baseline", colnames(cdata))] <- "PRE"
-groups <- factor(groups, levels = c("PRE", "POST"))
-names(groups) <- colnames(cdata)
-
-
-dataset <- cdata
-colnames(dataset) <- as.vector(groups)
-dataset <- melt(dataset)
-
-ggplot(dataset, aes(Var1, value, fill = Var2)) +
+ggplot(prepost_data, aes(name, value, fill = groups)) +
   geom_boxplot() +
+  xlab("") + 
   ylab("cell fractions") +
-  xlab("") +
-  theme(
-    axis.text = element_text(size = 17),
-    axis.title = element_text(size = 19)
-  ) +
-  theme(
-    legend.text = element_text(size = 17),
-    legend.title = element_text(size = 19)
-  ) +
-  scale_fill_discrete(name = "Treatment") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  stat_compare_means(aes(group = Var2),
-    symnum.args = list(cutpoints = c(0, 0.001, 0.01, 0.05, 0.1, 1), symbols = c("****", "***", "**", "*", "ns")),
-    label = "p.signif",
-    hide.ns = TRUE, cex = 10
-  ) # default: Wilcoxon Test
+  theme_bw() + 
+  theme(axis.text.x = element_text(angle = 45, hjust=1)) 
+# +
+#   stat_compare_means(aes(group = groups),
+#     symnum.args = list(cutpoints = c(0, 0.001, 0.01, 0.05, 0.1, 1), symbols = c("****", "***", "**", "*", "ns")),
+#     label = "p.signif",
+#     hide.ns = TRUE, cex = 10
+#   ) # default: Wilcoxon Test
 ```
 
 

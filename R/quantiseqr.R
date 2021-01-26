@@ -147,6 +147,10 @@ deconvolute_quantiseq <- function(gene_expression_matrix,
 #'  Can be a vector of gene symbols or a string among "none" (no genes are removed) and "default" (a list of genes with noisy expression RNA-seq data is removed as explained in quanTIseq paper). Default: "default" for RNA-seq data, "none" for microarrrays.
 #'
 #' @export
+#'
+#' @examples
+#' # TODO
+#'
 run_quantiseq <- function(expression_data,
                           arrays = FALSE,
                           signame = "TIL10",
@@ -198,8 +202,8 @@ run_quantiseq <- function(expression_data,
 
   message("\nRunning quanTIseq deconvolution module\n")
 
-  #' TODO: a thought: after the checks, what about printing out all
-  #' options and explain in brief what they should do?
+  # TODO: a thought: after the checks, what about printing out all
+  # options and explain in brief what they should do?
 
   # List of genes to be discarded
   if (rmgenes == "unassigned" && arrays == TRUE) { # For Microarrays
