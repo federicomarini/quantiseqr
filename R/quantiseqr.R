@@ -1,150 +1,69 @@
-######    #' Perform an immune cell deconvolution on a dataset.
-######    #'
-######    #' @param gene_expression A gene expression matrix or a Biobase ExpressionSet.
-######    #'   Either: A numeric matrix or data.frame with HGNC gene symbols as rownames and sample ######    identifiers as colnames.
-######    #'   Or: A Biobase ExpressionSet with HGNC symbols in an fData column (see `column` ######    parameter)
-######    #'   In both cases, data must be on non-log scale.
-######    #' @param column Only relevant if `gene_expression` is an ExpressionSet. Defines in which ######    column
-######    #'   of fData the HGNC symbol can be found.
-######    #' @param method a string specifying the method.
-######    #'   Supported methods are `xcell`, `...`
-######    #' @param indications a character vector with one indication per
-######    #'   sample for TIMER. Argument is ignored for all other methods.
-######    #' @param tumor use a signature matrix/procedure optimized for tumor samples,
-######    #'   if supported by the method. Currently affects EPIC and quanTIseq.
-######    #' @param arrays Runs methods in a mode optimized for microarray data.
-######    #'   Currently affects quanTIseq and CIBERSORT.
-######    #' @param rmgenes a character vector of gene symbols. Exclude these genes from the analysis.
-######    #'   Use this to exclude e.g. noisy genes.
-######    #' @param scale_mrna logical. If FALSE, disable correction for mRNA content of different ######    cell types.
-######    #'   This is supported by methods that compute an absolute score (EPIC and quanTIseq)
-######    #' @param expected_cell_types Limit the analysis to the cell types given in this list. If ######    the cell
-######    #'   types present in the sample are known *a priori*, setting this can improve results for
-######    #'   xCell (see https://github.com/grst/immunedeconv/issues/1).
-######    #' @param ... arguments passed to the respective method
-######    #' @return `data.frame` with `cell_type` as first column and a column with the
-######    #'     calculated cell fractions for each sample.
-######    #'
-######    #' @examples
-######    #' # Not run: deconvolute(gene_expression_matrix, "xcell")
-######    #' @name deconvolute
-######    #' @export deconvolute
-######    deconvolute <- function(gene_expression, method = deconvolution_methods,
-######                            indications = NULL, tumor = TRUE,
-######                            arrays = FALSE, column = "gene_symbol",
-######                            rmgenes = NULL, scale_mrna = TRUE,
-######                            expected_cell_types = NULL,
-######                            ...) {
-######      message(paste0("\n", ">>> Running ", method))
-######
-######      # convert expression set to matrix, if required.
-######      if (is(gene_expression, "ExpressionSet")) {
-######        gene_expression <- gene_expression %>% eset_to_matrix(column)
-######      }
-######
-######      if (!is.null(rmgenes)) {
-######        gene_expression <- gene_expression[!rownames(gene_expression) %in% rmgenes, ]
-######      }
-######
-######      # run selected method
-######      res <- switch(method,
-######                    xcell = deconvolute_xcell(gene_expression, arrays = arrays, ######    expected_cell_types = expected_cell_types, ...),
-######                    mcp_counter = deconvolute_mcp_counter(gene_expression, ...),
-######                    epic = deconvolute_epic(gene_expression, tumor = tumor, scale_mrna = ######    scale_mrna, ...),
-######                    quantiseq = deconvolute_quantiseq(gene_expression,
-######                                                      tumor = tumor, arrays = arrays, scale_mrna ######    = scale_mrna, ...
-######                    ),
-######                    cibersort = deconvolute_cibersort(gene_expression,
-######                                                      absolute = FALSE,
-######                                                      arrays = arrays, ...
-######                    ),
-######                    cibersort_abs = deconvolute_cibersort(gene_expression,
-######                                                          absolute = TRUE,
-######                                                          arrays = arrays, ...
-######                    ),
-######                    timer = deconvolute_timer(gene_expression, indications = indications, ...)
-######      )
-######
-######      # convert to tibble and annotate unified cell_type names
-######      res <- res %>%
-######        as_tibble(rownames = "method_cell_type") %>%
-######        annotate_cell_type(method = method)
-######
-######      return(res)
-######    }
-
-
-
-
-
-
-#' Deconvolute using quanTIseq (only needed for immunedeconv, not for quantiseqr -> can be removed)
+#' Run the quanTIseq algorithm
 #'
-#' @param gene_expression_matrix a m x n matrix with m genes and n samples. Mandatory.
-#' @param tumor Set to TRUE if dealing with a tumor samples. if TRUE, signature genes with
-#'   high expression in tumor samples are removed. Default: FALSE
-#' @param arrays Set to TRUE if working with Microarray data instead of RNA-seq. Default: FALSE
-#' @param scale_mrna Set to FALSE to disable correction for cell type-specific differences
-#'  in mRNA content. Default: TRUE
-#' @param ... passed through to original quanTIseq method. A native argument takes precedence
-#'   over an immunedeconv argument (e.g. `mRNAscale` takes precedence over `scale_mrna`)
-#'   See `deconvolute_quantiseq.default()`.
-#'
-#' @export
-deconvolute_quantiseq <- function(gene_expression_matrix,
-                                  tumor,
-                                  arrays,
-                                  scale_mrna,
-                                  ...) {
-
-  # TODO: we might not even need this way of calling the function
-  arguments <- rlang::dots_list(gene_expression_matrix, tumor = tumor, arrays = arrays, mRNAscale = scale_mrna, ..., .homonyms = "last")
-  call <- rlang::call2(run_quantiseq, !!!arguments)
-  res <- eval(call)
-
-  sample_names <- res$Sample
-  res_mat <- res %>%
-    as_tibble() %>%
-    select(-Sample) %>%
-    as.matrix()
-  rownames(res_mat) <- sample_names
-
-  t(res_mat)
-}
-
-
-
-
-
-
-
-
-
-
 #' Use quanTIseq to deconvolute a gene expression matrix.
 #'
-#' Source code from https://github.com/FFinotello/quanTIseq - TODO: will need to update link?
+#' @param expression_data The gene expression information, containing the TPM
+#' values for the measured features.
+#' Can be provided as
+#' - a simple gene expression matrix, or a data frame (with HGNC gene symbols as
+#' row names and sample identifiers as column names)
+#' - an `ExpressionSet` object (from the Biobase package), where the HGNC gene symbols
+#' are provided in a column of the `fData` slot - that is specified by the `column`
+#' parameter below
+#' - a `SummarizedExperiment` object, or any of the derivative classes (e.g. DESeq2's
+#' `DESeqDataSet`) TODO, in which the assay TODO is containing the TPMs as expected
+#' Internally, `quantiseqr` handles the conversion to an object which is used in
+#' the deconvolution procedure.
+#' @param signature_matrix Character string, specifying the name of the signature matrix.
+#' Defaults to `TIL10`, but can be overridden by providing the path to the file
+#' containing the signature matrix information (TODO specify formatting) or TODO
+#' could be also the name of an existing R object formatted as such
+#' Alt TODO: it can provide the prefix string to the two required files, if I got it
+#' right
+#' @param is_arraydata Logical value. Should be set to TRUE if the expression data
+#' are originating from microarray data. For RNA-seq data, this has to be FALSE
+#' (default value). If set to TRUE, the `rmgenes` parameter (see below) is set
+#' to "none". TODO: think what is meant with "unassigned" - could be left to NULL?
+#' @param is_tumordata Logical value. Should be set to TRUE if the expression data
+#' is from tumor samples. Default: FALSE (e.g. for RNA-seq from blood samples)
+#' @param scale_mRNA Logical value. If set to FALSE, it disables the correction
+#' of cell-type-specific mRNA content bias. Default: TRUE
+#' @param method Character string, defining the deconvolution method to be used:
+#' `lsei` for constrained least squares regression, `hampel`, `huber`, or `bisquare`
+#' for robust regression with Huber, Hampel, or Tukey bisquare estimators,
+#' respectively. Default: `lsei`.
+#' @param column Character, specifies which column in the `fData` slot (for the
+#' ExpressionSet object) contains the information of the HGNC gene symbol
+#' identifiers
+#' @param rm_genes Character vector, specifying which genes have to be excluded
+#' from the deconvolution analysis. It can be provided as
+#' - a vector of gene symbols (contained in the `expression_data`)
+#' - a single string among the choices of "none" (no genes are removed) and "default"
+#'   (a list of genes with noisy expression RNA-seq data is removed, as explained
+#'   in the quanTIseq paper).
+#' Default: "default" for RNA-seq data, "none" for microarrays. TODO: careful,
+#' here it is currently "unassigned"
 #'
+#' @details The values contained in the `expression_data` need to be provided as
+#' TPM values, as this is the format also used to store the `TIL10` signature, upon
+#' which quanTIseq builds to perform the immune cell type deconvolution.
+#' Expression data should _not_ be provided in logarithmic scale.
+#'
+#' Source code is originally available from https://github.com/FFinotello/quanTIseq
+#' - TODO: will need to update link?
+#'
+#'
+#' @references
 #' F. Finotello, C. Mayer, C. Plattner, G. Laschober, D. Rieder,
-#' H. Hackl, A. Krogsdam, Z. Loncova, W. Posch, D. Wilflingseder, S. Sopper, M. Jsselsteijn,
-#' T. P. Brouwer, D. Johnsons, Y. Xu, Y. Wang, M. E. Sanders, M. V. Estrada, P. Ericsson-Gonzalez,
-#' P. Charoentong, J. Balko, N. F. d. C. C. de Miranda, Z. Trajanoski.
-#' "Molecular and pharmacological modulators of the tumor immune contexture revealed by deconvolution of RNA-seq data".
+#' H. Hackl, A. Krogsdam, Z. Loncova, W. Posch, D. Wilflingseder, S. Sopper,
+#' M. Jsselsteijn, T. P. Brouwer, D. Johnsons, Y. Xu, Y. Wang, M. E. Sanders,
+#' M. V. Estrada, P. Ericsson-Gonzalez, P. Charoentong, J. Balko,
+#' N. F. d. C. C. de Miranda, Z. Trajanoski.
+#' "Molecular and pharmacological modulators of the tumor immune contexture
+#' revealed by deconvolution of RNA-seq data".
 #' Genome Medicine 2019;11(1):34. doi: 10.1186/s13073-019-0638-6.
 #'
-#' @param expression_data table with the gene TPM or microarray expression values for all samples to be deconvoluted
-#'     (Gene symbols on the first column and sample IDs on the first row). Expression data should be on non-log scale
-#' @param arrays Logical value. Set to TRUE if the expression data are from microarrays instead of RNA-seq. If TRUE, the "rmgenes" parameter is set to "none". Default: FALSE
-#' @param signame name of the signature matrix. Currently only `TIL10` is available.
-#' TODO: if passed as a file/matrix, we need to define some ways of handling this upstream of things
-#' @param tumor Logical value. Set to TRUE if the expression data is from tumor samples. Default: FALSE
-#' @param mRNAscale Logical value. Set to FALSE to disable the correction of cell-type-specific mRNA content bias. Default: TRUE
-#' @param method Character string, defining the deconvolution method to be used:
-#' "lsei" for constrained least squares regression, "hampel", "huber", or "bisquare"
-#' for robust regression with Huber, Hampel, or Tukey bisquare estimators. Default: "lsei".
-#' @param column Character, specifies which column contains the information of the gene symbol identifiers
-#' @param rmgenes Specifies which genes have to be removed from the deconvolution analysis.
-#'  Can be a vector of gene symbols or a string among "none" (no genes are removed) and "default" (a list of genes with noisy expression RNA-seq data is removed as explained in quanTIseq paper). Default: "default" for RNA-seq data, "none" for microarrrays.
+#' TODO: additional refs, say Plattner et al?
 #'
 #' @export
 #'
@@ -152,13 +71,13 @@ deconvolute_quantiseq <- function(gene_expression_matrix,
 #' # TODO
 #'
 run_quantiseq <- function(expression_data,
-                          arrays = FALSE,
-                          signame = "TIL10",
-                          tumor = FALSE,
-                          mRNAscale = TRUE,
+                          signature_matrix = "TIL10",
+                          is_arraydata = FALSE,
+                          is_tumordata = FALSE,
+                          scale_mRNA = TRUE,
                           method = "lsei",
                           column = "gene_symbol",
-                          rmgenes = "unassigned") {
+                          rm_genes = "unassigned") {
 
   ## TODO
   ## handle case of SummarizedExperiment
@@ -185,16 +104,16 @@ run_quantiseq <- function(expression_data,
   stopifnot(is.character(method))
   method <- match.arg(method, c("lsei", "hampel", "huber", "bisquare"))
 
-  stopifnot(is.logical(arrays))
-  stopifnot(is.logical(tumor))
-  stopifnot(is.logical(mRNAscale))
+  stopifnot(is.logical(is_arraydata))
+  stopifnot(is.logical(is_tumordata))
+  stopifnot(is.logical(scale_mRNA))
 
   # TODO - slightly trickier to see how rmgenes should be structured
 
 
   ## TODO: this needs to be done later, otherwise no entries remain?
-  if (!is.null(rmgenes)) {
-    mix.mat <- mix.mat[!rownames(mix.mat) %in% rmgenes, ]
+  if (!is.null(rm_genes)) {
+    mix.mat <- mix.mat[!rownames(mix.mat) %in% rm_genes, ]
   }
 
 
@@ -206,39 +125,39 @@ run_quantiseq <- function(expression_data,
   # options and explain in brief what they should do?
 
   # List of genes to be discarded
-  if (rmgenes == "unassigned" && arrays == TRUE) { # For Microarrays
-    rmgenes <- "none"
-  } else if (rmgenes == "unassigned" && arrays == FALSE) { # For RNA-seq
-    rmgenes <- "default"
+  if (rm_genes == "unassigned" && is_arraydata == TRUE) { # For Microarrays
+    rm_genes <- "none"
+  } else if (rm_genes == "unassigned" && is_arraydata == FALSE) { # For RNA-seq
+    rm_genes <- "default"
   }
 
   # Files
   listsig <- c("TIL10")
-  if (signame %in% listsig) {
-    sig.mat.file <- system.file("extdata", paste0(signame, "_signature.txt"),
+  if (signature_matrix %in% listsig) {
+    sig.mat.file <- system.file("extdata", paste0(signature_matrix, "_signature.txt"),
       package = "quantiseqr", mustWork = TRUE
     )
 
-    mRNA.file <- system.file("extdata", paste0(signame, "_mRNA_scaling.txt"),
+    mRNA.file <- system.file("extdata", paste0(signature_matrix, "_mRNA_scaling.txt"),
       package = "quantiseqr", mustWork = TRUE
     )
 
-    fileab <- system.file("extdata", paste0(signame, "_TCGA_aberrant_immune_genes.txt"),
+    fileab <- system.file("extdata", paste0(signature_matrix, "_TCGA_aberrant_immune_genes.txt"),
       package = "quantiseqr", mustWork = TRUE
     )
 
-    if (rmgenes == "default") {
-      filerm <- system.file("extdata", paste0(signame, "_rmgenes.txt"),
+    if (rm_genes == "default") {
+      filerm <- system.file("extdata", paste0(signature_matrix, "_rmgenes.txt"),
         package = "quantiseqr", mustWork = TRUE
       )
-    } else if (rmgenes == "path") {
-      filerm <- system.file("extdata", paste0(signame, "rmgenes.txt"),
+    } else if (rm_genes == "path") {
+      filerm <- system.file("extdata", paste0(signature_matrix, "rmgenes.txt"),
         package = "quantiseqr", mustWork = TRUE
       )
     }
   } else {
-    sig.mat.file <- paste0(signame, "_signature.txt")
-    mRNA.file <- paste0(signame, "_mRNA_scaling.txt")
+    sig.mat.file <- paste0(signature_matrix, "_signature.txt")
+    mRNA.file <- paste0(signature_matrix, "_mRNA_scaling.txt")
     # TODO: would need to check that these files
       ## exist
       ## are formatted as expected?
@@ -253,7 +172,7 @@ run_quantiseq <- function(expression_data,
   sig.mat <- read.table(sig.mat.file, header = TRUE, sep = "\t", row.names = 1)
 
   # Load normalization factors (set all to 1 if mRNAscale==FALSE)
-  if (mRNAscale) {
+  if (scale_mRNA) {
     mRNA <- read.table(mRNA.file,
       sep = "\t",
       header = FALSE,
@@ -268,13 +187,13 @@ run_quantiseq <- function(expression_data,
   # Preprocess mixture matrix
   message(paste0(
     "Gene expression normalization and re-annotation (arrays: ",
-    arrays, ")\n"
+    is_arraydata, ")\n"
   ))
-  mix.mat <- fixMixture(mix.mat, arrays = arrays)
+  mix.mat <- fixMixture(mix.mat, arrays = is_arraydata)
 
   # Remove noisy genes
-  if (rmgenes != "none") {
-    if (signame %in% listsig) {
+  if (rm_genes != "none") {
+    if (signature_matrix %in% listsig) {
       lrmgenes <- as.vector(read.table(filerm, header = FALSE, sep = "\t")[, 1])
       n1 <- nrow(sig.mat)
       sig.mat <- sig.mat[!rownames(sig.mat) %in% lrmgenes, , drop = FALSE]
@@ -284,8 +203,8 @@ run_quantiseq <- function(expression_data,
   }
 
   # Fix tumor data
-  if (tumor) {
-    if (signame %in% listsig) {
+  if (is_tumordata) {
+    if (signature_matrix %in% listsig) {
       abgenes <- as.vector(read.table(fileab, header = FALSE, sep = "\t")[, 1])
       n1 <- nrow(sig.mat)
       sig.mat <- sig.mat[!rownames(sig.mat) %in% abgenes, , drop = FALSE]
