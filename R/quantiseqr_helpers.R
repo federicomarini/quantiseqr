@@ -42,8 +42,6 @@ se_to_matrix <- function(se) {
 
 
 
-########
-
 
 
 
