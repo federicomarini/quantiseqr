@@ -122,7 +122,7 @@ makeQN <- function(mix.mat) {
 #' @examples
 #' # TODO
 mapGenes <- function(mydata) {
-  HGNC <- read.csv(system.file("extdata", "HGNC_genenames_20170418.txt", package = "quantiseqr", mustWork = TRUE),
+  HGNC <- read.csv(system.file("extdata", "HGNC_genenames_20170418.txt.gz", package = "quantiseqr", mustWork = TRUE),
     header = TRUE, sep = "\t"
   )
 
