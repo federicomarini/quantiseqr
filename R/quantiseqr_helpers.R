@@ -14,13 +14,12 @@ NULL
 #'
 #' @param eset `ExpressionSet`
 #' @param column column name of the `fData()` table, which contains the HGNC gene symbols.
-#' @return matrix with gene symbols as rownames and sample identifiers as colnames.
+#' @return A matrix with gene symbols as rownames and sample identifiers as colnames.
 #'
 #' @export
 eset_to_matrix <- function(eset, column) {
   expr_mat <- exprs(eset)
-  # TODO: could be done also without dplyr code to reduce dependencies to minimum!
-  rownames(expr_mat) <- fData(eset) %>% pull(!!column)
+  rownames(expr_mat) <- fData(eset)[["column"]]
   return(expr_mat)
 }
 
@@ -39,9 +38,30 @@ se_to_matrix <- function(se) {
 
 #' TODO: even if unexported, it would not hurt to have the functions a little more
 #' documented
+#'
 
 
+#' @param signature_matrix TODO
+#' @param mix_mat TODO
+check_signature <- function(signature_matrix, mix_mat) {
+  if (!(is.data.frame(signature_matrix) | is.matrix(signature_matrix)))
+    stop("The signature matrix provided is not formatted as a matrix or a data.frame")
+  if (is.matrix(signature_matrix)) {
+    if (!is.numeric(signature_matrix))
+      stop("Signature Matrix provided not in numeric format")
+  }
+  if (is.data.frame(signature_matrix)) {
+    if (!all(unlist(lapply(signature_matrix, is.numeric))))
+      stop("Signature Data frame provided not in numeric format")
+  }
 
+  found_in_sig <- length(intersect(rownames(mix_mat), rownames(signature_matrix)))
+  if (found_in_sig == 0)
+    stop("No match found between signature genes and identifiers provided in the expression data!")
+  if ((found_in_sig / nrow(signature_matrix)) < 0.1)
+    warning("Found less than 10% of the signature genes in the provided expression data!")
+
+}
 
 
 

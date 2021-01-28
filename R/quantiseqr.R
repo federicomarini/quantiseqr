@@ -88,7 +88,7 @@ run_quantiseq <- function(expression_data,
 
   # convert expression set to matrix, if required.
   if (is(expression_data, "ExpressionSet")) {
-    mix.mat <- expression_data %>% eset_to_matrix(column)
+    mix.mat <- eset_to_matrix(expression_data, column)
   }
 
   if (is(expression_data, "matrix")) {
@@ -98,6 +98,15 @@ run_quantiseq <- function(expression_data,
     mix.mat <- expression_data
   }
 
+  if (is.integer(mix.mat)) {
+    warning("Discrete values detected in the expression data, please keep in mind ",
+            "that quanTIsea required the values formatted as TPM!")
+  }
+
+  # TODO: probably move the check above
+  if (!is.numeric(mix.mat)) {
+    stop("Expecting a matrix/an object with numeric values to be provided")
+  }
 
 
   # automatically handles that a right option is passed
@@ -158,18 +167,24 @@ run_quantiseq <- function(expression_data,
   } else {
     sig.mat.file <- paste0(signature_matrix, "_signature.txt")
     mRNA.file <- paste0(signature_matrix, "_mRNA_scaling.txt")
+
+    if (!file.exists(sig.mat.file)) {
+      stop("Signature matrix file not found! ",
+           "quantiseqr is expecting to find a file called ", sig.mat.file)
+    }
+    if (!file.exists(mRNA.file)) {
+      stop("Scaling info file not found! ",
+           "quantiseqr is expecting to find a file called ", mRNA.file)
+    }
     # TODO: would need to check that these files
       ## exist
       ## are formatted as expected?
   }
 
-  # TODO: probably move the check above
-  if (is.numeric(mix.mat[[1, 1]]) != TRUE) {
-    stop("Wrong input format for the mixture matrix! Please follow the instructions of the documentation.")
-  }
 
   # Load signature
   sig.mat <- read.table(sig.mat.file, header = TRUE, sep = "\t", row.names = 1)
+  check_signature(sig.mat, mix.mat)
 
   # Load normalization factors (set all to 1 if mRNAscale==FALSE)
   if (scale_mRNA) {
