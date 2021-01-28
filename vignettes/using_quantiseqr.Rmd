@@ -227,7 +227,6 @@ colnames(ti_quant)
 library(GEOquery)
 library(ggplot2)
 library(reshape2)
-library(ggpubr)
 
 ### Load file with estimated cell fractions by quanTIseq:
 cdata <- # read.csv(paste0(path, "/SRP066571_cell_fractions.txt"), header = TRUE, sep = "\t", stringsAsFactors = FALSE, row.names = 1)
@@ -333,7 +332,7 @@ this is not the way we should call it, but let it be handled via `immunedeconv`
 in there for checking vs `run_quantiseq`
 
 ```{r}
-run_tests <- TRUE
+run_tests <- FALSE
 ```
 
 
@@ -363,14 +362,14 @@ res_mat <- t(res_mat)
 colnames(res_mat) <- rownames(res_quantiseq_run)
 ```
 
-some checks here...
+<!-- some checks here... -->
 
-```{r, message=FALSE, warning=FALSE, eval=run_tests}
-# identical(res_mat, res_quantiseq)
+<!-- ```{r, message=FALSE, warning=FALSE, eval=run_tests} -->
+<!-- # identical(res_mat, res_quantiseq) -->
 
-all.equal(as.matrix(res_quantiseq_immunedeconv[, -1]), res_mat)
-as.matrix(res_quantiseq_immunedeconv[, -1]) - res_mat
-```
+<!-- all.equal(as.matrix(res_quantiseq_immunedeconv[, -1]), res_mat) -->
+<!-- as.matrix(res_quantiseq_immunedeconv[, -1]) - res_mat -->
+<!-- ``` -->
 
 
 QuanTIseq generates scores that can be interpreted as a cell-type fraction. Let's visualize
@@ -401,74 +400,41 @@ Estimating the amount of "uncharacterized cells" is a novel feature introduced b
 
 
 
-Let's now apply MCP-counter to the same dataset.
+<!-- Let's now apply MCP-counter to the same dataset. -->
 
-```{r, message=FALSE, warning=FALSE}
-library(immunedeconv)
-res_mcp_counter <- deconvolute(dataset_racle$expr_mat, "mcp_counter")
-```
+<!-- ```{r, message=FALSE, warning=FALSE} -->
+<!-- library(immunedeconv) -->
+<!-- res_mcp_counter <- deconvolute(dataset_racle$expr_mat, "mcp_counter") -->
+<!-- ``` -->
 
-MCP-counter provides scores in arbitrary units that are only comparable between samples, but not between
-cell-types. The visualization as bar-chart suggests the scores to be cell-type fractions and is, therefore, unsuitable.
-Instead, we use ggplot to visualize the scores per-cell type, allowing for a relative comparison between samples.
+<!-- MCP-counter provides scores in arbitrary units that are only comparable between samples, but not between -->
+<!-- cell-types. The visualization as bar-chart suggests the scores to be cell-type fractions and is, therefore, unsuitable. -->
+<!-- Instead, we use ggplot to visualize the scores per-cell type, allowing for a relative comparison between samples. -->
 
-```{r, fig.height=7, fig.width=7}
-res_mcp_counter %>%
-  gather(sample, score, -cell_type) %>%
-  ggplot(aes(x = sample, y = score, color = cell_type)) +
-  geom_point(size = 4) +
-  facet_wrap(~cell_type, scales = "free_x", ncol = 3) +
-  scale_color_brewer(palette = "Paired", guide = FALSE) +
-  coord_flip() +
-  theme_bw() +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
-```
+<!-- ```{r, fig.height=7, fig.width=7} -->
+<!-- res_mcp_counter %>% -->
+<!--   gather(sample, score, -cell_type) %>% -->
+<!--   ggplot(aes(x = sample, y = score, color = cell_type)) + -->
+<!--   geom_point(size = 4) + -->
+<!--   facet_wrap(~cell_type, scales = "free_x", ncol = 3) + -->
+<!--   scale_color_brewer(palette = "Paired", guide = FALSE) + -->
+<!--   coord_flip() + -->
+<!--   theme_bw() + -->
+<!--   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) -->
+<!-- ``` -->
 
-With the scores being in arbitrary units, the results are not useful for judging if a cell type is present in the sample, or not. However, we can compare the relative values between samples and relate them to the results we obtained earlier using quanTIseq. 
+<!-- With the scores being in arbitrary units, the results are not useful for judging if a cell type is present in the sample, or not. However, we can compare the relative values between samples and relate them to the results we obtained earlier using quanTIseq.  -->
 
-* Consistent with quanTIseq, MCP-counter predicts B cells to be more abundant in LAU355 and LAU1314 than in the other two samples. 
-* Also consistent with quanTIseq, the last LAU125 appears to contain significantly less CD8+ T cells than the other samples. 
-* the estimates for Neutrophils and Monocytes are inconsistent with quanTIseq. 
+<!-- * Consistent with quanTIseq, MCP-counter predicts B cells to be more abundant in LAU355 and LAU1314 than in the other two samples.  -->
+<!-- * Also consistent with quanTIseq, the last LAU125 appears to contain significantly less CD8+ T cells than the other samples.  -->
+<!-- * the estimates for Neutrophils and Monocytes are inconsistent with quanTIseq.  -->
 
 
 ## Comparison with FACS data
 
 Let's now compare the results with 'gold standard' FACS data obtained for the four samples. This is, of course, not a representative benchmark, but it gives a notion about what magnitude of predictive accuracy we can expect. 
 
-```{r, eval=run_tests}
-# construct a single dataframe containing all data
-#
-# re-map the cell-types to common names.
-# only include the cell-types that are measured using FACS
-cell_types <- c("B cell", "T cell CD4+", "T cell CD8+", "NK cell")
-
-tmp_quantiseq <- res_quantiseq_immunedeconv %>%
-  map_result_to_celltypes(cell_types, "quantiseq") %>%
-  rownames_to_column("cell_type") %>%
-  gather("sample", "estimate", -cell_type) %>%
-  mutate(method = "quanTIseq")
-tmp_mcp_counter <- res_mcp_counter %>%
-  map_result_to_celltypes(cell_types, "mcp_counter") %>%
-  rownames_to_column("cell_type") %>%
-  gather("sample", "estimate", -cell_type) %>%
-  mutate(method = "MCP-counter")
-
-result <- bind_rows(tmp_quantiseq, tmp_mcp_counter) %>%
-  inner_join(dataset_racle$ref)
-```
-
-Plot the true vs. estimated values: 
-
-```{r, fig.width=6, fig.height=7, eval=run_tests}
-result %>%
-  ggplot(aes(x = true_fraction, y = estimate)) +
-  geom_point(aes(shape = cell_type, color = cell_type)) +
-  facet_wrap(cell_type ~ method, scales = "free_y", ncol = 2) +
-  scale_color_brewer(palette = "Dark2") +
-  theme_bw()
-```
-
-(MCP counter does not provide estimates for CD4+ T cells.)
+...
 
 # Additional Information {#additionalinfo}
 
