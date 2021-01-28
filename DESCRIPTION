@@ -23,7 +23,8 @@ Imports:
     stats,
     limSolve,
     MASS,
-    preprocessCore
+    preprocessCore,
+    Biobase
 Suggests: 
     BiocStyle,
     knitr,

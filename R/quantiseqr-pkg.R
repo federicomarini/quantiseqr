@@ -9,6 +9,7 @@
 #' @importFrom preprocessCore normalize.quantiles
 #' @importFrom methods is
 #' @importFrom stats aggregate median
+#' @importFrom Biobase exprs fData
 #'
 #' @name quantiseqr-pkg
 #' @docType package

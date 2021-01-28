@@ -2,6 +2,8 @@
 
 export(eset_to_matrix)
 export(run_quantiseq)
+importFrom(Biobase,exprs)
+importFrom(Biobase,fData)
 importFrom(MASS,rlm)
 importFrom(limSolve,lsei)
 importFrom(methods,is)
