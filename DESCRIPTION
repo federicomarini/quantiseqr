@@ -26,6 +26,12 @@ Imports:
     preprocessCore,
     Biobase
 Suggests: 
+    GEOquery,
+    dplyr,
+    ggplot2,
+    reshape2, 
+    tibble, 
+    tidyr,
     BiocStyle,
     knitr,
     rmarkdown
