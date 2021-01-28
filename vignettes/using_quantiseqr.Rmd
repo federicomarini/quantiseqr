@@ -332,7 +332,12 @@ this is not the way we should call it, but let it be handled via `immunedeconv`
 
 in there for checking vs `run_quantiseq`
 
-```{r, message=FALSE, warning=FALSE}
+```{r}
+run_tests <- TRUE
+```
+
+
+```{r, message=FALSE, warning=FALSE, eval=run_tests}
 res_quantiseq_immunedeconv <- immunedeconv::deconvolute(dataset_racle$expr_mat, "quantiseq", tumor = TRUE)
 ```
 
@@ -360,7 +365,7 @@ colnames(res_mat) <- rownames(res_quantiseq_run)
 
 some checks here...
 
-```{r, message=FALSE, warning=FALSE}
+```{r, message=FALSE, warning=FALSE, eval=run_tests}
 # identical(res_mat, res_quantiseq)
 
 all.equal(as.matrix(res_quantiseq_immunedeconv[, -1]), res_mat)
@@ -430,7 +435,7 @@ With the scores being in arbitrary units, the results are not useful for judging
 
 Let's now compare the results with 'gold standard' FACS data obtained for the four samples. This is, of course, not a representative benchmark, but it gives a notion about what magnitude of predictive accuracy we can expect. 
 
-```{r}
+```{r, eval=run_tests}
 # construct a single dataframe containing all data
 #
 # re-map the cell-types to common names.
@@ -454,7 +459,7 @@ result <- bind_rows(tmp_quantiseq, tmp_mcp_counter) %>%
 
 Plot the true vs. estimated values: 
 
-```{r, fig.width=6, fig.height=7}
+```{r, fig.width=6, fig.height=7, eval=run_tests}
 result %>%
   ggplot(aes(x = true_fraction, y = estimate)) +
   geom_point(aes(shape = cell_type, color = cell_type)) +
@@ -467,6 +472,7 @@ result %>%
 
 # Additional Information {#additionalinfo}
 
+e.g. using quantiseqr via immunedeconv
 ...
 
 # FAQs {#faqs}
