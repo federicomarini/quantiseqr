@@ -151,7 +151,7 @@ mapGenes <- function(mydata) {
   for (i in genes.ind.NA) {
     genei <- curgenes[i]
 
-    # Previos symbol?
+    # Previous symbol?
     ind1 <- grep(genei, HGNC$PreviousSymbols)
     for (i1 in ind1) {
       array1 <- unlist(strsplit(as.character(HGNC$PreviousSymbols[i1]), ","))
@@ -184,11 +184,16 @@ mapGenes <- function(mydata) {
   newgenes <- newgenes[which(!is.na(newgenes))]
 
   # Take the median if duplicates are present
-  outdata <- aggregate(mydata, by = list(newgenes), FUN = median)
-  rownames(outdata) <- outdata[, 1]
-  outdata <- outdata[, -1, drop = FALSE]
-  outdata <- as.data.frame(outdata)
-
+  if (all(duplicated(rownames(mydata)))) {
+    message("dupe dupes, might take a little longer: TODO, faster options?")
+    outdata <- aggregate(mydata, by = list(newgenes), FUN = median)
+    rownames(outdata) <- outdata[, 1]
+    outdata <- outdata[, -1, drop = FALSE]
+    outdata <- as.data.frame(outdata)
+  } else {
+    message("no dupes")
+    outdata <- as.data.frame(mydata)
+  }
 
   return(outdata)
 }
