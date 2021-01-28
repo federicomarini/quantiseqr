@@ -2,10 +2,7 @@
 % Please edit documentation in R/quantiseqr_helpers.R
 \name{fixMixture}
 \alias{fixMixture}
-\title{TODO: something similar, but for the SummarizedExperiment class?
-TODO: even if unexported, it would not hurt to have the functions a little more
-documented
-Title}
+\title{Title}
 \usage{
 fixMixture(mix.mat, arrays = FALSE)
 }
@@ -18,9 +15,6 @@ fixMixture(mix.mat, arrays = FALSE)
 TODO
 }
 \description{
-TODO: something similar, but for the SummarizedExperiment class?
-TODO: even if unexported, it would not hurt to have the functions a little more
-documented
 Title
 }
 \examples{

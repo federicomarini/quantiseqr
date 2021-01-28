@@ -12,7 +12,7 @@ eset_to_matrix(eset, column)
 \item{column}{column name of the \code{fData()} table, which contains the HGNC gene symbols.}
 }
 \value{
-matrix with gene symbols as rownames and sample identifiers as colnames.
+A matrix with gene symbols as rownames and sample identifiers as colnames.
 }
 \description{
 Convert a \code{Biobase::ExpressionSet} to a gene-expression matrix.
