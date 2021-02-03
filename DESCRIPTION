@@ -29,12 +29,13 @@ Suggests:
     GEOquery,
     dplyr,
     ggplot2,
-    reshape2, 
-    tibble, 
+    reshape2,
+    tibble,
     tidyr,
     BiocStyle,
     knitr,
-    rmarkdown
+    rmarkdown,
+    testthat
 VignetteBuilder: knitr
 Encoding: UTF-8
 LazyData: true
