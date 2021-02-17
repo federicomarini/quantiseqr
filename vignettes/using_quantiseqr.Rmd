@@ -394,7 +394,7 @@ We observe that
 * the last two samples (LAU1255, LAU125) appear to contain a large amount of "uncharacterized cells"
 * the last sample (LAU125) appears to contain no CD8+ T cells, often associated with bad prognosis. 
 
-Estimating the amount of "uncharacterized cells" is a novel feature introduced by quanTIseq and EPIC [@EPIC2017, @quantiseq2017]. This estimate often corresponds to the fraction of tumor cells in the sample. 
+Estimating the amount of "uncharacterized cells" is a novel feature introduced by quanTIseq and EPIC [@EPIC2017, @quantiseq2019]. This estimate often corresponds to the fraction of tumor cells in the sample. 
 
 
 
