@@ -13,8 +13,7 @@ Authors@R:
         )
     )
 Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to
-    pick a license
+License: GPL (>= 3)
 Depends:
     R (>= 4.0.0)
 Imports: 
