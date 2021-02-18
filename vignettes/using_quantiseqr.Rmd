@@ -236,7 +236,9 @@ cdata <- # read.csv(paste0(path, "/SRP066571_cell_fractions.txt"), header = TRUE
 gds <- getGEO("GSE75299")
 pdata <- pData(gds[[1]])
 
-sraInfo <- read.csv("SRP066571runtable.txt", header = TRUE, sep = ",", stringsAsFactors = FALSE)
+sraInfo <- read.csv(
+  system.file("extdata", "SRP066571runtable.txt", package = "quantiseqr"), 
+  header = TRUE, sep = ",", stringsAsFactors = FALSE)
 
 cdata <- cbind(cdata, sraInfo[, "SampleName"][match(rownames
 (cdata), sraInfo$Run)])
