@@ -3,13 +3,14 @@
 #' pkg description
 #'
 #'
-#' @importFrom utils read.table read.csv
-#' @importFrom MASS rlm
-#' @importFrom limSolve lsei
-#' @importFrom preprocessCore normalize.quantiles
-#' @importFrom methods is
-#' @importFrom stats aggregate median
 #' @importFrom Biobase exprs fData
+#' @importFrom limSolve lsei
+#' @importFrom MASS rlm
+#' @importFrom methods is
+#' @importFrom preprocessCore normalize.quantiles
+#' @importFrom stats aggregate median
+#' @importFrom SummarizedExperiment assays
+#' @importFrom utils read.table read.csv
 #'
 #' @name quantiseqr-pkg
 #' @docType package

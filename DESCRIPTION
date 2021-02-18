@@ -17,24 +17,28 @@ License: GPL (>= 3)
 Depends:
     R (>= 4.0.0)
 Imports: 
-    methods,
-    utils,
-    stats,
+    Biobase,
     limSolve,
     MASS,
+    methods,
     preprocessCore,
-    Biobase
+    stats,
+    SummarizedExperiment,
+    utils
 Suggests: 
-    GEOquery,
-    dplyr,
-    ggplot2,
-    reshape2,
-    tibble,
-    tidyr,
+    AnnotationDbi,
     BiocStyle,
+    dplyr,
+    GEOquery,
+    ggplot2,
     knitr,
+    macrophage,
+    org.Hs.eg.db,
+    reshape2,
     rmarkdown,
-    testthat
+    testthat,
+    tibble,
+    tidyr
 biocViews:
     GeneExpression, Software, Transcription, Transcriptomics, Sequencing, Microarray,
     Visualization, Annotation, ImmunoOncology, FeatureExtraction, Classification, 

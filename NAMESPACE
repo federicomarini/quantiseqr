@@ -2,9 +2,11 @@
 
 export(eset_to_matrix)
 export(run_quantiseq)
+export(se_to_matrix)
 importFrom(Biobase,exprs)
 importFrom(Biobase,fData)
 importFrom(MASS,rlm)
+importFrom(SummarizedExperiment,assays)
 importFrom(limSolve,lsei)
 importFrom(methods,is)
 importFrom(preprocessCore,normalize.quantiles)
