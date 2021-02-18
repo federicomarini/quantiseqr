@@ -347,7 +347,7 @@ celldensities <- function(DCres,
 
   celldens <- DCres
 
-  for (i in 1:nrow(celldens)) {
+  for (i in seq_len(nrow(celldens))) {
     celldens[i, ] <- celldens[i, ] * imageinfo[i, 2]
   }
 
