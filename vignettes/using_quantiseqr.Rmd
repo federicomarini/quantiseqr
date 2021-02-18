@@ -359,7 +359,7 @@ We also read in the true proportions, known by design - this is provided as a te
 
 ```{r}
 true_prop_1700mix <- read.table(
-  system.file("extdata", "quanTIseq_SimRNAseq_read_fractions.txt", package = "quantiseqr"), 
+  system.file("extdata", "quanTIseq_SimRNAseq_read_fractions.txt.gz", package = "quantiseqr"), 
   sep = "\t", header = TRUE)
 head(true_prop_1700mix)
 ```
