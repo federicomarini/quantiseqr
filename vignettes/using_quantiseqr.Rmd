@@ -198,7 +198,7 @@ for (i in 1:(ncol(DCdata) + 1)) {
 Lorem ipsum description of the use case...
 
 ```{r}
-tpmdata <- read.table("tpm_GSE75299.txt", header = TRUE)
+tpmdata <- read.table("tpm_GSE75299.txt.gz", header = TRUE)
 
 tpm_genesymbols <- tpmdata$GENE
 tpmdata <- as.matrix(tpmdata[, -1])
