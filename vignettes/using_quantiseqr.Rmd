@@ -101,8 +101,10 @@ Lorem ipsum description of the use case...
 library(GEOquery)
 
 # downloading the supplemental files on the fly
-tpminfo_GSE107572 <- getGEOSuppFiles("GSE107572")
-tpmdata <-read.table("GSE107572/GSE107572_tpm_PBMC_RNAseq.txt.gz", header = TRUE)
+tpminfo_GSE107572 <- getGEOSuppFiles("GSE107572", baseDir = tempdir())
+tpm_location <- rownames(tpminfo_GSE107572)[2]
+tpm_location
+tpmdata <-read.table(tpm_location, header = TRUE)
 
 GEOid <- "GSE107572"
 gds <- getGEO(GEOid)
