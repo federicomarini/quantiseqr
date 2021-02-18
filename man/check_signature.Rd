@@ -2,8 +2,7 @@
 % Please edit documentation in R/quantiseqr_helpers.R
 \name{check_signature}
 \alias{check_signature}
-\title{TODO: something similar, but for the SummarizedExperiment class?
-TODO: even if unexported, it would not hurt to have the functions a little more
+\title{TODO: even if unexported, it would not hurt to have the functions a little more
 documented}
 \usage{
 check_signature(signature_matrix, mix_mat)
@@ -14,7 +13,6 @@ check_signature(signature_matrix, mix_mat)
 \item{mix_mat}{TODO}
 }
 \description{
-TODO: something similar, but for the SummarizedExperiment class?
 TODO: even if unexported, it would not hurt to have the functions a little more
 documented
 }
