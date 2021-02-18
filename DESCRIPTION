@@ -35,6 +35,10 @@ Suggests:
     knitr,
     rmarkdown,
     testthat
+biocViews:
+    GeneExpression, Software, Transcription, Transcriptomics, Sequencing, Microarray,
+    Visualization, Annotation, ImmunoOncology, FeatureExtraction, Classification, 
+    StatisticalMethod
 VignetteBuilder: knitr
 Encoding: UTF-8
 LazyData: true
