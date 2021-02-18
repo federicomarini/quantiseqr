@@ -155,7 +155,7 @@ names(palette) <- c("T.cells.CD4", "Dendritic.cells", "Monocytes", "T.cells.CD8"
 ```
 
 
-```{r fig.width=10, fig.height=10}
+```{r fig.width=9, fig.height=9}
 par(mfrow = c(3, 3))
 colall <- c()
 for (i in 1:(ncol(DCdata) + 1)) {
@@ -218,7 +218,7 @@ colnames(ti_quant)
 ```
 
 
-```{r fig.height=8, fig.width=8}
+```{r fig.height=7, fig.width=7}
 # download.file(
 #   url = paste0("http://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?save=efetch&db=sra&rettype=runinfo&term=",
 #                "SRP066571"),
@@ -366,7 +366,7 @@ head(true_prop_1700mix)
 
 In the following chunk we perform some preprocessing steps to facilitate the comparison, also in a graphical manner.
 
-```{r}
+```{r fig.width=7}
 # merging the two sets to facilitate the visualization
 # colnames(ti_quant_sim1700mixtures) <- paste0("quantiseq_", colnames(ti_quant_sim1700mixtures))
 # colnames(true_prop_1700mix) <- paste0("trueprops_", colnames(true_prop_1700mix))
@@ -403,13 +403,6 @@ ggplot(ti_tp_merged,
      aes(x = value_trueprop, 
          y = value_quantiseq,
          col = cell_type.x)) + geom_point(alpha = 0.5) + theme_bw()
-
-ggplot(ti_tp_merged,
-     aes(x = value_trueprop, 
-         y = value_quantiseq,
-         col = cell_type.x)) + 
-  facet_wrap(~cell_type.x) + 
-  geom_point(alpha = 0.5) + theme_bw()
 
 ggplot(ti_tp_merged,
      aes(x = value_trueprop, 
