@@ -23,14 +23,80 @@ eset_to_matrix <- function(eset, column) {
   return(expr_mat)
 }
 
+#' SummarizedExperiment to matrix
+#'
+#' @param se A `SummarizedExperiment` object, or any of its derivates, which
+#' contains the information on the TPM expression values, which are stored in a
+#' specified assay slot.
+#' @param assay A character string, specifying the name of the `assays` component
+#' of the `se` object. Defaults to "abundance", as this is the common convention
+#' used e.g. by the `tximport` package to store the values imported from the
+#' transcript level quantifications
+#'
+#' @return A matrix object, containing the TPM values, ready to be used in the
+#' framework of `quantiseqr`
+#' @export
+#'
+#' @examples
+#' library("SummarizedExperiment")
+#' library("macrophage")
+#' data("gse", package = "macrophage")
+#' se <- gse
+#'
+#' # If using ENSEMBL or Gencode gene annotation, you might want to convert the row names
+#' ## in this case, the gene symbols are provided as rowData information
+#' rownames(se) <- rowData(se)$SYMBOL
+#'
+#' tpm_matrix <- se_to_matrix(se, assay = "abundance")
+#'
+#' ## otherwise, you can map the identifiers via
+#' library("org.Hs.eg.db")
+#' library("AnnotationDbi")
+#' se <- gse
+#' # keep the parts before the '.', used in the Gencode annotation
+#' rownames(se) <- substr(rownames(se), 1, 15)
+#' gene_names <- mapIds(org.Hs.eg.db,
+#'                      keys = rownames(se),
+#'                      column = "SYMBOL",
+#'                      keytype = "ENSEMBL")
+#' rownames(se) <- gene_names
+#'
+#' # If you require to convert the counts to TPMs by hand, you need a vector of
+#' # gene lengths as well, and then run this simple function on the count matrix
+#' counts_to_tpm <- function(counts, lengths) {
+#'   ratio <- counts / lengths
+#'   mytpm <- ratio / sum(ratio) * 1e6
+#'   return(mytpm)
+#' }
+#' # then run via
+#' # tpmdata <- counts_to_tpm(count_matrix, genelength_vector)
+#'
+se_to_matrix <- function(se,
+                         assay = "abundance") {
+  if (!is(se, "SummarizedExperiment"))
+    stop("Please provide a SummarizedExperiment as input, or a derivate of this class")
 
-## TODO: potential arguments: which assay should I pick if more are available?
-se_to_matrix <- function(se) {
-  # TODO: define all behavior and edge cases
+  if (!(assay %in% names(assays(se))))
+    stop("The specified name of the assay could not be found in the provided `se` object")
+
+  if (assay == "counts")
+    warning("Please consider quanTIseq expects expression values formatted as TPM values, ",
+            "you selected an assay name which is commonly used for raw count values. \n",
+            "Consider using a different name, or a function that converts the counts to TPMs - ",
+            "see the example section for a simple implementation (counts and lengths are needed)")
+
+  exp_mat <- assays(se)[[assay]]
+
+  guessed_ensembl_gencode <- grepl(pattern = "^ENS", rownames(exp_mat))
+  if (mean(guessed_ensembl_gencode) > 0.8)
+    warning("Found a large majority of row names starting with 'ENS', mostly common ",
+            "in the ENSEMBL/Gencode annotation schemes. quanTIseq requires you to ",
+            "provide the row names as HGNC gene symbols, please see the example section ",
+            "for an example of how to use annotation packages to convert to this format.") # TODO: or even throw an error? A lot would just probably not work...
+
+  return(exp_mat)
 }
 
-
-#' TODO: something similar, but for the SummarizedExperiment class?
 
 
 
