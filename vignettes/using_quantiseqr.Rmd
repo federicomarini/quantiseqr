@@ -92,20 +92,32 @@ of one of the following methods for deconvolution:
 Lorem ipsum description of the use case...
 
 ```{}
-wget -c ftp://ftp.ncbi.nlm.nih.gov/geo/series/GSE107nnn/GSE107572/suppl/GSE107572%5Ftpm%5FPBMC%5FRNAseq%2Etxt%2Egz
-unzip GSE107572_tpm_PBMC_RNAseq.txt.gz
-read.table("GSE107572_tpm_PBMC_RNAseq.txt", header = TRUE)
-
+# wget -c ftp://ftp.ncbi.nlm.nih.gov/geo/series/GSE107nnn/GSE107572/suppl/GSE107572%5Ftpm%5FPBMC%5FRNAseq%2Etxt%2Egz
+# unzip GSE107572_tpm_PBMC_RNAseq.txt.gz
+# read.table("GSE107572_tpm_PBMC_RNAseq.txt", header = TRUE)
 ```
-
-
-
 
 ```{r}
 library(GEOquery)
 
-tpmdata <-
-  read.table("GSE107572_tpm_PBMC_RNAseq.txt", header = TRUE)
+# downloading the supplemental files on the fly
+tpminfo_GSE107572 <- getGEOSuppFiles("GSE107572")
+tpmdata <-read.table("GSE107572/GSE107572_tpm_PBMC_RNAseq.txt.gz", header = TRUE)
+
+GEOid <- "GSE107572"
+gds <- getGEO(GEOid)
+GEOinfo <- pData(gds[[1]])
+FACSdata <- data.frame(
+  B.cells = GEOinfo$`b cells:ch1`,
+  T.cells.CD4 = GEOinfo$`cd4+ t cells:ch1`,
+  T.cells.CD8 = GEOinfo$`cd8+ t cells:ch1`,
+  Monocytes = GEOinfo$`monocytes:ch1`,
+  Dendritic.cells = GEOinfo$`myeloid dendritic cells:ch1`,
+  NK.cells = GEOinfo$`natural killer cells:ch1`,
+  Neutrophils = GEOinfo$`neutrophils:ch1`,
+  Tregs = GEOinfo$`tregs:ch1`
+)
+rownames(FACSdata) <- gsub("Blood-derived immune-cell mixture from donor ", "pbmc", GEOinfo$title) # Load deconvolution data obtained by running quanTIseq (--pipelinestart=decon)
 
 tpm_genesymbols <- tpmdata$GENE
 tpmdata <- as.matrix(tpmdata[, -1])
@@ -123,22 +135,6 @@ ti_quant
 
 DCdata <- ti_quant
 
-
-library(GEOquery)
-GEOid <- "GSE107572"
-gds <- getGEO(GEOid)
-GEOinfo <- pData(gds[[1]])
-FACSdata <- data.frame(
-  B.cells = GEOinfo$`b cells:ch1`,
-  T.cells.CD4 = GEOinfo$`cd4+ t cells:ch1`,
-  T.cells.CD8 = GEOinfo$`cd8+ t cells:ch1`,
-  Monocytes = GEOinfo$`monocytes:ch1`,
-  Dendritic.cells = GEOinfo$`myeloid dendritic cells:ch1`,
-  NK.cells = GEOinfo$`natural killer cells:ch1`,
-  Neutrophils = GEOinfo$`neutrophils:ch1`,
-  Tregs = GEOinfo$`tregs:ch1`
-)
-rownames(FACSdata) <- gsub("Blood-derived immune-cell mixture from donor ", "pbmc", GEOinfo$title) # Load deconvolution data obtained by running quanTIseq (--pipelinestart=decon)
 
 # DCdata<-read.table(paste0(dir,”/GSE107572_cell_fractions.txt"), header=TRUE, sep="\t", row.names=1)
 
