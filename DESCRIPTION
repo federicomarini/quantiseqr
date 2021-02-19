@@ -9,7 +9,7 @@ Authors@R:
         ),
         person(
             given = "Francesca", family = "Finotello", role = "aut", 
-            email = "xx@yy.zz", comment = c(ORCID = "xxxxx")
+            email = "francesca.finotello@i-med.ac.at", comment = c(ORCID = "0000-0003-0712-4658")
         )
     )
 Description: What the package does (one paragraph).
