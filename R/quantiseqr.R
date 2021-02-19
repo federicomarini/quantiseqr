@@ -98,9 +98,13 @@ run_quantiseq <- function(expression_data,
     mix.mat <- expression_data
   }
 
+  if (is(expression_data, "data.frame")) {
+    mix.mat <- as.matrix(expression_data)
+  }
+
   if (is.integer(mix.mat)) {
     warning("Discrete values detected in the expression data, please keep in mind ",
-            "that quanTIsea required the values formatted as TPM!")
+            "that quanTIseq required the values formatted as TPM!")
   }
 
   # TODO: probably move the check above
