@@ -268,11 +268,11 @@ run_quantiseq <- function(expression_data,
 
 
   # TODO: maybe rewrite these last lines once expected format is clarified
-  results = data.frame(results)
-  results<-cbind(rownames(results), results)
-  colnames(results)[1]<-"Sample"
+  results <- data.frame(results)
+  results <- cbind(rownames(results), results)
+  colnames(results)[1] <- "Sample"
 
-  message("Deconvolution sucessful!")
+  message("Deconvolution successful!")
 
   return(results)
 }
