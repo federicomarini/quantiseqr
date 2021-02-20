@@ -26,9 +26,9 @@ row names and sample identifiers as column names)
 are provided in a column of the \code{fData} slot - that is specified by the \code{column}
 parameter below
 \item a \code{SummarizedExperiment} object, or any of the derivative classes (e.g. DESeq2's
-\code{DESeqDataSet}) TODO, in which the assay TODO is containing the TPMs as expected
-Internally, \code{quantiseqr} handles the conversion to an object which is used in
-the deconvolution procedure.
+\code{DESeqDataSet}), in which the assay (default: "abundance") is containing the TPMs
+as expected. Internally, \code{quantiseqr} handles the conversion to an object which
+is used in the deconvolution procedure.
 }}
 
 \item{signature_matrix}{Character string, specifying the name of the signature matrix.
@@ -82,6 +82,11 @@ Source code is originally available from https://github.com/FFinotello/quanTIseq
 \itemize{
 \item TODO: will need to update link?
 }
+
+If providing the \code{expression_data} as a \code{SummarizedExperiment}/\code{DESeqDataSet}
+object, it might be beneficial that this has been created via \code{tximport} -
+if this is the case, the assay named "abundance" will be automatically
+created upon importing the transcript quantification results.
 }
 \examples{
 # TODO
@@ -97,5 +102,8 @@ N. F. d. C. C. de Miranda, Z. Trajanoski.
 revealed by deconvolution of RNA-seq data".
 Genome Medicine 2019;11(1):34. doi: 10.1186/s13073-019-0638-6.
 
-TODO: additional refs, say Plattner et al?
+C. Plattner, F. Finotello, D. Rieder.
+"Chapter Ten - Deconvoluting tumor-infiltrating immune cells from RNA-seq
+data using quanTIseq".
+Methods in Enzymology, 2020. doi: 10.1016/bs.mie.2019.05.056.
 }

@@ -11,9 +11,9 @@
 #' are provided in a column of the `fData` slot - that is specified by the `column`
 #' parameter below
 #' - a `SummarizedExperiment` object, or any of the derivative classes (e.g. DESeq2's
-#' `DESeqDataSet`) TODO, in which the assay TODO is containing the TPMs as expected
-#' Internally, `quantiseqr` handles the conversion to an object which is used in
-#' the deconvolution procedure.
+#' `DESeqDataSet`), in which the assay (default: "abundance") is containing the TPMs
+#' as expected. Internally, `quantiseqr` handles the conversion to an object which
+#' is used in the deconvolution procedure.
 #' @param signature_matrix Character string, specifying the name of the signature matrix.
 #' Defaults to `TIL10`, but can be overridden by providing the path to the file
 #' containing the signature matrix information (TODO specify formatting) or TODO
@@ -52,6 +52,11 @@
 #' Source code is originally available from https://github.com/FFinotello/quanTIseq
 #' - TODO: will need to update link?
 #'
+#' If providing the `expression_data` as a `SummarizedExperiment`/`DESeqDataSet`
+#' object, it might be beneficial that this has been created via `tximport` -
+#' if this is the case, the assay named "abundance" will be automatically
+#' created upon importing the transcript quantification results.
+#'
 #'
 #' @references
 #' F. Finotello, C. Mayer, C. Plattner, G. Laschober, D. Rieder,
@@ -63,7 +68,10 @@
 #' revealed by deconvolution of RNA-seq data".
 #' Genome Medicine 2019;11(1):34. doi: 10.1186/s13073-019-0638-6.
 #'
-#' TODO: additional refs, say Plattner et al?
+#' C. Plattner, F. Finotello, D. Rieder.
+#' "Chapter Ten - Deconvoluting tumor-infiltrating immune cells from RNA-seq
+#' data using quanTIseq".
+#' Methods in Enzymology, 2020. doi: 10.1016/bs.mie.2019.05.056.
 #'
 #' @export
 #'
@@ -79,12 +87,18 @@ run_quantiseq <- function(expression_data,
                           column = "gene_symbol",
                           rm_genes = "unassigned") {
 
-  ## TODO
+  stopifnot(is.logical(is_arraydata))
+  stopifnot(is.logical(is_tumordata))
+  stopifnot(is.logical(scale_mRNA))
+
+  # automatically handles that a right option is passed
+  stopifnot(is.character(method))
+  method <- match.arg(method, c("lsei", "hampel", "huber", "bisquare"))
+
   ## handle case of SummarizedExperiment
   if (is(expression_data, "SummarizedExperiment")) {
     mix.mat <- se_to_matrix(expression_data)
   }
-
 
   # convert expression set to matrix, if required.
   if (is(expression_data, "ExpressionSet")) {
@@ -92,9 +106,6 @@ run_quantiseq <- function(expression_data,
   }
 
   if (is(expression_data, "matrix")) {
-
-    ## TODO: check that rownames are available, needed in mapGenes
-
     mix.mat <- expression_data
   }
 
@@ -113,14 +124,6 @@ run_quantiseq <- function(expression_data,
   }
 
 
-  # automatically handles that a right option is passed
-  stopifnot(is.character(method))
-  method <- match.arg(method, c("lsei", "hampel", "huber", "bisquare"))
-
-  stopifnot(is.logical(is_arraydata))
-  stopifnot(is.logical(is_tumordata))
-  stopifnot(is.logical(scale_mRNA))
-
   # TODO - slightly trickier to see how rmgenes should be structured
 
 
@@ -128,8 +131,6 @@ run_quantiseq <- function(expression_data,
   if (!is.null(rm_genes)) {
     mix.mat <- mix.mat[!rownames(mix.mat) %in% rm_genes, ]
   }
-
-
 
 
   message("\nRunning quanTIseq deconvolution module\n")
@@ -264,13 +265,15 @@ run_quantiseq <- function(expression_data,
     }
   }
   results <- results1
-  results <- results / apply(results, 1, sum)
+  results <- results / apply(results, 1, sum) # TODO: replace with rowSums?
 
 
   # TODO: maybe rewrite these last lines once expected format is clarified
-  results <- data.frame(results)
-  results <- cbind(rownames(results), results)
-  colnames(results)[1] <- "Sample"
+  # results <- data.frame(results)
+  # results <- cbind(rownames(results), results)
+  # colnames(results)[1] <- "Sample"
+
+  results <- data.frame(Sample = rownames(results), results)
 
   message("Deconvolution successful!")
 
