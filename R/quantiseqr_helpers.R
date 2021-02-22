@@ -17,6 +17,20 @@ NULL
 #' @return A matrix with gene symbols as rownames and sample identifiers as colnames.
 #'
 #' @export
+#'
+#' @examples
+#'
+#' data(dataset_racle)
+#' dim(dataset_racle$expr_mat)
+#'
+#' library("Biobase")
+#' es_racle <- ExpressionSet(assayData = dataset_racle$expr_mat)
+#' featureData(es_racle)$gene_symbol <- rownames(dataset_racle$expr_mat)
+#'
+#' es_racle
+#'
+#' head(eset_to_matrix(es_racle, "gene_symbol"))
+#'
 eset_to_matrix <- function(eset, column) {
   expr_mat <- exprs(eset)
   rownames(expr_mat) <- fData(eset)[[column]]

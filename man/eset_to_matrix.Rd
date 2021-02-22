@@ -17,3 +17,17 @@ A matrix with gene symbols as rownames and sample identifiers as colnames.
 \description{
 Convert a \code{Biobase::ExpressionSet} to a gene-expression matrix.
 }
+\examples{
+
+data(dataset_racle)
+dim(dataset_racle$expr_mat)
+
+library("Biobase")
+es_racle <- ExpressionSet(assayData = dataset_racle$expr_mat)
+featureData(es_racle)$gene_symbol <- rownames(dataset_racle$expr_mat)
+
+es_racle
+
+head(eset_to_matrix(es_racle, "gene_symbol"))
+
+}
