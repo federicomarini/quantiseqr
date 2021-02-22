@@ -12,7 +12,8 @@ run_quantiseq(
   scale_mRNA = TRUE,
   method = "lsei",
   column = "gene_symbol",
-  rm_genes = "unassigned"
+  rm_genes = "unassigned",
+  return_se = is(expression_data, "SummarizedExperiment")
 )
 }
 \arguments{
@@ -68,6 +69,10 @@ in the quanTIseq paper).
 Default: "default" for RNA-seq data, "none" for microarrays. TODO: careful,
 here it is currently "unassigned"
 }}
+
+\item{return_se}{Logical value, controls the format of how the quantification
+is returned. If providing a \code{SummarizedExperiment}, it can simply extend its
+\code{colData} component, without the need to create a separate data frame as output.}
 }
 \description{
 Use quanTIseq to deconvolute a gene expression matrix.
@@ -89,7 +94,35 @@ if this is the case, the assay named "abundance" will be automatically
 created upon importing the transcript quantification results.
 }
 \examples{
-# TODO
+
+data(dataset_racle)
+dim(dataset_racle$expr_mat)
+res_quantiseq_run <- quantiseqr::run_quantiseq(
+  expression_data = dataset_racle$expr_mat,
+  signature_matrix = "TIL10",
+  is_arraydata = FALSE,
+  is_tumordata = TRUE,
+  scale_mRNA = TRUE
+)
+
+# using a SummarizedExperiment object
+library("SummarizedExperiment")
+se_racle <- SummarizedExperiment(
+  assays = List(
+    abundance = dataset_racle$expr_mat
+  ),
+  colData = DataFrame(
+    SampleName = colnames(dataset_racle$expr_mat)
+  )
+)
+
+res_run_SE <- quantiseqr::run_quantiseq(
+    expression_data = se_racle,
+    signature_matrix = "TIL10",
+    is_arraydata = FALSE,
+    is_tumordata = TRUE,
+    scale_mRNA = TRUE
+)
 
 }
 \references{

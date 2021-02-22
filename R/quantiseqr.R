@@ -43,6 +43,9 @@
 #'   in the quanTIseq paper).
 #' Default: "default" for RNA-seq data, "none" for microarrays. TODO: careful,
 #' here it is currently "unassigned"
+#' @param return_se Logical value, controls the format of how the quantification
+#' is returned. If providing a `SummarizedExperiment`, it can simply extend its
+#' `colData` component, without the need to create a separate data frame as output.
 #'
 #' @details The values contained in the `expression_data` need to be provided as
 #' TPM values, as this is the format also used to store the `TIL10` signature, upon
@@ -85,7 +88,8 @@ run_quantiseq <- function(expression_data,
                           scale_mRNA = TRUE,
                           method = "lsei",
                           column = "gene_symbol",
-                          rm_genes = "unassigned") {
+                          rm_genes = "unassigned",
+                          return_se = is(expression_data, "SummarizedExperiment")) {
 
   stopifnot(is.logical(is_arraydata))
   stopifnot(is.logical(is_tumordata))
@@ -276,6 +280,18 @@ run_quantiseq <- function(expression_data,
   results <- data.frame(Sample = rownames(results), results)
 
   message("Deconvolution successful!")
+
+  if (is(expression_data, "SummarizedExperiment") & return_se) {
+    colnames(results) <- paste0("quanTIseq_",
+                                signature_matrix, "_",
+                                colnames(results))
+    quantiseq_coldata <- cbind(
+      colData(expression_data),
+      results[, -1]
+    )
+    colData(expression_data) <- quantiseq_coldata
+    return(expression_data)
+  }
 
   return(results)
 }
