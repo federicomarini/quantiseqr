@@ -19,7 +19,7 @@ NULL
 #' @export
 eset_to_matrix <- function(eset, column) {
   expr_mat <- exprs(eset)
-  rownames(expr_mat) <- fData(eset)[["column"]]
+  rownames(expr_mat) <- fData(eset)[[column]]
   return(expr_mat)
 }
 
