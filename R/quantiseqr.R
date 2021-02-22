@@ -79,7 +79,35 @@
 #' @export
 #'
 #' @examples
-#' # TODO
+#'
+#' data(dataset_racle)
+#' dim(dataset_racle$expr_mat)
+#' res_quantiseq_run <- quantiseqr::run_quantiseq(
+#'   expression_data = dataset_racle$expr_mat,
+#'   signature_matrix = "TIL10",
+#'   is_arraydata = FALSE,
+#'   is_tumordata = TRUE,
+#'   scale_mRNA = TRUE
+#' )
+#'
+#' # using a SummarizedExperiment object
+#' library("SummarizedExperiment")
+#' se_racle <- SummarizedExperiment(
+#'   assays = List(
+#'     abundance = dataset_racle$expr_mat
+#'   ),
+#'   colData = DataFrame(
+#'     SampleName = colnames(dataset_racle$expr_mat)
+#'   )
+#' )
+#'
+#' res_run_SE <- quantiseqr::run_quantiseq(
+#'     expression_data = se_racle,
+#'     signature_matrix = "TIL10",
+#'     is_arraydata = FALSE,
+#'     is_tumordata = TRUE,
+#'     scale_mRNA = TRUE
+#' )
 #'
 run_quantiseq <- function(expression_data,
                           signature_matrix = "TIL10",

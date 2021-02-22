@@ -9,7 +9,7 @@
 #' @importFrom methods is
 #' @importFrom preprocessCore normalize.quantiles
 #' @importFrom stats aggregate median
-#' @importFrom SummarizedExperiment assays
+#' @importFrom SummarizedExperiment assays colData
 #' @importFrom utils read.table read.csv
 #'
 #' @name quantiseqr-pkg
