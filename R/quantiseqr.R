@@ -314,10 +314,10 @@ run_quantiseq <- function(expression_data,
                                 signature_matrix, "_",
                                 colnames(results))
     quantiseq_coldata <- cbind(
-      colData(expression_data),
+      SummarizedExperiment::colData(expression_data),
       results[, -1]
     )
-    colData(expression_data) <- quantiseq_coldata
+    SummarizedExperiment::colData(expression_data) <- quantiseq_coldata
     return(expression_data)
   }
 
