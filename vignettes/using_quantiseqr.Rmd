@@ -428,14 +428,13 @@ This figure aims to replicate with live code the one available as [Supplementary
 GSE20300
 
 ```{r}
-load("/Users/fede/Dropbox/quanTIseq_batch2/GSE20300_mixture.RData")
-arraydata <- mix.mat
-dim(arraydata)
+data("GSE20300_mixture")
+dim(GSE20300_mixture)
 
 # running quantiseq on that set
 # True mRNA fractions were simulated with no total-mRNA bias. Thus, these data should be analyzed specifying the option scale_mRNA set to FALSE
 ti_quant_blood_marray <- quantiseqr::run_quantiseq(
-  expression_data = arraydata,
+  expression_data = GSE20300_mixture,
   signature_matrix = "TIL10",
   is_arraydata = TRUE,
   is_tumordata = FALSE,
@@ -444,13 +443,12 @@ ti_quant_blood_marray <- quantiseqr::run_quantiseq(
 
 head(ti_quant_blood_marray)
 
-load("/Users/fede/Dropbox/quanTIseq_batch2/GSE20300_gtruth.RData")
+data("GSE20300_gtruth")
+head(GSE20300_gtruth)
 
-head(RefData)
-
-plot(as.data.frame(RefData)$Neutrophils, ti_quant_blood_marray$Neutrophils)
-plot(as.data.frame(RefData)$Monocytes, ti_quant_blood_marray$Monocytes)
-plot(as.data.frame(RefData)$Lymphocytes, 
+plot(as.data.frame(GSE20300_gtruth)$Neutrophils, ti_quant_blood_marray$Neutrophils)
+plot(as.data.frame(GSE20300_gtruth)$Monocytes, ti_quant_blood_marray$Monocytes)
+plot(as.data.frame(GSE20300_gtruth)$Lymphocytes, 
      (ti_quant_blood_marray$T.cells.CD4 + 
         ti_quant_blood_marray$T.cells.CD8 + 
         ti_quant_blood_marray$Tregs + 

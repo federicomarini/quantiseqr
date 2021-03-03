@@ -49,3 +49,21 @@ NULL
 #' @name ti_quant_sim1700mixtures
 #' @docType data
 NULL
+
+
+#' Mixture matrix for GSE20300
+#'
+#' @details TODO
+#'
+#' @name GSE20300_mixture
+#' @docType data
+NULL
+
+
+#' Ground truth for GSE20300
+#'
+#' @details TODO
+#'
+#' @name GSE20300_gtruth
+#' @docType data
+NULL
