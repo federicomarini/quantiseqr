@@ -188,14 +188,18 @@ run_quantiseq <- function(expression_data,
     abgenes <- as.vector(read.table(fileab, header = FALSE, sep = "\t")[, 1])
     
     lrmgenes <- NULL
-    if (rm_genes[1] == "default") {
-      filerm <- system.file("extdata", paste0(signature_matrix, "_rmgenes.txt"),
-        package = "quantiseqr", mustWork = TRUE
-      )
-      lrmgenes <- as.vector(read.table(filerm, header = FALSE, sep = "\t")[, 1])
+    if (length(rm_genes) == 1) {
       
-    } else if (rm_genes[1] == "none") {
-      lrmgenes <- c()
+      if (rm_genes == "default") {
+        filerm <- system.file("extdata", paste0(signature_matrix, "_rmgenes.txt"),
+                              package = "quantiseqr", mustWork = TRUE
+        )
+        lrmgenes <- as.vector(read.table(filerm, header = FALSE, sep = "\t")[, 1])
+        
+      } else if (rm_genes == "none") {
+        lrmgenes <- c()
+        
+      }
       
     } else {
       lrmgenes <- rm_genes
