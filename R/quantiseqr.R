@@ -116,7 +116,7 @@ run_quantiseq <- function(expression_data,
                           scale_mRNA = TRUE,
                           method = "lsei",
                           column = "gene_symbol",
-                          rm_genes = "unassigned",
+                          rm_genes = NULL,
                           return_se = is(expression_data, "SummarizedExperiment")) {
 
   stopifnot(is.logical(is_arraydata))
@@ -159,21 +159,15 @@ run_quantiseq <- function(expression_data,
   # TODO - slightly trickier to see how rmgenes should be structured
 
 
-  ## TODO: this needs to be done later, otherwise no entries remain?
-  if (!is.null(rm_genes)) {
-    mix.mat <- mix.mat[!rownames(mix.mat) %in% rm_genes, ]
-  }
-
-
   message("\nRunning quanTIseq deconvolution module\n")
 
   # TODO: a thought: after the checks, what about printing out all
   # options and explain in brief what they should do?
 
   # List of genes to be discarded
-  if (rm_genes == "unassigned" && is_arraydata == TRUE) { # For Microarrays
+  if (is.null(rm_genes) && is_arraydata == TRUE) { # For Microarrays
     rm_genes <- "none"
-  } else if (rm_genes == "unassigned" && is_arraydata == FALSE) { # For RNA-seq
+  } else if (is.null(rm_genes) && is_arraydata == FALSE) { # For RNA-seq
     rm_genes <- "default"
   }
 
@@ -191,17 +185,25 @@ run_quantiseq <- function(expression_data,
     fileab <- system.file("extdata", paste0(signature_matrix, "_TCGA_aberrant_immune_genes.txt"),
       package = "quantiseqr", mustWork = TRUE
     )
-
+    abgenes <- as.vector(read.table(fileab, header = FALSE, sep = "\t")[, 1])
+    
+    lrmgenes <- NULL
     if (rm_genes == "default") {
       filerm <- system.file("extdata", paste0(signature_matrix, "_rmgenes.txt"),
         package = "quantiseqr", mustWork = TRUE
       )
+      lrmgenes <- as.vector(read.table(filerm, header = FALSE, sep = "\t")[, 1])
+      
+    } else if (rm_genes == "none") {
+      lrmgenes <- c()
+      
     } else if (rm_genes == "path") {
-      filerm <- system.file("extdata", paste0(signature_matrix, "rmgenes.txt"),
-        package = "quantiseqr", mustWork = TRUE
-      )
+      lrmgenes <- rm_genes
+      
     }
+    
   } else {
+    
     sig.mat.file <- paste0(signature_matrix, "_signature.txt")
     mRNA.file <- paste0(signature_matrix, "_mRNA_scaling.txt")
 
@@ -244,25 +246,17 @@ run_quantiseq <- function(expression_data,
   mix.mat <- fixMixture(mix.mat, arrays = is_arraydata)
 
   # Remove noisy genes
-  if (rm_genes != "none") {
-    if (signature_matrix %in% listsig) {
-      lrmgenes <- as.vector(read.table(filerm, header = FALSE, sep = "\t")[, 1])
-      n1 <- nrow(sig.mat)
-      sig.mat <- sig.mat[!rownames(sig.mat) %in% lrmgenes, , drop = FALSE]
-      n2 <- nrow(sig.mat)
-      message(paste0("Removing ", n1 - n2, " noisy genes\n"))
-    }
-  }
+  n1 <- nrow(sig.mat)
+  sig.mat <- sig.mat[!rownames(sig.mat) %in% lrmgenes, , drop = FALSE]
+  n2 <- nrow(sig.mat)
+  message(paste0("Removing ", n1 - n2, " noisy genes\n"))
 
   # Fix tumor data
   if (is_tumordata) {
-    if (signature_matrix %in% listsig) {
-      abgenes <- as.vector(read.table(fileab, header = FALSE, sep = "\t")[, 1])
-      n1 <- nrow(sig.mat)
-      sig.mat <- sig.mat[!rownames(sig.mat) %in% abgenes, , drop = FALSE]
-      n2 <- nrow(sig.mat)
-      message(paste0("Removing ", n1 - n2, " genes with high expression in tumors\n"))
-    }
+    n1 <- nrow(sig.mat)
+    sig.mat <- sig.mat[!rownames(sig.mat) %in% abgenes, , drop = FALSE]
+    n2 <- nrow(sig.mat)
+    message(paste0("Removing ", n1 - n2, " genes with high expression in tumors\n"))
   }
 
   # Signature genes present in the mixture
@@ -308,6 +302,7 @@ run_quantiseq <- function(expression_data,
   results <- data.frame(Sample = rownames(results), results)
 
   message("Deconvolution successful!")
+  message("TEST\n")
 
   if (is(expression_data, "SummarizedExperiment") & return_se) {
     colnames(results) <- paste0("quanTIseq_",
