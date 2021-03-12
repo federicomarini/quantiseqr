@@ -465,6 +465,46 @@ plot(as.data.frame(GSE20300_gtruth)$Lymphocytes,
 ```
 
 
+# Melanoma dataset
+
+TODO
+
+```{r eval=FALSE}
+load("/Users/fede/Dropbox/quanTIseq_batch2/Vanderbilt_melanoma_confidential.RData")
+ti_quant_melanoma <- quantiseqr::run_quantiseq(
+  expression_data = RNAseq_tpm,
+  signature_matrix = "TIL10",
+  is_arraydata = FALSE,
+  is_tumordata = TRUE,
+  scale_mRNA = TRUE
+)
+
+density_df <- data.frame(celldens = image_totcell_dens, Sample = names(image_totcell_dens))
+
+cd4_df <- data.frame(cd4dens = image_CD4_dens, Sample = names(image_CD4_dens))
+cd8_df <- data.frame(cd8dens = image_CD8_dens, Sample = names(image_CD8_dens))
+treg_df <- data.frame(tregdens = image_Treg_dens, Sample = names(image_Treg_dens))
+
+merged_cd4 <- dplyr::inner_join(
+  dplyr::inner_join(ti_quant_melanoma, cd4_df),
+  density_df)
+merged_cd8 <- dplyr::inner_join(
+  dplyr::inner_join(ti_quant_melanoma, cd8_df),
+  density_df)
+merged_tregs <- dplyr::inner_join(
+  dplyr::inner_join(ti_quant_melanoma, treg_df),
+  density_df)
+
+par(mfrow = c(1,3))
+plot(merged_cd4$cd4dens, merged_cd4$celldens * (merged_cd4$T.cells.CD4 + merged_cd4$Tregs))
+plot(merged_cd8$cd8dens, merged_cd8$celldens * merged_cd8$T.cells.CD8)
+plot(merged_tregs$tregdens, merged_tregs$celldens * merged_tregs$Tregs)
+
+plot(merged_cd4$cd4dens,(merged_cd4$T.cells.CD4 + merged_cd4$Tregs))
+plot(merged_cd8$cd8dens, merged_cd8$T.cells.CD8)
+plot(merged_tregs$tregdens, merged_tregs$Tregs)
+```
+
 
 # General calls and tests 
 
