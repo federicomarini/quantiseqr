@@ -302,7 +302,6 @@ run_quantiseq <- function(expression_data,
   results <- data.frame(Sample = rownames(results), results)
 
   message("Deconvolution successful!")
-  message("TEST\n")
 
   if (is(expression_data, "SummarizedExperiment") & return_se) {
     colnames(results) <- paste0("quanTIseq_",
