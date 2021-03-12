@@ -40,6 +40,8 @@ knitr::opts_chunk$set(
 
 This vignette describes how to use the `r BiocStyle::Biocpkg("quantiseqr")` package for ... .
 
+TODO
+
 # Getting started {#gettingstarted}
 
 To install this package, start R and enter:
@@ -57,7 +59,7 @@ Once installed, the package can be loaded and attached to your current workspace
 library("quantiseqr")
 ```
 
-
+TODO
 
 ```{r, message=FALSE, warning=FALSE}
 library(dplyr)
@@ -90,6 +92,8 @@ of one of the following methods for deconvolution:
 # Plattner et al analysis, example 1
 
 Lorem ipsum description of the use case...
+
+TODO
 
 ```{}
 # wget -c ftp://ftp.ncbi.nlm.nih.gov/geo/series/GSE107nnn/GSE107572/suppl/GSE107572%5Ftpm%5FPBMC%5FRNAseq%2Etxt%2Egz
@@ -194,6 +198,8 @@ for (i in 1:(ncol(DCdata) + 1)) {
 # Plattner et al, example 2
 
 Lorem ipsum description of the use case...
+
+TODO
 
 ```{r}
 tpmdata <- read.table(
@@ -427,6 +433,8 @@ This figure aims to replicate with live code the one available as [Supplementary
 
 GSE20300
 
+TODO
+
 ```{r}
 data("GSE20300_mixture")
 dim(GSE20300_mixture)
@@ -594,6 +602,12 @@ e.g. using quantiseqr via immunedeconv
 **Q: MyQ?**
 
 A: MyA
+
+TODO TODO
+TODO TODO
+
+Examples: can I use it with data not from human?
+What about other methods to compare it against? Shoutout to `immunedeconv`
 
 # Session Info {- .smaller}
 

@@ -1,5 +1,5 @@
 Package: quantiseqr
-Title: What the Package Does (One Line, Title Case)
+Title: What the Package Does (One Line, Title Case) TODO
 Version: 0.0.2
 Authors@R: 
     c(
@@ -12,7 +12,7 @@ Authors@R:
             email = "francesca.finotello@i-med.ac.at", comment = c(ORCID = "0000-0003-0712-4658")
         )
     )
-Description: What the package does (one paragraph).
+Description: What the package does (one paragraph). TODO TODO 3 sentences
 License: GPL (>= 3)
 Depends:
     R (>= 4.0.0)
