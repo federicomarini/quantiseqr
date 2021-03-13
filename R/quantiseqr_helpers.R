@@ -114,6 +114,47 @@ se_to_matrix <- function(se,
 
 
 
+#' Plot the information on the tumor immune contexture
+#'
+#' Plot the information on the tumor immune contexture, as extracted with
+#' `run_quantiseqr()`
+#'
+#' @param obj An object, either
+#' - a `SummarizedExperiment` where the quantifications are stored
+#' - a simple data.frame object, as obtained by `run_quantiseqr()`
+#'
+#' @return A ggplot object
+#' @export
+#'
+#' @examples
+#' # TODO
+quantiplot <- function(obj) {
+  # if providing SE...
+  if (is(obj, "SummarizedExperiment")) {
+    ti_quant <- extract_ti_from_se(obj)
+  } else if (is.data.frame(obj)) {
+    ti_quant <- obj
+  }
+
+  # checks on the columns
+
+  ti_mat <- t(ti_quant[, -1])
+  ti_df <- as.data.frame(ti_mat)
+  ti_df$cell_type <- rownames(ti_df)
+
+  ti_df_long <- gather(ti_df, key = sample, value = fraction, -cell_type)
+
+  # plot as stacked bar chart
+  p <- ggplot(ti_df_long, aes(x = sample, y = fraction, fill = cell_type)) +
+    geom_bar(stat = "identity") +
+    coord_flip() +
+    scale_fill_brewer(palette = "Paired") +
+    scale_x_discrete(limits = rev(colnames(ti_mat))) +
+    theme_bw()
+  return(p)
+}
+
+
 
 
 #' TODO: even if unexported, it would not hurt to have the functions a little more
