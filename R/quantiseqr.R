@@ -186,28 +186,28 @@ run_quantiseq <- function(expression_data,
       package = "quantiseqr", mustWork = TRUE
     )
     abgenes <- as.vector(read.table(fileab, header = FALSE, sep = "\t")[, 1])
-    
+
     lrmgenes <- NULL
     if (length(rm_genes) == 1) {
-      
+
       if (rm_genes == "default") {
         filerm <- system.file("extdata", paste0(signature_matrix, "_rmgenes.txt"),
                               package = "quantiseqr", mustWork = TRUE
         )
         lrmgenes <- as.vector(read.table(filerm, header = FALSE, sep = "\t")[, 1])
-        
+
       } else if (rm_genes == "none") {
         lrmgenes <- c()
-        
+
       }
-      
+
     } else {
       lrmgenes <- rm_genes
-      
+
     }
-    
+
   } else {
-    
+
     sig.mat.file <- paste0(signature_matrix, "_signature.txt")
     mRNA.file <- paste0(signature_matrix, "_mRNA_scaling.txt")
 
@@ -295,7 +295,7 @@ run_quantiseq <- function(expression_data,
     }
   }
   results <- results1
-  results <- results / apply(results, 1, sum) # TODO: replace with rowSums?
+  results <- results / rowSums(results)
 
 
   # TODO: maybe rewrite these last lines once expected format is clarified
