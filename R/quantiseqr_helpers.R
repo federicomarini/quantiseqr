@@ -112,6 +112,51 @@ se_to_matrix <- function(se,
 }
 
 
+#' Extract tumor immune quantifications
+#'
+#' Extract tumor immune quantifications from a SummarizedExperiment object,
+#' previously processed with `run_quantiseqr()`
+#'
+#' @param se A `SummarizedExperiment` object, or any of its derivates, which
+#' contains the quantifications extracted via `quantiseqr` in its `colData` slot.
+#'
+#' @return A data.frame, formatted as required by downstream functions
+#' @export
+#'
+#' @examples
+#' # TODO
+extract_ti_from_se <- function(se) {
+  if (!is(se, "SummarizedExperiment"))
+    stop("Please provide a SummarizedExperiment as input, or a derivate of this class")
+
+  ti_cols <-
+    colData(se)[, grepl(pattern = "quanTIseq", colnames(colData(se)))]
+
+  ti_celltypes <- unlist(
+    lapply(strsplit(colnames(ti_cols), split = "_"), function(arg) arg[[3]])
+  )
+
+  quanti_sig <- unlist(
+    lapply(strsplit(colnames(ti_cols), split = "_"), function(arg) arg[[2]])
+  )
+
+  if (length(unique(quanti_sig)) == 1) {
+    quanti_sig <- quanti_sig[1]
+    message("Found quantifications for the ", quanti_sig, " signature...")
+  } else {
+    stop("Found mixed-up information for the signature in use, please check the ",
+         "colData slot of the provided `se` object")
+  }
+
+  colnames(ti_cols) <- ti_celltypes
+  ti_quant <- data.frame(
+    Sample = colnames(se),
+    ti_cols
+  )
+
+  return(ti_quant)
+}
+
 
 
 #' Plot the information on the tumor immune contexture
