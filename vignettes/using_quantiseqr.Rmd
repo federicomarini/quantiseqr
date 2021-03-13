@@ -65,11 +65,24 @@ TODO
 library(dplyr)
 library(ggplot2)
 library(tidyr)
-# library(immunedeconv)
 library(tibble)
 ```
 
-*Immunedeconv* ships with an example dataset with samples from four patients with metastatic melanoma published in [@EPIC2017]. 
+
+
+# Some use cases for `quantiseqr`
+
+In this section, we illustrate the usage of `quantiseqr` on a variety of datasets.
+These differ with respect to their size and samples of origin, and we illustrate how the different parameters of `quantiseqr` should be set in the different scenarios.
+
+The fundamental input for `quantiseqr` is a gene expression matrix-like object, with features on the rows, and samples as the columns.
+`quantiseqr` can also directly handle `SummarizedExperiment` objects, as well as `ExpressionSet` objects, commonly used for microarray data.
+In case a `SummarizedExperiment` object is passed, the quantifications of the immune contexture can be directly returned extending the `colData` of the provided input.
+
+## Racle
+
+`quantiseqr` ships with an example dataset with samples from four patients with metastatic melanoma published in [@EPIC2017]. 
+
 It is available from `immunedeconv::dataset_racle`. It contains a gene expression matrix (`dataset_racle$expr_mat`) generated using bulk RNA-seq and 'gold standard' estimates of immune cell contents profiled with FACS (`dataset_racle$ref`). We are going to use the bulk RNA-seq data to run the deconvolution methods and will compare the results to the FACS data later on.   
 
 The gene expression data is a matrix with HGNC symbols in rows and samples in columns:
@@ -81,15 +94,49 @@ knitr::kable(dataset_racle$expr_mat[1:5, ])
 ```
 
 
-
-To estimate immune cell fractions, we simply have to invoke the `deconvolute` function. It requires the specification
-of one of the following methods for deconvolution:
+TODO
 
 ```{r}
-##### immunedeconv::deconvolution_methods
+data("dataset_racle")
+dim(dataset_racle$expr_mat)
 ```
 
-# Plattner et al analysis, example 1
+The quantification of the immunce cell types with `quantiseqr` can be done as in the chunk below:
+
+```{r, message=FALSE, warning=FALSE}
+ti_racle <- quantiseqr::run_quantiseq(
+  expression_data = dataset_racle$expr_mat,
+  signature_matrix = "TIL10",
+  is_arraydata = FALSE,
+  is_tumordata = TRUE,
+  scale_mRNA = TRUE
+)
+```
+
+TODO comment on why the parameters have been picked like this
+
+The output of `quantiseqr` can be further processed and represented in a tabular or visual manner to facilitate the comparisons across samples/conditions.
+
+The scores returned by `quantiseqr` can be interpreted as a cell-type fraction, making it possible to represent them as a stacked bar chart.
+
+```{r, fig.height=4, fig.width=8}
+quantiplot(ti_racle)
+```
+
+
+
+We observe that
+
+* the first two samples (LAU355, LAU1314) appear to contain a large amount of CD4+ T cells and B cells
+* the last two samples (LAU1255, LAU125) appear to contain a large amount of "uncharacterized cells"
+* the last sample (LAU125) appears to contain no CD8+ T cells, often associated with bad prognosis. 
+
+Estimating the amount of "uncharacterized cells" is a novel feature introduced by quanTIseq and EPIC [@quantiseq2019, @EPIC2017]. 
+This estimate often corresponds to the fraction of tumor cells in the sample. 
+
+
+
+## Plattner et al analysis, example 1
 
 Lorem ipsum description of the use case...
 
