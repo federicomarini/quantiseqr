@@ -154,8 +154,9 @@ TODO
 library(GEOquery)
 
 # downloading the supplemental files on the fly
-tpminfo_GSE107572 <- getGEOSuppFiles("GSE107572", baseDir = tempdir())
-tpm_location <- rownames(tpminfo_GSE107572)[2]
+tpminfo_GSE107572 <- getGEOSuppFiles("GSE107572", baseDir = tempdir(),
+                                     filter_regex = "GSE107572_tpm_PBMC_RNAseq")
+tpm_location <- rownames(tpminfo_GSE107572)[1]
 tpm_location
 tpmdata <-read.table(tpm_location, header = TRUE)
 
