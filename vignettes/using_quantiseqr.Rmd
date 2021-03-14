@@ -570,8 +570,14 @@ e.g. using quantiseqr via immunedeconv
 
 A: MyA
 
+**Q: My expression data is encoding the features in a different identifier than Gene Symbols. Can I use `quantiseqr` for that?**
+
+A: Sure, just make sure to convert the identifiers beforehand - you can use one of the many options available inside Bioconductor for streamlining this step (e.g. the `org.Hs.eg.db` and the function `AnnotationDbi::mapIds()`).
+
 TODO TODO
 TODO TODO
+
+Example: why TPMs?
 
 Examples: can I use it with data not from human?
 What about other methods to compare it against? Shoutout to `immunedeconv`
