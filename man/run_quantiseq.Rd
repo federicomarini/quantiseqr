@@ -12,7 +12,7 @@ run_quantiseq(
   scale_mRNA = TRUE,
   method = "lsei",
   column = "gene_symbol",
-  rm_genes = "unassigned",
+  rm_genes = NULL,
   return_se = is(expression_data, "SummarizedExperiment")
 )
 }
