@@ -11,6 +11,10 @@
 #' @importFrom stats aggregate median
 #' @importFrom SummarizedExperiment assays colData
 #' @importFrom utils read.table read.csv
+#' @importFrom ggplot2 aes coord_flip geom_bar ggplot scale_fill_brewer
+#' scale_x_discrete theme_bw aes_string
+#' @importFrom tidyr gather
+#' @importFrom rlang .data
 #'
 #' @name quantiseqr-pkg
 #' @docType package

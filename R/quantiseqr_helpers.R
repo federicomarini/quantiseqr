@@ -187,10 +187,11 @@ quantiplot <- function(obj) {
   ti_df <- as.data.frame(ti_mat)
   ti_df$cell_type <- rownames(ti_df)
 
-  ti_df_long <- gather(ti_df, key = sample, value = fraction, -cell_type)
+  ti_df_long <- gather(ti_df, key = "sample",
+                       value = "fraction", -"cell_type")
 
   # plot as stacked bar chart
-  p <- ggplot(ti_df_long, aes(x = sample, y = fraction, fill = cell_type)) +
+  p <- ggplot(ti_df_long, aes_string(x = "sample", y = "fraction", fill = "cell_type")) +
     geom_bar(stat = "identity") +
     coord_flip() +
     scale_fill_brewer(palette = "Paired") +
