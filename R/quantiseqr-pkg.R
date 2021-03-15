@@ -22,11 +22,15 @@ NULL
 
 
 
-#' An exemplary dataset
+#' An exemplary dataset with samples from four patients with metastatic melanoma
 #'
-#' @details TODO
+#' @details `quantiseqr` ships with an example dataset with samples from four
+#' patients with metastatic melanoma. The dataset `quantiseqr::dataset_racle` contains
+#' - a gene expression matrix (`dataset_racle$expr_mat`) generated using bulk RNA-seq
+#' - 'gold standard' estimates of immune cell contents profiled with FACS
+#' (`dataset_racle$ref`).
 #'
-#' @references TODO
+#' @references Racle et al, 2017 - https://doi.org/10.7554/eLife.26476.049
 #'
 #' @name dataset_racle
 #' @docType data
@@ -55,19 +59,3 @@ NULL
 NULL
 
 
-#' Mixture matrix for GSE20300
-#'
-#' @details TODO
-#'
-#' @name GSE20300_mixture
-#' @docType data
-NULL
-
-
-#' Ground truth for GSE20300
-#'
-#' @details TODO
-#'
-#' @name GSE20300_gtruth
-#' @docType data
-NULL

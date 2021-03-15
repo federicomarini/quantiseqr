@@ -3,13 +3,19 @@
 \docType{data}
 \name{dataset_racle}
 \alias{dataset_racle}
-\title{An exemplary dataset}
+\title{An exemplary dataset with samples from four patients with metastatic melanoma}
 \description{
-An exemplary dataset
+An exemplary dataset with samples from four patients with metastatic melanoma
 }
 \details{
-TODO
+\code{quantiseqr} ships with an example dataset with samples from four
+patients with metastatic melanoma. The dataset \code{quantiseqr::dataset_racle} contains
+\itemize{
+\item a gene expression matrix (\code{dataset_racle$expr_mat}) generated using bulk RNA-seq
+\item 'gold standard' estimates of immune cell contents profiled with FACS
+(\code{dataset_racle$ref}).
+}
 }
 \references{
-TODO
+Racle et al, 2017 - https://doi.org/10.7554/eLife.26476.049
 }
