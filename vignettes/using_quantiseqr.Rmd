@@ -85,31 +85,27 @@ The fundamental input for `quantiseqr` is a gene expression matrix-like object, 
 `quantiseqr` can also directly handle `SummarizedExperiment` objects, as well as `ExpressionSet` objects, commonly used for microarray data.
 In case a `SummarizedExperiment` object is passed, the quantifications of the immune contexture can be directly returned extending the `colData` of the provided input.
 
-## Racle
+## Example 1: Metastatic melanoma patients (Racle et al 2017)
 
 `quantiseqr` ships with an example dataset with samples from four patients with metastatic melanoma published in [@EPIC2017]. 
 
-It is available from `immunedeconv::dataset_racle`. It contains a gene expression matrix (`dataset_racle$expr_mat`) generated using bulk RNA-seq and 'gold standard' estimates of immune cell contents profiled with FACS (`dataset_racle$ref`). We are going to use the bulk RNA-seq data to run the deconvolution methods and will compare the results to the FACS data later on.   
+The dataset `quantiseqr::dataset_racle` contains
+- a gene expression matrix (`dataset_racle$expr_mat`) generated using bulk RNA-seq
+- 'gold standard' estimates of immune cell contents profiled with FACS (`dataset_racle$ref`). 
 
-The gene expression data is a matrix with HGNC symbols in rows and samples in columns:
-The dataset is a matrix 
+We are going to use the bulk RNA-seq data to run the deconvolution methods and will compare the results to the FACS data in the following steps.
 
-```{r}
-# show the first 5 lines of the gene expression matrix
+Let's inspect the expression matrix first:
+
+```{r ex1-racle-view}
+data("dataset_racle")
+dim(dataset_racle$expr_mat)
 knitr::kable(dataset_racle$expr_mat[1:5, ])
 ```
 
+The quantification of the immune cell types with `quantiseqr` can be done as in the chunk below:
 
-TODO
-
-```{r}
-data("dataset_racle")
-dim(dataset_racle$expr_mat)
-```
-
-The quantification of the immunce cell types with `quantiseqr` can be done as in the chunk below:
-
-```{r, message=FALSE, warning=FALSE}
+```{r ex1-ti-run}
 ti_racle <- quantiseqr::run_quantiseq(
   expression_data = dataset_racle$expr_mat,
   signature_matrix = "TIL10",
@@ -125,7 +121,7 @@ The output of `quantiseqr` can be further processed and represented in a tabular
 
 The scores returned by `quantiseqr` can be interpreted as a cell-type fraction, making it possible to represent them as a stacked bar chart.
 
-```{r, fig.height=4, fig.width=8}
+```{r ex1-tiplot, fig.height=4, fig.width=8}
 quantiplot(ti_racle)
 ```
 
