@@ -235,13 +235,23 @@ quantiplot <- function(obj) {
 
 
 
-#' TODO: even if unexported, it would not hurt to have the functions a little more
-#' documented
+
+#' Check the signature matrix
 #'
-
-
-#' @param signature_matrix TODO
-#' @param mix_mat TODO
+#' Checks requirements for the signature matrix, with respect to the expression
+#' matrix data provided (the one on which the deconvolution algorithm needs to
+#' be run)
+#'
+#' Performs a number of checks to ensure the compatibility of the provided
+#' signature matrix in `quantiseqr`, referring also to the content of the `mix_mat`
+#' mixture matrix, to be deconvoluted
+#'
+#' @param signature_matrix A data.frame or a matrix object, containing the
+#' signature matrix
+#' @param mix_mat Mixture matrix, storing the information provided as `expression_data`
+#' to the main function, `run_quantiseqr()`
+#'
+#' @return Invisible NULL
 check_signature <- function(signature_matrix, mix_mat) {
   if (!(is.data.frame(signature_matrix) | is.matrix(signature_matrix)))
     stop("The signature matrix provided is not formatted as a matrix or a data.frame")
@@ -260,6 +270,7 @@ check_signature <- function(signature_matrix, mix_mat) {
   if ((found_in_sig / nrow(signature_matrix)) < 0.1)
     warning("Found less than 10% of the signature genes in the provided expression data!")
 
+  return(invisible(NULL))
 }
 
 
