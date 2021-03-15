@@ -25,6 +25,9 @@ test_that("Racle runs", {
   expect_is(res_quantiseq_run, "data.frame")
   expect_equal(nrow(res_quantiseq_run), 4)
 
+  p <- quantiplot(res_quantiseq_run)
+  expect_is(p, "gg")
+
   # forcing the TPM value to be rounded to integer (simulating counts...)
   racle_integered <- dataset_racle$expr_mat
   storage.mode(racle_integered) <- "integer"
@@ -68,8 +71,6 @@ test_that("Racle runs as SE", {
   )
   expect_is(p1, "gg")
 
-  p2 <- quantiplot(res_quantiseq_run)
-  expect_is(p2, "gg")
 })
 
 
