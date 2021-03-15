@@ -60,6 +60,10 @@
 #' if this is the case, the assay named "abundance" will be automatically
 #' created upon importing the transcript quantification results.
 #'
+#' @return A data.frame containing the quantifications of the cell type proportions,
+#' or alternatively, if providing `expression_data` as `SummarizedExperiment` and
+#' setting `return_se` to TRUE, a `SummarizedExperiment` with the quantifications
+#' included by expanding the `colData` slot of the original object
 #'
 #' @references
 #' F. Finotello, C. Mayer, C. Plattner, G. Laschober, D. Rieder,

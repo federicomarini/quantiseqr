@@ -74,6 +74,12 @@ here it is currently "unassigned"
 is returned. If providing a \code{SummarizedExperiment}, it can simply extend its
 \code{colData} component, without the need to create a separate data frame as output.}
 }
+\value{
+A data.frame containing the quantifications of the cell type proportions,
+or alternatively, if providing \code{expression_data} as \code{SummarizedExperiment} and
+setting \code{return_se} to TRUE, a \code{SummarizedExperiment} with the quantifications
+included by expanding the \code{colData} slot of the original object
+}
 \description{
 Use quanTIseq to deconvolute a gene expression matrix.
 }
