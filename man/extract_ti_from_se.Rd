@@ -18,5 +18,28 @@ Extract tumor immune quantifications from a SummarizedExperiment object,
 previously processed with \code{run_quantiseqr()}
 }
 \examples{
-# TODO
+data(dataset_racle)
+dim(dataset_racle$expr_mat)
+
+# using a SummarizedExperiment object
+library("SummarizedExperiment")
+se_racle <- SummarizedExperiment(
+  assays = List(
+    abundance = dataset_racle$expr_mat
+  ),
+  colData = DataFrame(
+    SampleName = colnames(dataset_racle$expr_mat)
+  )
+)
+
+res_run_SE <- quantiseqr::run_quantiseq(
+    expression_data = se_racle,
+    signature_matrix = "TIL10",
+    is_arraydata = FALSE,
+    is_tumordata = TRUE,
+    scale_mRNA = TRUE
+)
+
+extract_ti_from_se(res_run_SE)
+
 }
