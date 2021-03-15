@@ -491,94 +491,16 @@ ggplot(ti_tp_merged,
 
 This figure aims to replicate with live code the one available as [Supplementary Figure 1](https://static-content.springer.com/esm/art%3A10.1186%2Fs13073-019-0638-6/MediaObjects/13073_2019_638_MOESM2_ESM.pdf).
 
-# Blood validation data from microarrays
-
-GSE20300
-
-TODO
-
-```{r}
-data("GSE20300_mixture")
-dim(GSE20300_mixture)
-
-# running quantiseq on that set
-# True mRNA fractions were simulated with no total-mRNA bias. Thus, these data should be analyzed specifying the option scale_mRNA set to FALSE
-ti_quant_blood_marray <- quantiseqr::run_quantiseq(
-  expression_data = GSE20300_mixture,
-  signature_matrix = "TIL10",
-  is_arraydata = TRUE,
-  is_tumordata = FALSE,
-  scale_mRNA = TRUE
-)
-
-head(ti_quant_blood_marray)
-
-data("GSE20300_gtruth")
-head(GSE20300_gtruth)
-
-plot(as.data.frame(GSE20300_gtruth)$Neutrophils, ti_quant_blood_marray$Neutrophils)
-plot(as.data.frame(GSE20300_gtruth)$Monocytes, ti_quant_blood_marray$Monocytes)
-plot(as.data.frame(GSE20300_gtruth)$Lymphocytes, 
-     (ti_quant_blood_marray$T.cells.CD4 + 
-        ti_quant_blood_marray$T.cells.CD8 + 
-        ti_quant_blood_marray$Tregs + 
-        ti_quant_blood_marray$B.cells +
-        ti_quant_blood_marray$NK.cells)) # TODO: please review this one Francesca?
-```
-
-
-# Melanoma dataset
-
-TODO
-
-```{r eval=FALSE}
-load("/Users/fede/Dropbox/quanTIseq_batch2/Vanderbilt_melanoma_confidential.RData")
-ti_quant_melanoma <- quantiseqr::run_quantiseq(
-  expression_data = RNAseq_tpm,
-  signature_matrix = "TIL10",
-  is_arraydata = FALSE,
-  is_tumordata = TRUE,
-  scale_mRNA = TRUE
-)
-
-density_df <- data.frame(celldens = image_totcell_dens, Sample = names(image_totcell_dens))
-
-cd4_df <- data.frame(cd4dens = image_CD4_dens, Sample = names(image_CD4_dens))
-cd8_df <- data.frame(cd8dens = image_CD8_dens, Sample = names(image_CD8_dens))
-treg_df <- data.frame(tregdens = image_Treg_dens, Sample = names(image_Treg_dens))
-
-merged_cd4 <- dplyr::inner_join(
-  dplyr::inner_join(ti_quant_melanoma, cd4_df),
-  density_df)
-merged_cd8 <- dplyr::inner_join(
-  dplyr::inner_join(ti_quant_melanoma, cd8_df),
-  density_df)
-merged_tregs <- dplyr::inner_join(
-  dplyr::inner_join(ti_quant_melanoma, treg_df),
-  density_df)
-
-par(mfrow = c(1,3))
-plot(merged_cd4$cd4dens, merged_cd4$celldens * (merged_cd4$T.cells.CD4 + merged_cd4$Tregs))
-plot(merged_cd8$cd8dens, merged_cd8$celldens * merged_cd8$T.cells.CD8)
-plot(merged_tregs$tregdens, merged_tregs$celldens * merged_tregs$Tregs)
-
-plot(merged_cd4$cd4dens,(merged_cd4$T.cells.CD4 + merged_cd4$Tregs))
-plot(merged_cd8$cd8dens, merged_cd8$T.cells.CD8)
-plot(merged_tregs$tregdens, merged_tregs$Tregs)
-```
-
-
-
 ...
 
-# Additional Information {#additionalinfo}
-
-e.g. using quantiseqr via immunedeconv
-...
 
 # FAQs {#faqs}
 
-**Q: MyQ?**
+**Q: Do I have to provide my expression data formatted as TPMs? Why is that so?**
+
+A: MyA
+
+**Q: Can I use `quantiseqr` with samples from model systems, i.e. not from human?**
 
 A: MyA
 
@@ -586,20 +508,24 @@ A: MyA
 
 A: Sure, just make sure to convert the identifiers beforehand - you can use one of the many options available inside Bioconductor for streamlining this step (e.g. the `org.Hs.eg.db` and the function `AnnotationDbi::mapIds()`).
 
+**Q: I'm interested in other such deconvolution methods. What other options are available?**
+
+A: MyA [@sturm2019, @Sturm2020]
+
+**Q: Can I provide my own signature like the `TIL10` and use that in `quantiseqr`?**
+
+A: MyA
+
+
+
 TODO TODO
 TODO TODO
 
-Example: why TPMs?
-
-Examples: can I use it with data not from human?
-What about other methods to compare it against? Shoutout to `immunedeconv`
 
 # Session Info {- .smaller}
 
 ```{r sessioninfo}
 sessionInfo()
 ```
-
-
 
 # References {-}
