@@ -63,6 +63,17 @@ test_that("Racle runs", {
       scale_mRNA = TRUE
     )
   )
+
+  expect_message(
+    res_quantiseq_robustrun <- quantiseqr::run_quantiseq(
+      expression_data = dataset_racle$expr_mat,
+      signature_matrix = "TIL10",
+      method = "hampel",
+      is_arraydata = FALSE,
+      is_tumordata = TRUE,
+      scale_mRNA = TRUE
+    )
+  )
 })
 
 
