@@ -1,28 +1,49 @@
 Package: quantiseqr
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
+Title: What the Package Does (One Line, Title Case) TODO
+Version: 0.0.2
 Authors@R: 
-    person(given = "First",
-           family = "Last",
-           role = c("aut", "cre"),
-           email = "first.last@example.com",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to
-    pick a license
+    c(
+        person(
+            given = "Federico", family = "Marini", role = c("aut", "cre"), 
+            email = "marinif@uni-mainz.de", comment = c(ORCID = "0000-0003-3252-7758")
+        ),
+        person(
+            given = "Francesca", family = "Finotello", role = "aut", 
+            email = "francesca.finotello@i-med.ac.at", comment = c(ORCID = "0000-0003-0712-4658")
+        )
+    )
+Description: What the package does (one paragraph). TODO TODO 3 sentences
+License: GPL-3
 Depends:
     R (>= 4.0.0)
 Imports: 
-    methods,
-    utils,
-    stats,
+    Biobase,
     limSolve,
     MASS,
-    preprocessCore
+    methods,
+    preprocessCore,
+    stats,
+    SummarizedExperiment,
+    ggplot2,
+    tidyr,
+    rlang,
+    utils
 Suggests: 
+    AnnotationDbi,
     BiocStyle,
+    dplyr,
+    GEOquery,
     knitr,
-    rmarkdown
+    macrophage,
+    org.Hs.eg.db,
+    reshape2,
+    rmarkdown,
+    testthat,
+    tibble
+biocViews:
+    GeneExpression, Software, Transcription, Transcriptomics, Sequencing, Microarray,
+    Visualization, Annotation, ImmunoOncology, FeatureExtraction, Classification, 
+    StatisticalMethod
 VignetteBuilder: knitr
 Encoding: UTF-8
 LazyData: true

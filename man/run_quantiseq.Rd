@@ -2,55 +2,147 @@
 % Please edit documentation in R/quantiseqr.R
 \name{run_quantiseq}
 \alias{run_quantiseq}
-\title{Use quanTIseq to deconvolute a gene expression matrix.}
+\title{Run the quanTIseq algorithm}
 \usage{
 run_quantiseq(
-  mix.mat,
-  arrays = FALSE,
-  signame = "TIL10",
-  tumor = FALSE,
-  mRNAscale = TRUE,
+  expression_data,
+  signature_matrix = "TIL10",
+  is_arraydata = FALSE,
+  is_tumordata = FALSE,
+  scale_mRNA = TRUE,
   method = "lsei",
-  btotalcells = FALSE,
   column = "gene_symbol",
-  rmgenes = "unassigned"
+  rm_genes = NULL,
+  return_se = is(expression_data, "SummarizedExperiment")
 )
 }
 \arguments{
-\item{mix.mat}{table with the gene TPM (or microarray expression values) for all samples to be deconvoluted
-(Gene symbols on the first column and sample IDs on the first row). Expression data must be on non-log scale}
+\item{expression_data}{The gene expression information, containing the TPM
+values for the measured features.
+Can be provided as
+\itemize{
+\item a simple gene expression matrix, or a data frame (with HGNC gene symbols as
+row names and sample identifiers as column names)
+\item an \code{ExpressionSet} object (from the Biobase package), where the HGNC gene symbols
+are provided in a column of the \code{fData} slot - that is specified by the \code{column}
+parameter below
+\item a \code{SummarizedExperiment} object, or any of the derivative classes (e.g. DESeq2's
+\code{DESeqDataSet}), in which the assay (default: "abundance") is containing the TPMs
+as expected. Internally, \code{quantiseqr} handles the conversion to an object which
+is used in the deconvolution procedure.
+}}
 
-\item{arrays}{specifies whether expression data are from microarrays (instead of RNA-seq).
-If TRUE, the "--rmgenes" parameter is set to "none".}
+\item{signature_matrix}{Character string, specifying the name of the signature matrix.
+Defaults to \code{TIL10}, but can be overridden by providing the path to the file
+containing the signature matrix information (TODO specify formatting) or TODO
+could be also the name of an existing R object formatted as such
+Alt TODO: it can provide the prefix string to the two required files, if I got it
+right}
 
-\item{signame}{name of the signature matrix. Currently only \code{TIL10} is available.}
+\item{is_arraydata}{Logical value. Should be set to TRUE if the expression data
+are originating from microarray data. For RNA-seq data, this has to be FALSE
+(default value). If set to TRUE, the \code{rmgenes} parameter (see below) is set
+to "none". TODO: think what is meant with "unassigned" - could be left to NULL?}
 
-\item{tumor}{specifies whether expression data are from tumor samples. If TRUE, signature genes
-with high expression in tumor samples are removed.
-Default: FALSE.}
+\item{is_tumordata}{Logical value. Should be set to TRUE if the expression data
+is from tumor samples. Default: FALSE (e.g. for RNA-seq from blood samples)}
 
-\item{mRNAscale}{specifies whether cell fractions must be scaled to account for cell-type-specific
-mRNA content.
-Default: TRUE.}
+\item{scale_mRNA}{Logical value. If set to FALSE, it disables the correction
+of cell-type-specific mRNA content bias. Default: TRUE}
 
-\item{method}{deconvolution method to be used: "hampel", "huber", or "bisquare" for robust regression
-with Huber, Hampel, or Tukey bisquare estimators, respectively, or "lsei" for constrained
-least squares regression. The fraction of uncharacterized cells ("other") is computed only
-by the "lsei" method.
-Default: "lsei".}
+\item{method}{Character string, defining the deconvolution method to be used:
+\code{lsei} for constrained least squares regression, \code{hampel}, \code{huber}, or \code{bisquare}
+for robust regression with Huber, Hampel, or Tukey bisquare estimators,
+respectively. Default: \code{lsei}.}
 
-\item{btotalcells}{compute cell densities instead of fractions
-Default: FALSE}
+\item{column}{Character, specifies which column in the \code{fData} slot (for the
+ExpressionSet object) contains the information of the HGNC gene symbol
+identifiers}
 
-\item{rmgenes}{Default: "default" for RNAseq, "none" for microArray data}
+\item{rm_genes}{Character vector, specifying which genes have to be excluded
+from the deconvolution analysis. It can be provided as
+\itemize{
+\item a vector of gene symbols (contained in the \code{expression_data})
+\item a single string among the choices of "none" (no genes are removed) and "default"
+(a list of genes with noisy expression RNA-seq data is removed, as explained
+in the quanTIseq paper).
+Default: "default" for RNA-seq data, "none" for microarrays. TODO: careful,
+here it is currently "unassigned"
+}}
+
+\item{return_se}{Logical value, controls the format of how the quantification
+is returned. If providing a \code{SummarizedExperiment}, it can simply extend its
+\code{colData} component, without the need to create a separate data frame as output.}
+}
+\value{
+A data.frame containing the quantifications of the cell type proportions,
+or alternatively, if providing \code{expression_data} as \code{SummarizedExperiment} and
+setting \code{return_se} to TRUE, a \code{SummarizedExperiment} with the quantifications
+included by expanding the \code{colData} slot of the original object
 }
 \description{
-Source code from https://github.com/FFinotello/quanTIseq
+Use quanTIseq to deconvolute a gene expression matrix.
 }
 \details{
+The values contained in the \code{expression_data} need to be provided as
+TPM values, as this is the format also used to store the \code{TIL10} signature, upon
+which quanTIseq builds to perform the immune cell type deconvolution.
+Expression data should \emph{not} be provided in logarithmic scale.
+
+Source code is originally available from https://github.com/FFinotello/quanTIseq
+\itemize{
+\item TODO: will need to update link?
+}
+
+If providing the \code{expression_data} as a \code{SummarizedExperiment}/\code{DESeqDataSet}
+object, it might be beneficial that this has been created via \code{tximport} -
+if this is the case, the assay named "abundance" will be automatically
+created upon importing the transcript quantification results.
+}
+\examples{
+
+data(dataset_racle)
+dim(dataset_racle$expr_mat)
+res_quantiseq_run <- quantiseqr::run_quantiseq(
+  expression_data = dataset_racle$expr_mat,
+  signature_matrix = "TIL10",
+  is_arraydata = FALSE,
+  is_tumordata = TRUE,
+  scale_mRNA = TRUE
+)
+
+# using a SummarizedExperiment object
+library("SummarizedExperiment")
+se_racle <- SummarizedExperiment(
+  assays = List(
+    abundance = dataset_racle$expr_mat
+  ),
+  colData = DataFrame(
+    SampleName = colnames(dataset_racle$expr_mat)
+  )
+)
+
+res_run_SE <- quantiseqr::run_quantiseq(
+    expression_data = se_racle,
+    signature_matrix = "TIL10",
+    is_arraydata = FALSE,
+    is_tumordata = TRUE,
+    scale_mRNA = TRUE
+)
+
+}
+\references{
 F. Finotello, C. Mayer, C. Plattner, G. Laschober, D. Rieder,
-H. Hackl, A. Krogsdam, W. Posch, D. Wilflingseder, S. Sopper, M. Jsselsteijn,
-D. Johnsons, Y. Xu, Y. Wang, M. E. Sanders, M. V. Estrada, P. Ericsson-Gonzalez,
-J. Balko, N. F. de Miranda, Z. Trajanoski. "quanTIseq: quantifying immune contexture of human tumors".
-bioRxiv 223180. https://doi.org/10.1101/223180.
+H. Hackl, A. Krogsdam, Z. Loncova, W. Posch, D. Wilflingseder, S. Sopper,
+M. Jsselsteijn, T. P. Brouwer, D. Johnsons, Y. Xu, Y. Wang, M. E. Sanders,
+M. V. Estrada, P. Ericsson-Gonzalez, P. Charoentong, J. Balko,
+N. F. d. C. C. de Miranda, Z. Trajanoski.
+"Molecular and pharmacological modulators of the tumor immune contexture
+revealed by deconvolution of RNA-seq data".
+Genome Medicine 2019;11(1):34. doi: 10.1186/s13073-019-0638-6.
+
+C. Plattner, F. Finotello, D. Rieder.
+"Chapter Ten - Deconvoluting tumor-infiltrating immune cells from RNA-seq
+data using quanTIseq".
+Methods in Enzymology, 2020. doi: 10.1016/bs.mie.2019.05.056.
 }

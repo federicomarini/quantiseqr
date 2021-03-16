@@ -1,15 +1,34 @@
 ---
 title: >
   Using quantiseqr
-output: rmarkdown::html_vignette
+author:
+- name: Federico Marini^[marinif@uni-mainz.de]
+  affiliation: Institute of Medical Biostatistics, Epidemiology and Informatics ([IMBEI, Mainz](https://www.unimedizin-mainz.de/imbei/imbei/welcome-page.html?L=1))
+- name: Francesce Finotello^[francesca.finotello@i-med.ac.at]
+  affiliation: Institute of Bioinformatics, Biocenter Medical University of Innsbruck (https://icbi.i-med.ac.at/index.html)
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_document:
+    toc: true
+    toc_float: true
+    number_sections: true
+    code_folding: show
+    theme: lumen
 bibliography: references_quantiseqr.bib
 vignette: >
   %\VignetteIndexEntry{Using quantiseqr}
+  %\VignettePackage{quantiseqr}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
+<style type="text/css">
+.smaller {
+  font-size: 10px
+}
+</style>
+
+```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   # eval = FALSE,
@@ -17,13 +36,496 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
-library(quantiseqr)
+# Introduction {#introduction}
+
+This vignette describes how to use the `r BiocStyle::Biocpkg("quantiseqr")` package for ... .
+
+TODO
+
+# Getting started {#gettingstarted}
+
+To install this package, start R and enter:
+
+```{r install, eval=FALSE}
+if (!requireNamespace("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
+
+BiocManager::install("quantiseqr")
+```
+
+Once installed, the package can be loaded and attached to your current workspace as follows:
+
+```{r loadlib, eval = TRUE}
+library("quantiseqr")
+```
+
+TODO
+
+```{r loadotherpkgs, message=FALSE, warning=FALSE}
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+library(tibble)
+```
+
+In order to use `r BiocStyle::Biocpkg("quantiseqr")` in your workflow, one fundamental input is required, to be provided to `run_quantiseqr()` as `expression_data`. 
+This is an object containing the TPM expression values for the measured features, and can be provided in different ways:
+
+- as a simple gene expression matrix, or a data frame (with HGNC gene symbols as row names and sample identifiers as column names)
+- as an `ExpressionSet` object (from the `r BiocStyle::Biocpkg("Biobase")` package), where the HGNC gene symbols are provided in a column of the `fData` slot
+- as a `SummarizedExperiment` object, or any of the derivative classes (e.g. `r BiocStyle::Biocpkg("DESeq2")`'s `DESeqDataSet`), in which the assay (default: "abundance") is containing the TPMs as expected
+
+
+# Some use cases for `quantiseqr`
+
+In this section, we illustrate the usage of `quantiseqr` on a variety of datasets.
+These differ with respect to their size and samples of origin, and we illustrate how the different parameters of `quantiseqr` should be set in the different scenarios.
+
+The fundamental input for `quantiseqr` is a gene expression matrix-like object, with features on the rows, and samples as the columns.
+`quantiseqr` can also directly handle `SummarizedExperiment` objects, as well as `ExpressionSet` objects, commonly used for microarray data.
+In case a `SummarizedExperiment` object is passed, the quantifications of the immune contexture can be directly returned extending the `colData` of the provided input.
+
+## Example 1: Metastatic melanoma patients (Racle et al 2017)
+
+`quantiseqr` ships with an example dataset with samples from four patients with metastatic melanoma published in [@EPIC2017]. 
+
+The dataset `quantiseqr::dataset_racle` contains
+- a gene expression matrix (`dataset_racle$expr_mat`) generated using bulk RNA-seq
+- 'gold standard' estimates of immune cell contents profiled with FACS (`dataset_racle$ref`). 
+
+We are going to use the bulk RNA-seq data to run the deconvolution methods and will compare the results to the FACS data in the following steps.
+
+Let's inspect the expression matrix first:
+
+```{r ex1-racle-view}
+data("dataset_racle")
+dim(dataset_racle$expr_mat)
+knitr::kable(dataset_racle$expr_mat[1:5, ])
+```
+
+The quantification of the immune cell types with `quantiseqr` can be done as in the chunk below:
+
+```{r ex1-ti-run}
+ti_racle <- quantiseqr::run_quantiseq(
+  expression_data = dataset_racle$expr_mat,
+  signature_matrix = "TIL10",
+  is_arraydata = FALSE,
+  is_tumordata = TRUE,
+  scale_mRNA = TRUE
+)
+```
+
+TODO comment on why the parameters have been picked like this
+
+The output of `quantiseqr` can be further processed and represented in a tabular or visual manner to facilitate the comparisons across samples/conditions.
+
+The scores returned by `quantiseqr` can be interpreted as a cell-type fraction, making it possible to represent them as a stacked bar chart.
+
+```{r ex1-tiplot, fig.height=4, fig.width=8}
+quantiplot(ti_racle)
 ```
 
 
 
+We observe that
 
-# References
+TODO: order might not be kept consistent
+
+* the first two samples (LAU355, LAU1314) appear to contain a large amount of CD4+ T cells and B cells
+* the last two samples (LAU1255, LAU125) appear to contain a large amount of "uncharacterized cells"
+* the last sample (LAU125) appears to contain no CD8+ T cells, often associated with bad prognosis. 
+
+Estimating the amount of "uncharacterized cells" is a novel feature introduced by quanTIseq and EPIC [@quantiseq2019, @EPIC2017]. 
+This estimate often corresponds to the fraction of tumor cells in the sample. 
+
+TODO: compare with facs internal refs?
+
+## Example 2: PBMCs, GSE107572 et al analysis, example 1
+
+Here we show how to use `quantiseqr` to deconvolute blood-derived immune-cell mixtures, for which also matching flow cytometry data are available. 
+
+This is also presented as an example in [@Plattner2020], please refer to this publication for additional details.
+
+The example dataset is available online at the Gene Expression Omnibus (accession number GSE107572), and is provided as preprocessed RNA-seq data from blood-derived immune-cell mixtures from nine healthy donors.   
+Flow cytometry estimates for the according immune subpopulations are also available
+
+```{r ex2-pbmcs-retrieve}
+## While downloading by hand is possible, it is recommended to use GEOquery
+# wget -c ftp://ftp.ncbi.nlm.nih.gov/geo/series/GSE107nnn/GSE107572/suppl/GSE107572%5Ftpm%5FPBMC%5FRNAseq%2Etxt%2Egz
+# unzip GSE107572_tpm_PBMC_RNAseq.txt.gz
+# read.table("GSE107572_tpm_PBMC_RNAseq.txt", header = TRUE)
+
+library(GEOquery)
+
+# downloading the supplemental files on the fly
+tpminfo_GSE107572 <- getGEOSuppFiles("GSE107572", baseDir = tempdir(),
+                                     filter_regex = "GSE107572_tpm_PBMC_RNAseq")
+tpm_location <- rownames(tpminfo_GSE107572)[1]
+tpm_location
+tpmdata <-read.table(tpm_location, header = TRUE)
+```
+
+```{r ex2-ti-run}
+tpm_genesymbols <- tpmdata$GENE
+tpmdata <- as.matrix(tpmdata[, -1])
+rownames(tpmdata) <- tpm_genesymbols
+
+ti_PBMCs <- quantiseqr::run_quantiseq(
+  expression_data = tpmdata,
+  signature_matrix = "TIL10",
+  is_arraydata = FALSE,
+  is_tumordata = FALSE,
+  scale_mRNA = TRUE
+)
+```
+
+To obtain an overview on the cell type compositions, we can print out the result and plot that with the conveniente `quantiplot` wrapper:
+
+```{r ex2-ti-plot}
+ti_PBMCs
+quantiplot(ti_PBMCs)
+```
+
+Notably, for these samples, corresponding quantifications of the true cell fractions done by flow cytometry are also available.  
+In the chunk that follows, we retrieve that information and generate scatter plots to display how the estimated values from `quantiseqr` correlate with the ground truth values.  
+This is adapted by [@Plattner2020] to match the output format generated by `quantiseqr` - and can be used as a template in case other types of matched ground-truth information are available.
+
+```{r ex2-comparison, fig.width=9, fig.height=9}
+GEOid <- "GSE107572"
+gds <- getGEO(GEOid)
+GEOinfo <- pData(gds[[1]])
+FACSdata <- data.frame(
+  B.cells = GEOinfo$`b cells:ch1`,
+  T.cells.CD4 = GEOinfo$`cd4+ t cells:ch1`,
+  T.cells.CD8 = GEOinfo$`cd8+ t cells:ch1`,
+  Monocytes = GEOinfo$`monocytes:ch1`,
+  Dendritic.cells = GEOinfo$`myeloid dendritic cells:ch1`,
+  NK.cells = GEOinfo$`natural killer cells:ch1`,
+  Neutrophils = GEOinfo$`neutrophils:ch1`,
+  Tregs = GEOinfo$`tregs:ch1`
+)
+rownames(FACSdata) <- gsub(
+  "Blood-derived immune-cell mixture from donor ", "pbmc", GEOinfo$title) 
+
+rownames(ti_PBMCs) <- gsub("_.*$", "", sub("_", "", rownames(ti_PBMCs)))
+
+ccells <- intersect(colnames(ti_PBMCs), colnames(FACSdata))
+csbjs <- intersect(rownames(ti_PBMCs), rownames(FACSdata))
+
+ti_PBMCs <- ti_PBMCs[csbjs, ccells]
+FACSdata <- FACSdata[csbjs, ccells] 
+
+palette <- c("#451C87", "#B3B300", "#CE0648", "#2363C5", "#AB4CA1", "#0A839B", "#DD8C24", "#ED6D42")
+
+names(palette) <- c("T.cells.CD4", "Dendritic.cells", "Monocytes", "T.cells.CD8", "Tregs", "B.cells", "NK.cells", "Neutrophils")
+
+par(mfrow = c(3, 3))
+colall <- c()
+for (i in 1:(ncol(ti_PBMCs) + 1)) {
+  if (i <= ncol(ti_PBMCs)) {
+    x <- as.numeric(as.character(FACSdata[, i]))
+    y <- ti_PBMCs[, i]
+    ccell <- colnames(ti_PBMCs)[i]
+    col <- palette[ccell]
+  } else {
+    x <- as.numeric(as.vector(as.matrix(FACSdata)))
+    y <- as.vector(as.matrix(ti_PBMCs))
+    ccell <- "All cells"
+    col <- colall
+  }
+  res.cor <- cor.test(y, x)
+  R <- round(res.cor$estimate, digits = 2)
+  p <- format.pval(res.cor$p.value, digits = 2)
+  RMSE <- round(sqrt(mean((y - x)^2, na.rm = TRUE)), digits = 2)
+
+  regl <- lm(y ~ x)
+  ymax <- max(round(max(y), digits = 2) * 1.3, 0.01)
+  xmax <- max(round(max(x), digits = 2), 0.01)
+  plot(x, y,
+    main = gsub("(\\.)", " ", ccell), pch = 19,
+    xlab = "Flow cytometry cell fractions",
+    ylab = "quanTIseq cell fractions",
+    col = col, cex.main = 1.3, ylim = c(0, ymax), xlim = c(0, xmax), las = 1
+  )
+  abline(regl)
+  text(0, ymax * 0.98, cex = 1, paste0("r = ", R, ", p = ", p), pos = 4)
+  text(0, ymax * 0.9, cex = 1, paste0("RMSE = ", RMSE), pos = 4)
+
+  colall <- c(colall, rep(col, length(x)))
+}
+```
 
 
+# Plattner et al, example 2
+
+Lorem ipsum description of the use case...
+
+TODO
+
+```{r}
+tpmdata <- read.table(
+  system.file("extdata", "tpm_GSE75299.txt.gz", package = "quantiseqr"), header = TRUE)
+
+tpm_genesymbols <- tpmdata$GENE
+tpmdata <- as.matrix(tpmdata[, -1])
+rownames(tpmdata) <- tpm_genesymbols
+
+ti_quant <- quantiseqr::run_quantiseq(
+  expression_data = tpmdata,
+  signature_matrix = "TIL10",
+  is_arraydata = FALSE,
+  is_tumordata = TRUE,
+  scale_mRNA = TRUE
+)
+
+dim(ti_quant)
+rownames(ti_quant)
+colnames(ti_quant)
+```
+
+
+```{r fig.height=7, fig.width=7}
+# download.file(
+#   url = paste0("http://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?save=efetch&db=sra&rettype=runinfo&term=",
+#                "SRP066571"),
+#   destfile = "SRP066571runtable.txt",quiet = TRUE)
+
+library(GEOquery)
+library(ggplot2)
+library(reshape2)
+
+### Load file with estimated cell fractions by quanTIseq:
+cdata <- # read.csv(paste0(path, "/SRP066571_cell_fractions.txt"), header = TRUE, sep = "\t", stringsAsFactors = FALSE, row.names = 1)
+  ti_quant
+
+
+### Annotation
+gds <- getGEO("GSE75299")
+pdata <- pData(gds[[1]])
+
+sraInfo <- read.csv(
+  system.file("extdata", "SRP066571runtable.txt", package = "quantiseqr"), 
+  header = TRUE, sep = ",", stringsAsFactors = FALSE)
+
+cdata <- cbind(cdata, sraInfo[, "SampleName"][match(rownames
+(cdata), sraInfo$Run)])
+
+colnames(cdata)[length(cdata)] <- "geo_accession"
+dim(pdata)
+pdata <- pdata[grep("^Pt", pdata[, 1]), ]
+
+pt_matchedinfo <- pdata[, "title"][match(cdata$geo_accession, pdata$geo_accession)]
+cdata$pt_info <- pt_matchedinfo
+# rownames(cdata) <- cdata[, length(cdata)]
+
+cdata$groups <- "POST"
+cdata$groups[grep("baseline", cdata$pt_info)] <- "PRE"
+
+class(cdata)
+
+cdata
+
+library(tidyr)
+cellfracs <- pivot_longer(cdata, cols = B.cells:Other)
+
+cellfracs$name <- factor(cellfracs$name,
+                         levels = c("B.cells", "Macrophages.M1", "Macrophages.M2",
+                                    "Monocytes", "Neutrophils", "NK.cells",   
+                                    "T.cells.CD4", "T.cells.CD8", "Tregs", 
+                                    "Dendritic.cells", "Other"))
+
+ggplot(cellfracs, aes(fill = name, y = value, x = Sample)) + 
+  geom_bar(position = "fill", stat = "identity") + 
+  scale_fill_brewer(palette = "PuOr") + 
+  # viridis::scale_fill_viridis(discrete = TRUE) +
+  xlab("") + 
+  ylab("Cell Fractions") + 
+  theme_minimal() + 
+  theme(axis.text.x = element_text(angle = 45, hjust=1))
+
+
+prepost_data <- cdata[!is.na(cdata$pt_info),]
+prepost_data <- prepost_data[-grep("Other", colnames(prepost_data))]
+
+### Remove other cells and the last two columns
+
+# cdata <- cdata[, -grep("Other", colnames(cdata))]
+
+# cdata <- cdata[, -grep("geo_accession", colnames(cdata))]
+
+prepost_data <- pivot_longer(prepost_data, cols = B.cells:Dendritic.cells)
+
+prepost_data$groups <- factor(prepost_data$groups, levels = c("PRE", "POST"))
+
+prepost_data$name <- factor(prepost_data$name,
+                            levels = c("B.cells", "Macrophages.M1", "Macrophages.M2",
+                                       "Monocytes", "Neutrophils", "NK.cells",   
+                                       "T.cells.CD4", "T.cells.CD8", "Tregs", 
+                                       "Dendritic.cells"))
+
+ggplot(prepost_data, aes(name, value, fill = groups)) +
+  geom_boxplot() +
+  xlab("") + 
+  ylab("cell fractions") +
+  theme_bw() + 
+  theme(axis.text.x = element_text(angle = 45, hjust=1)) 
+# +
+#   stat_compare_means(aes(group = groups),
+#     symnum.args = list(cutpoints = c(0, 0.001, 0.01, 0.05, 0.1, 1), symbols = c("****", "***", "**", "*", "ns")),
+#     label = "p.signif",
+#     hide.ns = TRUE, cex = 10
+#   ) # default: Wilcoxon Test
+```
+
+
+## Example 4: Running on simulated data for validation
+
+We will now display the performance of `quantiseqr` on a dataset for which the ground truth parameters are known.  
+The large simulated dataset represents the RNA-seq expression data from breast tumors with different immune-infiltration scenarios, consisting of a total of 1700 samples, that were generated by mixing RNA-seq reads from purified immune cell types and from a MCF7 breast tumor cell line.
+
+These samples were generated considering different immune relative cell proportions, tumor purity values (0:10:100%), and at different sequencing depths (1, 2, 5, 10, 20, 50, and 100 million read pairs).
+
+Please refer to https://icbi.i-med.ac.at/software/quantiseq/doc/ and to [@quantiseq2019] for more details.
+
+This dataset is coupled with a table where the original information on the used true fractions is available, and can be used to benchmark the performance of the deconvolution algorithm.
+
+```{r ex4-setup, eval = FALSE}
+# downloading first the file from https://icbi.i-med.ac.at/software/quantiseq/doc/downloads/quanTIseq_SimRNAseq_mixture.txt
+
+# https://icbi.i-med.ac.at/software/quantiseq/doc/
+
+tpm_1700mixtures <- readr::read_tsv("quanTIseq_SimRNAseq_mixture.txt.gz")
+dim(tpm_1700mixtures)
+
+# extracting the gene names, restructuring the matrix by dropping the column
+tpm_genesymbols <- tpm_1700mixtures$Gene
+tpm_1700mixtures <- as.matrix(tpm_1700mixtures[, -1])
+rownames(tpm_1700mixtures) <- tpm_genesymbols
+
+# running quantiseq on that set
+# True mRNA fractions were simulated with no total-mRNA bias. Thus, these data should be analyzed specifying the option scale_mRNA set to FALSE
+ti_quant_sim1700mixtures <- quantiseqr::run_quantiseq(
+  expression_data = tpm_1700mixtures,
+  signature_matrix = "TIL10",
+  is_arraydata = FALSE,
+  is_tumordata = TRUE,
+  scale_mRNA = FALSE
+)
+
+# save(ti_quant_sim1700mixtures, file = "data/ti_quant_sim1700mixtures.RData")
+```
+
+To avoid the download of a large file, we provide the precomputed object `ti_quant_sim1700mixtures` in the `quantiseqr` package - the chunk above is still fully functional once the mixture file has been retrieved.
+
+```{r ex4-load-plot, fig.height=8, fig.width=6}
+data(ti_quant_sim1700mixtures)
+dim(ti_quant_sim1700mixtures)
+head(ti_quant_sim1700mixtures)
+quantiplot(ti_quant_sim1700mixtures[1:100,])
+```
+
+We also read in the true proportions, known by design - this is provided as a text file inside `quantiseqr`.
+
+```{r ex4-gtruth}
+true_prop_1700mix <- read.table(
+  system.file("extdata", "quanTIseq_SimRNAseq_read_fractions.txt.gz", package = "quantiseqr"), 
+  sep = "\t", header = TRUE)
+head(true_prop_1700mix)
+```
+
+In the following chunk we perform some preprocessing steps to facilitate the comparison, also in a graphical manner.
+
+```{r ex4-compare-plot, fig.width=7}
+# merging the two sets to facilitate the visualization
+# colnames(ti_quant_sim1700mixtures) <- paste0("quantiseq_", colnames(ti_quant_sim1700mixtures))
+# colnames(true_prop_1700mix) <- paste0("trueprops_", colnames(true_prop_1700mix))
+
+# ti_quant_sim1700mixtures$method <- "quanTIseq"
+# true_prop_1700mix$method <- "ground_truth"
+
+colnames(true_prop_1700mix)[1] <- "Sample"
+colnames(true_prop_1700mix)[12] <- "Other"
+
+library("tidyr")
+ti_long <- pivot_longer(ti_quant_sim1700mixtures, cols = B.cells:Other, 
+                        names_to = "cell_type",
+                        values_to = "value_quantiseq")
+ti_long$mix_id <- paste(ti_long$Sample, ti_long$cell_type, sep = "_")
+
+tp_long <- pivot_longer(true_prop_1700mix, cols = B.cells:Other, 
+                        names_to = "cell_type",
+                        values_to = "value_trueprop")
+tp_long$mix_id <- paste(tp_long$Sample, tp_long$cell_type, sep = "_")
+
+
+ti_tp_merged <- merge(ti_long, tp_long, by = "mix_id")
+ti_tp_merged$cell_type.x <- factor(ti_tp_merged$cell_type.x, levels = colnames(true_prop_1700mix)[2:12])
+
+# ti_merged <- rbind(ti_quant_sim1700mixtures,
+                   # true_prop_1700mix)
+
+# ti_merged_long <- pivot_longer(ti_quant_sim1700mixtures, cols = B.cells:Other)
+
+library("ggplot2")
+
+ggplot(ti_tp_merged,
+     aes(x = value_trueprop, 
+         y = value_quantiseq,
+         col = cell_type.x)) + geom_point(alpha = 0.5) + theme_bw()
+
+ggplot(ti_tp_merged,
+     aes(x = value_trueprop, 
+         y = value_quantiseq,
+         col = cell_type.x)) + 
+  facet_wrap(~cell_type.x, scales = "free") + 
+  geom_point(alpha = 0.5) + theme_bw()
+
+# for (i in colnames(ti_quant_sim1700mixtures)) {
+#   message(i)
+#   if(i!="Sample")
+#     plot(true_prop_1700mix[[i]], ti_quant_sim1700mixtures[[i]], main = i)
+# }
+# plot( true_prop_1700mix$Tumor, ti_quant_sim1700mixtures$Other, main = "other")
+
+```
+
+This figure aims to replicate with live code the one available as [Supplementary Figure 1](https://static-content.springer.com/esm/art%3A10.1186%2Fs13073-019-0638-6/MediaObjects/13073_2019_638_MOESM2_ESM.pdf).
+
+...
+
+
+# FAQs {#faqs}
+
+**Q: Do I have to provide my expression data formatted as TPMs? Why is that so?**
+
+A: MyA
+
+**Q: Can I use `quantiseqr` with samples from model systems, i.e. not from human?**
+
+A: MyA
+
+**Q: My expression data is encoding the features in a different identifier than Gene Symbols. Can I use `quantiseqr` for that?**
+
+A: Sure, just make sure to convert the identifiers beforehand - you can use one of the many options available inside Bioconductor for streamlining this step (e.g. the `org.Hs.eg.db` and the function `AnnotationDbi::mapIds()`).
+
+**Q: I'm interested in other such deconvolution methods. What other options are available?**
+
+A: MyA [@sturm2019, @Sturm2020]
+
+**Q: Can I provide my own signature like the `TIL10` and use that in `quantiseqr`?**
+
+A: MyA
+
+
+
+TODO TODO
+TODO TODO
+
+
+# Session Info {- .smaller}
+
+```{r sessioninfo}
+sessionInfo()
+```
+
+# References {-}
