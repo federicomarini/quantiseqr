@@ -40,6 +40,29 @@ test_that("Racle runs", {
       scale_mRNA = TRUE
     )
   )
+
+  # providing wrong inputs
+  expect_error({
+    racle_strings <- dataset_racle$expr_mat
+    storage.mode(racle_strings) <- "character"
+    res_quantiseq_run <- quantiseqr::run_quantiseq(
+      expression_data = racle_strings,
+      signature_matrix = "TIL10",
+      is_arraydata = FALSE,
+      is_tumordata = TRUE,
+      scale_mRNA = TRUE
+    )
+  })
+
+  expect_error(
+    quantiseqr::run_quantiseq(
+      expression_data = dataset_racle$expr_mat,
+      signature_matrix = "TIL2020",
+      is_arraydata = FALSE,
+      is_tumordata = TRUE,
+      scale_mRNA = TRUE
+    )
+  )
 })
 
 
@@ -71,7 +94,29 @@ test_that("Racle runs as SE", {
   )
   expect_is(p1, "gg")
 
+  res_run_SE_mixedup <- res_run_SE
+  colnames(colData(res_run_SE_mixedup))[5] <- "quanTIseq_TIL2020_Monocytes"
+  expect_error(
+    extract_ti_from_se(res_run_SE_mixedup)
+  )
 })
+
+test_that("Racle runs as ExpressionSet", {
+
+  expect_message(
+    res_run_ESet <- quantiseqr::run_quantiseq(
+      expression_data = es_racle,
+      signature_matrix = "TIL10",
+      is_arraydata = FALSE,
+      is_tumordata = TRUE,
+      scale_mRNA = TRUE
+    )
+  )
+
+  expect_equal(dim(res_run_ESet), c(4, 12))
+
+})
+
 
 
 test_that("Conversions work...", {
@@ -92,6 +137,10 @@ test_that("Conversions work...", {
   )
 
   expect_warning(se_to_matrix(se = se_racle_mod, assay = "counts"))
+
+  expect_warning(se_to_matrix(se = se_racle_fakeENS))
+
+
 })
 
 

@@ -13,7 +13,12 @@ se_racle <- SummarizedExperiment(
 )
 se_racle
 
+se_racle_fakeENS <- se_racle
+rownames(se_racle_fakeENS) <- paste0("ENSG00000_fakenames_", rownames(se_racle))
+
 library("Biobase")
 es_racle <- ExpressionSet(assayData = dataset_racle$expr_mat)
 featureData(es_racle)$gene_symbol <- rownames(dataset_racle$expr_mat)
 es_racle
+
+
