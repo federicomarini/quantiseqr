@@ -574,8 +574,9 @@ get_densities <- function(DCres,
   density_info <- density_info[csbj]
   DCres <- DCres[csbj, , drop = FALSE]
 
+  celldens <- data.frame(DCres, row.names=1)
   for (i in seq_len(nrow(celldens))) {
-    celldens[i, ] <- DCres[i, ] * density_info
+    celldens[i, ] <- celldens[i, ] * density_info
   }
 
   return(celldens)
