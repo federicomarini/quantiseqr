@@ -4,5 +4,5 @@
 \alias{quantiseq_helper}
 \title{Helper functions for quanTIseq}
 \description{
-Source code from https://github.com/FFinotello/quanTIseq
+Helper functions for quanTIseq
 }

@@ -7,9 +7,13 @@
 fixMixture(mix.mat, arrays = FALSE)
 }
 \arguments{
-\item{mix.mat}{TODO}
+\item{mix.mat}{Matrix or data.frame with RNA-seq gene TPM or microarray
+expression values for all samples to be deconvoluted, with gene
+symbols as row names and sample IDs as column names. Expression
+levels should be on non-log scale.}
 
-\item{arrays}{TODO}
+\item{arrays}{Logical value. Should be set to TRUE if the expression data
+are from microarrays. For RNA-seq data, this has to be FALSE (default value).}
 }
 \value{
 TODO

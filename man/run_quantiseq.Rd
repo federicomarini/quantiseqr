@@ -33,16 +33,12 @@ is used in the deconvolution procedure.
 }}
 
 \item{signature_matrix}{Character string, specifying the name of the signature matrix.
-Defaults to \code{TIL10}, but can be overridden by providing the path to the file
-containing the signature matrix information (TODO specify formatting) or TODO
-could be also the name of an existing R object formatted as such
-Alt TODO: it can provide the prefix string to the two required files, if I got it
-right}
+At the moment, only the original \code{TIL10} signature can be selected.}
 
 \item{is_arraydata}{Logical value. Should be set to TRUE if the expression data
 are originating from microarray data. For RNA-seq data, this has to be FALSE
 (default value). If set to TRUE, the \code{rmgenes} parameter (see below) is set
-to "none". TODO: think what is meant with "unassigned" - could be left to NULL?}
+to "none".}
 
 \item{is_tumordata}{Logical value. Should be set to TRUE if the expression data
 is from tumor samples. Default: FALSE (e.g. for RNA-seq from blood samples)}
@@ -66,8 +62,7 @@ from the deconvolution analysis. It can be provided as
 \item a single string among the choices of "none" (no genes are removed) and "default"
 (a list of genes with noisy expression RNA-seq data is removed, as explained
 in the quanTIseq paper).
-Default: "default" for RNA-seq data, "none" for microarrays. TODO: careful,
-here it is currently "unassigned"
+Default: "default" for RNA-seq data, "none" for microarrays.
 }}
 
 \item{return_se}{Logical value, controls the format of how the quantification
@@ -88,11 +83,6 @@ The values contained in the \code{expression_data} need to be provided as
 TPM values, as this is the format also used to store the \code{TIL10} signature, upon
 which quanTIseq builds to perform the immune cell type deconvolution.
 Expression data should \emph{not} be provided in logarithmic scale.
-
-Source code is originally available from https://github.com/FFinotello/quanTIseq
-\itemize{
-\item TODO: will need to update link?
-}
 
 If providing the \code{expression_data} as a \code{SummarizedExperiment}/\code{DESeqDataSet}
 object, it might be beneficial that this has been created via \code{tximport} -

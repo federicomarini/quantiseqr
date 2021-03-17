@@ -7,9 +7,10 @@
 get_densities(DCres, density_info)
 }
 \arguments{
-\item{DCres}{TODO}
+\item{DCres}{Data.frame of deconvoluted cell fractions computed with the "run_quantiseq" function, with sample identifiers as row names.}
 
-\item{density_info}{TODO}
+\item{density_info}{Named numeric vector of total cell densities per sample. The vector names should match the sample identifiers specified in DCres.
+derived from imaging data}
 }
 \value{
 TODO

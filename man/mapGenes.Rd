@@ -2,18 +2,21 @@
 % Please edit documentation in R/quantiseqr_helpers.R
 \name{mapGenes}
 \alias{mapGenes}
-\title{Title TODO}
+\title{mapGenes}
 \usage{
 mapGenes(mydata)
 }
 \arguments{
-\item{mydata}{TODO}
+\item{mydata}{Matrix or data.frame with RNA-seq gene TPM or microarray
+gene expression values for all samples to be deconvoluted,
+with gene symbols as row names and sample IDs as column names.
+Expression levels should be on non-log scale.}
 }
 \value{
 TODO
 }
 \description{
-Title TODO
+mapGenes
 }
 \examples{
 # TODO
