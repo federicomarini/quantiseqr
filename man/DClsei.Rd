@@ -24,7 +24,7 @@ TODO
 Title
 }
 \details{
-The \code{\link[limsolve:lsei]{limsolve::lsei()}} function is used as underlying framework. Please
+The \code{\link[limSolve:lsei]{limSolve::lsei()}} function is used as underlying framework. Please
 refer to that function for more details.
 }
 \examples{

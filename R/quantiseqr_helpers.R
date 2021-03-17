@@ -498,7 +498,7 @@ quanTIseq <- function(currsig, currmix, scaling, method) {
 #'
 #' @return TODO
 #'
-#' @details The [limsolve::lsei()] function is used as underlying framework. Please
+#' @details The [limSolve::lsei()] function is used as underlying framework. Please
 #' refer to that function for more details.
 #'
 #' @examples
