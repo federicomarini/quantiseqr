@@ -23,7 +23,10 @@ TODO
 \description{
 Title
 }
+\details{
+The \code{\link[limsolve:lsei]{limsolve::lsei()}} function is used as underlying framework. Please
+refer to that function for more details.
+}
 \examples{
 # TODO
-# TODO: how to cite the package/function used https://www.rdocumentation.org/packages/limSolve/versions/1.5.6/topics/lsei?
 }
