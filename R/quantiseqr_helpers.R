@@ -500,7 +500,8 @@ quanTIseq <- function(currsig, currmix, scaling, method) {
 #'
 #' @examples
 #' # TODO
-#' # TODO: how to cite the package/function used https://www.rdocumentation.org/packages/limSolve/versions/1.5.6/topics/lsei?
+#' # TODO: how to cite the package/function used
+#' # https://www.rdocumentation.org/packages/limSolve/versions/1.5.6/topics/lsei?
 DClsei <- function(b, A, G, H, scaling) {
   sc <- norm(A, "2")
   A <- A / sc
