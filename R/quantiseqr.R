@@ -15,15 +15,11 @@
 #' as expected. Internally, `quantiseqr` handles the conversion to an object which
 #' is used in the deconvolution procedure.
 #' @param signature_matrix Character string, specifying the name of the signature matrix.
-#' Defaults to `TIL10`, but can be overridden by providing the path to the file
-#' containing the signature matrix information (TODO specify formatting) or TODO
-#' could be also the name of an existing R object formatted as such
-#' Alt TODO: it can provide the prefix string to the two required files, if I got it
-#' right
+#' At the moment, only the original `TIL10` signature can be selected.
 #' @param is_arraydata Logical value. Should be set to TRUE if the expression data
 #' are originating from microarray data. For RNA-seq data, this has to be FALSE
 #' (default value). If set to TRUE, the `rmgenes` parameter (see below) is set
-#' to "none". TODO: think what is meant with "unassigned" - could be left to NULL?
+#' to "none". 
 #' @param is_tumordata Logical value. Should be set to TRUE if the expression data
 #' is from tumor samples. Default: FALSE (e.g. for RNA-seq from blood samples)
 #' @param scale_mRNA Logical value. If set to FALSE, it disables the correction
@@ -41,8 +37,7 @@
 #' - a single string among the choices of "none" (no genes are removed) and "default"
 #'   (a list of genes with noisy expression RNA-seq data is removed, as explained
 #'   in the quanTIseq paper).
-#' Default: "default" for RNA-seq data, "none" for microarrays. TODO: careful,
-#' here it is currently "unassigned"
+#' Default: "default" for RNA-seq data, "none" for microarrays. 
 #' @param return_se Logical value, controls the format of how the quantification
 #' is returned. If providing a `SummarizedExperiment`, it can simply extend its
 #' `colData` component, without the need to create a separate data frame as output.
@@ -51,9 +46,6 @@
 #' TPM values, as this is the format also used to store the `TIL10` signature, upon
 #' which quanTIseq builds to perform the immune cell type deconvolution.
 #' Expression data should _not_ be provided in logarithmic scale.
-#'
-#' Source code is originally available from https://github.com/FFinotello/quanTIseq
-#' - TODO: will need to update link?
 #'
 #' If providing the `expression_data` as a `SummarizedExperiment`/`DESeqDataSet`
 #' object, it might be beneficial that this has been created via `tximport` -
@@ -300,13 +292,6 @@ run_quantiseq <- function(expression_data,
   }
   results <- results1
   results <- results / rowSums(results)
-
-
-  # TODO: maybe rewrite these last lines once expected format is clarified
-  # results <- data.frame(results)
-  # results <- cbind(rownames(results), results)
-  # colnames(results)[1] <- "Sample"
-
   results <- data.frame(Sample = rownames(results), results)
 
   message("Deconvolution successful!")
