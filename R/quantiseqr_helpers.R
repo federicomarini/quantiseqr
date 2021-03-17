@@ -298,9 +298,9 @@ check_signature <- function(signature_matrix, mix_mat) {
 
 #' Title
 #'
-#' @param mix.mat Matrix or data.frame with RNA-seq gene TPM or microarray 
-#' expression values for all samples to be deconvoluted, with gene 
-#' symbols as row names and sample IDs as column names. Expression 
+#' @param mix.mat Matrix or data.frame with RNA-seq gene TPM or microarray
+#' expression values for all samples to be deconvoluted, with gene
+#' symbols as row names and sample IDs as column names. Expression
 #' levels should be on non-log scale.
 #' @param arrays Logical value. Should be set to TRUE if the expression data
 #' are from microarrays. For RNA-seq data, this has to be FALSE (default value).
@@ -330,9 +330,9 @@ fixMixture <- function(mix.mat, arrays = FALSE) {
 
 #' Title
 #'
-#' @param mix.mat Matrix or data.frame with microarray 
-#' gene expression values for all samples to be deconvoluted, 
-#' with gene symbols as row names and sample IDs as column names. 
+#' @param mix.mat Matrix or data.frame with microarray
+#' gene expression values for all samples to be deconvoluted,
+#' with gene symbols as row names and sample IDs as column names.
 #' Expression levels should be on non-log scale.
 #'
 #' @return TODO
@@ -350,11 +350,12 @@ makeQN <- function(mix.mat) {
 
 
 
-## TODO: 
+## TODO:
+#' mapGenes
 #'
-#' @param mydata Matrix or data.frame with RNA-seq gene TPM or microarray 
-#' gene expression values for all samples to be deconvoluted, 
-#' with gene symbols as row names and sample IDs as column names. 
+#' @param mydata Matrix or data.frame with RNA-seq gene TPM or microarray
+#' gene expression values for all samples to be deconvoluted,
+#' with gene symbols as row names and sample IDs as column names.
 #' Expression levels should be on non-log scale.
 #'
 #' @return TODO
@@ -440,7 +441,7 @@ mapGenes <- function(mydata) {
 
 #' Title
 #'
-#' @param currsig Signature matrix to be used for deconvolution (format: genes by cell types). 
+#' @param currsig Signature matrix to be used for deconvolution (format: genes by cell types).
 #' @param currmix Mixture matrix to be deconvoluted (format: genes by samples).
 #' @param scaling Logical value. If set to FALSE, it disables the correction
 #' of cell-type-specific mRNA content bias. Default: TRUE
@@ -499,7 +500,7 @@ quanTIseq <- function(currsig, currmix, scaling, method) {
 #'
 #' @examples
 #' # TODO
-#' TODO: how to cite the package/function used https://www.rdocumentation.org/packages/limSolve/versions/1.5.6/topics/lsei?
+#' # TODO: how to cite the package/function used https://www.rdocumentation.org/packages/limSolve/versions/1.5.6/topics/lsei?
 DClsei <- function(b, A, G, H, scaling) {
   sc <- norm(A, "2")
   A <- A / sc
@@ -576,7 +577,7 @@ DCrr <- function(b, A, method, scaling) {
 #' # TODO
 get_densities <- function(DCres,
                           density_info) {
-  
+
   # checks:
   ## DCres should be formatted as output coming from quantiseqr
   ## density info should have the same samples included
@@ -593,5 +594,5 @@ get_densities <- function(DCres,
   }
 
   return(celldens)
-  
+
 }

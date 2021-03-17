@@ -7,7 +7,10 @@
 makeQN(mix.mat)
 }
 \arguments{
-\item{mix.mat}{TODO}
+\item{mix.mat}{Matrix or data.frame with microarray
+gene expression values for all samples to be deconvoluted,
+with gene symbols as row names and sample IDs as column names.
+Expression levels should be on non-log scale.}
 }
 \value{
 TODO

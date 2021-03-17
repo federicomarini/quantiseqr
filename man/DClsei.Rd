@@ -7,13 +7,13 @@
 DClsei(b, A, G, H, scaling)
 }
 \arguments{
-\item{b}{TODO}
+\item{b}{Numeric vector containing the right-hand side of the quadratic function to be minimised.}
 
-\item{A}{TODO}
+\item{A}{Numeric matrix containing the coefficients of the quadratic function to be minimised.}
 
-\item{G}{TODO}
+\item{G}{Numeric matrix containing the coefficients of the inequality constraints.}
 
-\item{H}{TODO}
+\item{H}{Numeric vector containing the right-hand side of the inequality constraints.}
 
 \item{scaling}{TODO}
 }
@@ -25,4 +25,5 @@ Title
 }
 \examples{
 # TODO
+# TODO: how to cite the package/function used https://www.rdocumentation.org/packages/limSolve/versions/1.5.6/topics/lsei?
 }

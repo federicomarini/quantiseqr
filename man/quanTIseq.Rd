@@ -7,13 +7,17 @@
 quanTIseq(currsig, currmix, scaling, method)
 }
 \arguments{
-\item{currsig}{TODO}
+\item{currsig}{Signature matrix to be used for deconvolution (format: genes by cell types).}
 
-\item{currmix}{TODO}
+\item{currmix}{Mixture matrix to be deconvoluted (format: genes by samples).}
 
-\item{scaling}{TODO}
+\item{scaling}{Logical value. If set to FALSE, it disables the correction
+of cell-type-specific mRNA content bias. Default: TRUE}
 
-\item{method}{TODO}
+\item{method}{Character string, defining the deconvolution method to be used:
+\code{lsei} for constrained least squares regression, \code{hampel}, \code{huber}, or \code{bisquare}
+for robust regression with Huber, Hampel, or Tukey bisquare estimators,
+respectively. Default: \code{lsei}.}
 }
 \value{
 TODO
