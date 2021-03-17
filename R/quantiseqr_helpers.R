@@ -1,7 +1,5 @@
 #' Helper functions for quanTIseq
 #'
-#' Source code from https://github.com/FFinotello/quanTIseq
-#'
 #' @name quantiseq_helper
 #'
 NULL
@@ -300,8 +298,12 @@ check_signature <- function(signature_matrix, mix_mat) {
 
 #' Title
 #'
-#' @param mix.mat TODO
-#' @param arrays TODO
+#' @param mix.mat Matrix or data.frame with RNA-seq gene TPM or microarray 
+#' expression values for all samples to be deconvoluted, with gene 
+#' symbols as row names and sample IDs as column names. Expression 
+#' levels should be on non-log scale.
+#' @param arrays Logical value. Should be set to TRUE if the expression data
+#' are from microarrays. For RNA-seq data, this has to be FALSE (default value).
 #'
 #' @return TODO
 #'
@@ -328,7 +330,10 @@ fixMixture <- function(mix.mat, arrays = FALSE) {
 
 #' Title
 #'
-#' @param mix.mat TODO
+#' @param mix.mat Matrix or data.frame with microarray 
+#' gene expression values for all samples to be deconvoluted, 
+#' with gene symbols as row names and sample IDs as column names. 
+#' Expression levels should be on non-log scale.
 #'
 #' @return TODO
 #'
@@ -345,10 +350,12 @@ makeQN <- function(mix.mat) {
 
 
 
-## TODO: maybe this can be cleverly handled with orgDb packages?
-#' Title TODO
+## TODO: 
 #'
-#' @param mydata TODO
+#' @param mydata Matrix or data.frame with RNA-seq gene TPM or microarray 
+#' gene expression values for all samples to be deconvoluted, 
+#' with gene symbols as row names and sample IDs as column names. 
+#' Expression levels should be on non-log scale.
 #'
 #' @return TODO
 #'
@@ -433,10 +440,14 @@ mapGenes <- function(mydata) {
 
 #' Title
 #'
-#' @param currsig TODO
-#' @param currmix TODO
-#' @param scaling TODO
-#' @param method TODO
+#' @param currsig Signature matrix to be used for deconvolution (format: genes by cell types). 
+#' @param currmix Mixture matrix to be deconvoluted (format: genes by samples).
+#' @param scaling Logical value. If set to FALSE, it disables the correction
+#' of cell-type-specific mRNA content bias. Default: TRUE
+#' @param method Character string, defining the deconvolution method to be used:
+#' `lsei` for constrained least squares regression, `hampel`, `huber`, or `bisquare`
+#' for robust regression with Huber, Hampel, or Tukey bisquare estimators,
+#' respectively. Default: `lsei`.
 #'
 #' @return TODO
 #'
@@ -478,16 +489,17 @@ quanTIseq <- function(currsig, currmix, scaling, method) {
 
 #' Title
 #'
-#' @param b TODO
-#' @param A TODO
-#' @param G TODO
-#' @param H TODO
+#' @param b Numeric vector containing the right-hand side of the quadratic function to be minimised.
+#' @param A Numeric matrix containing the coefficients of the quadratic function to be minimised.
+#' @param G Numeric matrix containing the coefficients of the inequality constraints.
+#' @param H Numeric vector containing the right-hand side of the inequality constraints.
 #' @param scaling TODO
 #'
 #' @return TODO
 #'
 #' @examples
 #' # TODO
+#' TODO: how to cite the package/function used https://www.rdocumentation.org/packages/limSolve/versions/1.5.6/topics/lsei?
 DClsei <- function(b, A, G, H, scaling) {
   sc <- norm(A, "2")
   A <- A / sc
@@ -554,8 +566,9 @@ DCrr <- function(b, A, method, scaling) {
 
 #' Title
 #'
-#' @param DCres TODO
-#' @param density_info TODO
+#' @param DCres Data.frame of deconvoluted cell fractions computed with the "run_quantiseq" function, with sample identifiers as row names.
+#' @param density_info Named numeric vector of total cell densities per sample. The vector names should match the sample identifiers specified in DCres.
+#' derived from imaging data
 #'
 #' @return TODO
 #'
@@ -576,7 +589,7 @@ get_densities <- function(DCres,
 
   celldens <- data.frame(DCres, row.names=1)
   for (i in seq_len(nrow(celldens))) {
-    celldens[i, ] <- DCres[i, ] * density_info
+    celldens[i, ] <- celldens[i, ] * density_info
   }
 
   return(celldens)

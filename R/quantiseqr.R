@@ -153,7 +153,7 @@ run_quantiseq <- function(expression_data,
 
 
   # TODO - slightly trickier to see how rmgenes should be structured
-
+  # should be a character, at least
 
   message("\nRunning quanTIseq deconvolution module\n")
 
@@ -215,7 +215,7 @@ run_quantiseq <- function(expression_data,
       stop("Scaling info file not found! ",
            "quantiseqr is expecting to find a file called ", mRNA.file)
     }
-    # TODO: would need to check that these files
+    # TODO: would need to check that these files, if user-specified signatures are allowed
       ## exist
       ## are formatted as expected?
   }
