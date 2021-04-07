@@ -305,10 +305,14 @@ check_signature <- function(signature_matrix, mix_mat) {
 #' @param arrays Logical value. Should be set to TRUE if the expression data
 #' are from microarrays. For RNA-seq data, this has to be FALSE (default value).
 #'
-#' @return TODO
+#' @return The input matrix transformed to the natural scale (if needed), 
+#' with fixed gene names on the rows, and TPM (for RNA-seq) or quantile (for microarrays) 
+#' normalized. 
 #'
 #' @examples
-#' # TODO
+#' 
+#' data(dataset_racle)
+#' mixture.fix <- fixMixture(dataset_racle$expr_mat)
 fixMixture <- function(mix.mat, arrays = FALSE) {
 
   # Map gene names
@@ -335,10 +339,12 @@ fixMixture <- function(mix.mat, arrays = FALSE) {
 #' with gene symbols as row names and sample IDs as column names.
 #' Expression levels should be on non-log scale.
 #'
-#' @return TODO
+#' @return The input matrix transfromed with quantile normalization. 
 #'
 #' @examples
-#' # TODO
+#' 
+#' data(dataset_racle)
+#' mixture.quantile <- makeQN(dataset_racle$expr_mat)
 makeQN <- function(mix.mat) {
   cnames <- colnames(mix.mat)
   rnames <- rownames(mix.mat)
@@ -350,18 +356,18 @@ makeQN <- function(mix.mat) {
 
 
 
-## TODO:
 #' mapGenes
 #'
 #' @param mydata Matrix or data.frame with RNA-seq gene TPM or microarray
 #' gene expression values for all samples to be deconvoluted,
 #' with gene symbols as row names and sample IDs as column names.
-#' Expression levels should be on non-log scale.
 #'
-#' @return TODO
+#' @return The input matrix with updated gene names on the rows.
 #'
 #' @examples
-#' # TODO
+#' 
+#' data(dataset_racle)
+#' mixture.fixgenes <- mapGenes(dataset_racle$expr_mat)
 mapGenes <- function(mydata) {
   HGNC <- read.csv(system.file("extdata", "HGNC_genenames_20170418.txt.gz", package = "quantiseqr", mustWork = TRUE),
     header = TRUE, sep = "\t"
@@ -450,11 +456,15 @@ mapGenes <- function(mydata) {
 #' for robust regression with Huber, Hampel, or Tukey bisquare estimators,
 #' respectively. Default: `lsei`.
 #'
-#' @return TODO
+#' @return A data.frame of cell fractions (TODO format)
 #'
 #' @examples
-#' # TODO
-quanTIseq <- function(currsig, currmix, scaling, method) {
+#' 
+#' data(dataset_racle)
+#' mixture <- dataset_racle$expr_mat
+#' cellfrac <- quanTIseq(mixture, signature)
+#' TODO: how to load TIL10 as signature in the example?
+quanTIseq <- function(currsig, currmix, scaling = TRUE, method = "lsei") {
   method <- match.arg(method, c("lsei", "hampel", "huber", "bisquare"))
 
   cgenes <- intersect(rownames(currsig), rownames(currmix))
@@ -482,8 +492,8 @@ quanTIseq <- function(currsig, currmix, scaling, method) {
     )
   }
 
-  # if (nrow(results)!=ncol(currmix))
-  results <- t(results)
+  if (!identical(rownames(results),colnames(currmix))) results<-t(results)
+  # TODO do extensive testing
 
   return(results)
 }
