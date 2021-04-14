@@ -2,12 +2,13 @@
 % Please edit documentation in R/quantiseqr_helpers.R
 \name{quanTIseq}
 \alias{quanTIseq}
-\title{Title}
+\title{Run quanTIseq deconvolution}
 \usage{
-quanTIseq(currsig, currmix, scaling, method)
+quanTIseq(currsig, currmix, scaling = TRUE, method = "lsei")
 }
 \arguments{
-\item{currsig}{Signature matrix to be used for deconvolution (format: genes by cell types).}
+\item{currsig}{Signature matrix to be used for deconvolution (format: genes
+by cell types).}
 
 \item{currmix}{Mixture matrix to be deconvoluted (format: genes by samples).}
 
@@ -20,11 +21,17 @@ for robust regression with Huber, Hampel, or Tukey bisquare estimators,
 respectively. Default: \code{lsei}.}
 }
 \value{
-TODO
+A data.frame of cell fractions, cell types by samples.
 }
 \description{
-Title
+Run quanTIseq deconvolution
 }
 \examples{
-# TODO
+
+data(dataset_racle)
+mixture <- dataset_racle$expr_mat
+signature.file <- system.file(
+  "extdata", "TIL10_signature.txt", package = "quantiseqr", mustWork = TRUE)
+signature <- read.table(signature.file, header = TRUE, sep = "\t", row.names = 1)
+# cellfrac <- quantiseqr:::quanTIseq(mixture, signature)
 }

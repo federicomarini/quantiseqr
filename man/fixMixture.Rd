@@ -2,7 +2,7 @@
 % Please edit documentation in R/quantiseqr_helpers.R
 \name{fixMixture}
 \alias{fixMixture}
-\title{Title}
+\title{Format the mixture matrix before deconvolution}
 \usage{
 fixMixture(mix.mat, arrays = FALSE)
 }
@@ -16,11 +16,15 @@ levels should be on non-log scale.}
 are from microarrays. For RNA-seq data, this has to be FALSE (default value).}
 }
 \value{
-TODO
+The input matrix transformed to the natural scale (if needed),
+with fixed gene names on the rows, and TPM (for RNA-seq) or quantile (for microarrays)
+normalized.
 }
 \description{
-Title
+Format the mixture matrix before deconvolution
 }
 \examples{
-# TODO
+
+data(dataset_racle)
+# mixture.fix <- quantiseqr:::fixMixture(dataset_racle$expr_mat)
 }

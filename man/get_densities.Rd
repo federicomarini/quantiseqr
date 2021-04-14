@@ -2,22 +2,37 @@
 % Please edit documentation in R/quantiseqr_helpers.R
 \name{get_densities}
 \alias{get_densities}
-\title{Title}
+\title{Scale deconvoluted cell fractions to cell densities}
 \usage{
 get_densities(DCres, density_info)
 }
 \arguments{
-\item{DCres}{Data.frame of deconvoluted cell fractions computed with the "run_quantiseq" function, with sample identifiers as row names.}
+\item{DCres}{Data.frame of deconvoluted cell fractions computed with the
+\code{run_quantiseq()} function, with sample identifiers as row names.}
 
-\item{density_info}{Named numeric vector of total cell densities per sample. The vector names should match the sample identifiers specified in DCres.
-derived from imaging data}
+\item{density_info}{Named numeric vector of total cell densities per sample.
+The vector names should match the sample identifiers specified in DCres.
+These values are derived from the quantitative analysis of imaging data.}
 }
 \value{
-TODO
+A data.frame of cell densities, samples by cell types.
 }
 \description{
-Title
+Scale deconvoluted cell fractions to cell densities
 }
 \examples{
-# TODO
+data(dataset_racle)
+mixture <- dataset_racle$expr_mat
+
+res_quantiseq_run <- quantiseqr::run_quantiseq(
+  expression_data = dataset_racle$expr_mat,
+  signature_matrix = "TIL10",
+  is_arraydata = FALSE,
+  is_tumordata = TRUE,
+  scale_mRNA = TRUE
+)
+
+totcells <- rnorm(n = ncol(mixture), mean = 1e4)
+names(totcells) <- colnames(mixture)
+celldens <- get_densities(res_quantiseq_run, totcells)
 }

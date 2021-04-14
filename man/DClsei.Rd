@@ -2,31 +2,52 @@
 % Please edit documentation in R/quantiseqr_helpers.R
 \name{DClsei}
 \alias{DClsei}
-\title{Title}
+\title{Solve Least Squares with Equality and Inequality Constraints (LSEI) problem}
 \usage{
-DClsei(b, A, G, H, scaling)
+DClsei(b, A, G, H, scaling = NULL)
 }
 \arguments{
-\item{b}{Numeric vector containing the right-hand side of the quadratic function to be minimised.}
+\item{b}{Numeric vector containing the right-hand side of the quadratic
+function to be minimized.}
 
-\item{A}{Numeric matrix containing the coefficients of the quadratic function to be minimised.}
+\item{A}{Numeric matrix containing the coefficients of the quadratic
+function to be minimized.}
 
 \item{G}{Numeric matrix containing the coefficients of the inequality constraints.}
 
 \item{H}{Numeric vector containing the right-hand side of the inequality constraints.}
 
-\item{scaling}{TODO}
+\item{scaling}{A vector of scaling factors to by applied to the estimates.
+Its length should equal the number of columns of A.}
 }
 \value{
-TODO
+A vector containing the solution of the LSEI problem.
 }
 \description{
-Title
+Solve Least Squares with Equality and Inequality Constraints (LSEI) problem
 }
 \details{
 The \code{\link[limSolve:lsei]{limSolve::lsei()}} function is used as underlying framework. Please
 refer to that function for more details.
 }
 \examples{
-# TODO
+data(dataset_racle)
+mixture <- dataset_racle$expr_mat
+signature.file <- system.file(
+  "extdata", "TIL10_signature.txt", package = "quantiseqr", mustWork = TRUE)
+signature <- read.table(signature.file, header = TRUE, sep = "\t", row.names = 1)
+scaling.file <- system.file(
+  "extdata", "TIL10_mRNA_scaling.txt", package = "quantiseqr", mustWork = TRUE)
+scaling <- as.vector(
+  as.matrix(read.table(scaling.file, header = FALSE, sep = "\t", row.names = 1)))
+
+cgenes <- intersect(rownames(signature), rownames(mixture))
+b <- as.vector(as.matrix(mixture[cgenes,1, drop=FALSE]))
+A <- as.matrix(signature[cgenes,])
+
+G <- matrix(0, ncol = ncol(A), nrow = ncol(A))
+diag(G) <- 1
+G <- rbind(G, rep(-1, ncol(G)))
+H <- c(rep(0, ncol(A)), -1)
+# cellfrac <- quantiseqr:::DClsei(b = b, A = A, G= G, H = H, scaling = scaling)
 }

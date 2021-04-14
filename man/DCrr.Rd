@@ -2,25 +2,47 @@
 % Please edit documentation in R/quantiseqr_helpers.R
 \name{DCrr}
 \alias{DCrr}
-\title{Title}
+\title{Perform robust regression}
 \usage{
-DCrr(b, A, method, scaling)
+DCrr(b, A, method = c("hampel", "huber", "bisquare"), scaling = NULL)
 }
 \arguments{
-\item{b}{TODO}
+\item{b}{Numeric vector containing the right-hand side of the quadratic
+function to be minimized.}
 
-\item{A}{TODO}
+\item{A}{Numeric matrix containing the coefficients of the quadratic function
+to be minimized.}
 
-\item{method}{TODO}
+\item{method}{Character specifying the robust regression method to be used
+among deconvolution methods: "hampel", "huber", or "bisquare". Default: "hampel".}
 
-\item{scaling}{TODO}
+\item{scaling}{A vector of scaling factors to by applied to the estimates.
+Its length should equal the number of columns of A.}
 }
 \value{
-TODO
+A vector containing robust least-square estimates.
 }
 \description{
-Title
+Perform robust regression
+}
+\details{
+The \code{\link[MASS:rlm]{MASS::rlm()}} function is used as underlying framework. Please
+refer to that function for more details.
 }
 \examples{
-# TODO
+data(dataset_racle)
+mixture <- dataset_racle$expr_mat
+signature.file <- system.file(
+  "extdata", "TIL10_signature.txt", package = "quantiseqr", mustWork = TRUE)
+signature <- read.table(signature.file, header = TRUE, sep = "\t", row.names = 1)
+scaling.file <- system.file(
+  "extdata", "TIL10_mRNA_scaling.txt", package = "quantiseqr", mustWork = TRUE)
+scaling <- as.vector(
+  as.matrix(read.table(scaling.file, header = FALSE, sep = "\t", row.names = 1)))
+
+cgenes <- intersect(rownames(signature), rownames(mixture))
+b <- as.vector(as.matrix(mixture[cgenes,1, drop=FALSE]))
+A <- as.matrix(signature[cgenes,])
+
+# cellfrac <- quantiseqr:::DCrr(b = b, A = A, scaling = scaling)
 }

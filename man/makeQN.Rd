@@ -2,7 +2,7 @@
 % Please edit documentation in R/quantiseqr_helpers.R
 \name{makeQN}
 \alias{makeQN}
-\title{Title}
+\title{Perform quantile normalization of expression data}
 \usage{
 makeQN(mix.mat)
 }
@@ -13,11 +13,13 @@ with gene symbols as row names and sample IDs as column names.
 Expression levels should be on non-log scale.}
 }
 \value{
-TODO
+The input matrix transformed with quantile normalization.
 }
 \description{
-Title
+Perform quantile normalization of expression data
 }
 \examples{
-# TODO
+
+data(dataset_racle)
+# mixture.quantile <- quantiseqr:::makeQN(dataset_racle$expr_mat)
 }

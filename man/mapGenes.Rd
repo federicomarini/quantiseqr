@@ -2,22 +2,23 @@
 % Please edit documentation in R/quantiseqr_helpers.R
 \name{mapGenes}
 \alias{mapGenes}
-\title{mapGenes}
+\title{Rename gene symbols before deconvolution}
 \usage{
 mapGenes(mydata)
 }
 \arguments{
 \item{mydata}{Matrix or data.frame with RNA-seq gene TPM or microarray
 gene expression values for all samples to be deconvoluted,
-with gene symbols as row names and sample IDs as column names.
-Expression levels should be on non-log scale.}
+with gene symbols as row names and sample IDs as column names.}
 }
 \value{
-TODO
+The input matrix with updated gene names on the rows.
 }
 \description{
-mapGenes
+Rename gene symbols before deconvolution
 }
 \examples{
-# TODO
+
+data(dataset_racle)
+# mixture.fixgenes <- quantiseqr:::mapGenes(dataset_racle$expr_mat)
 }
