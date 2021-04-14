@@ -303,14 +303,14 @@ check_signature <- function(signature_matrix, mix_mat) {
 #' @param arrays Logical value. Should be set to TRUE if the expression data
 #' are from microarrays. For RNA-seq data, this has to be FALSE (default value).
 #'
-#' @return The input matrix transformed to the natural scale (if needed), 
-#' with fixed gene names on the rows, and TPM (for RNA-seq) or quantile (for microarrays) 
-#' normalized. 
+#' @return The input matrix transformed to the natural scale (if needed),
+#' with fixed gene names on the rows, and TPM (for RNA-seq) or quantile (for microarrays)
+#' normalized.
 #'
 #' @examples
-#' 
+#'
 #' data(dataset_racle)
-#' mixture.fix <- fixMixture(dataset_racle$expr_mat)
+#' # mixture.fix <- quantiseqr:::fixMixture(dataset_racle$expr_mat)
 fixMixture <- function(mix.mat, arrays = FALSE) {
 
   # Map gene names
@@ -337,12 +337,12 @@ fixMixture <- function(mix.mat, arrays = FALSE) {
 #' with gene symbols as row names and sample IDs as column names.
 #' Expression levels should be on non-log scale.
 #'
-#' @return The input matrix transfromed with quantile normalization. 
+#' @return The input matrix transformed with quantile normalization.
 #'
 #' @examples
-#' 
+#'
 #' data(dataset_racle)
-#' mixture.quantile <- makeQN(dataset_racle$expr_mat)
+#' # mixture.quantile <- quantiseqr:::makeQN(dataset_racle$expr_mat)
 makeQN <- function(mix.mat) {
   cnames <- colnames(mix.mat)
   rnames <- rownames(mix.mat)
