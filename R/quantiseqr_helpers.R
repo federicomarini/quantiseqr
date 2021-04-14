@@ -6,8 +6,6 @@ NULL
 
 
 
-
-
 #' Convert a `Biobase::ExpressionSet` to a gene-expression matrix.
 #'
 #' @param eset `ExpressionSet`
@@ -296,7 +294,7 @@ check_signature <- function(signature_matrix, mix_mat) {
 
 
 
-#' Title
+#' Format the mixture matrix before deconvolution
 #'
 #' @param mix.mat Matrix or data.frame with RNA-seq gene TPM or microarray
 #' expression values for all samples to be deconvoluted, with gene
@@ -332,7 +330,7 @@ fixMixture <- function(mix.mat, arrays = FALSE) {
   return(mix.mat)
 }
 
-#' Title
+#' Perform quantile normalization of expression data
 #'
 #' @param mix.mat Matrix or data.frame with microarray
 #' gene expression values for all samples to be deconvoluted,
@@ -356,7 +354,7 @@ makeQN <- function(mix.mat) {
 
 
 
-#' mapGenes
+#' Rename gene symbols before deconvolution
 #'
 #' @param mydata Matrix or data.frame with RNA-seq gene TPM or microarray
 #' gene expression values for all samples to be deconvoluted,
@@ -445,7 +443,7 @@ mapGenes <- function(mydata) {
   return(outdata)
 }
 
-#' Title
+#' Run quanTIseq deconvolution
 #'
 #' @param currsig Signature matrix to be used for deconvolution (format: genes by cell types).
 #' @param currmix Mixture matrix to be deconvoluted (format: genes by samples).
@@ -456,20 +454,22 @@ mapGenes <- function(mydata) {
 #' for robust regression with Huber, Hampel, or Tukey bisquare estimators,
 #' respectively. Default: `lsei`.
 #'
-#' @return A data.frame of cell fractions (TODO format)
+#' @return A data.frame of cell fractions, cell types by samples.
 #'
 #' @examples
 #' 
 #' data(dataset_racle)
 #' mixture <- dataset_racle$expr_mat
+#' signature.file <- system.file("extdata", "TIL10_signature.txt", package = "quantiseqr", mustWork = TRUE)
+#' signature <- read.table(signature.file, header = TRUE, sep = "\t", row.names = 1)
 #' cellfrac <- quanTIseq(mixture, signature)
-#' TODO: how to load TIL10 as signature in the example?
+#' TODO: Fede, does this work for you?
 quanTIseq <- function(currsig, currmix, scaling = TRUE, method = "lsei") {
   method <- match.arg(method, c("lsei", "hampel", "huber", "bisquare"))
 
   cgenes <- intersect(rownames(currsig), rownames(currmix))
-  currsig <- as.matrix(currsig[cgenes, ])
-  currmix <- as.matrix(currmix[cgenes, ])
+  currsig <- as.matrix(currsig[cgenes,,drop=FALSE])
+  currmix <- as.matrix(currmix[cgenes,,drop=FALSE])
 
   if (method == "lsei") {
 
@@ -498,22 +498,45 @@ quanTIseq <- function(currsig, currmix, scaling = TRUE, method = "lsei") {
   return(results)
 }
 
-#' Title
+#' Solve Least Squares with Equality and Inequality Constraints (LSEI) problem
 #'
 #' @param b Numeric vector containing the right-hand side of the quadratic function to be minimised.
 #' @param A Numeric matrix containing the coefficients of the quadratic function to be minimised.
 #' @param G Numeric matrix containing the coefficients of the inequality constraints.
 #' @param H Numeric vector containing the right-hand side of the inequality constraints.
-#' @param scaling TODO
+#' @param scaling A vector of scaling factors to by applied to the estimates. 
+#' Its length should equal the number of columns of A.
 #'
-#' @return TODO
+#' @return A vector containing the solution of the LSEI problem.
 #'
-#' @details The [limsolve::lsei()] function is used as underlying framework. Please
+#' @details The [limSolve::lsei()] function is used as underlying framework. Please
 #' refer to that function for more details.
 #'
 #' @examples
-#' # TODO
-DClsei <- function(b, A, G, H, scaling) {
+#' data(dataset_racle)
+#' mixture <- dataset_racle$expr_mat
+#' signature.file <- system.file("extdata", "TIL10_signature.txt", package = "quantiseqr", mustWork = TRUE)
+#' signature <- read.table(signature.file, header = TRUE, sep = "\t", row.names = 1)
+#' scaling.file <- system.file("extdata", "TIL10_mRNA_scaling.txt", package = "quantiseqr", mustWork = TRUE)
+#' scaling <- as.vector(as.matrix(read.table(scaling.file, header = FALSE, sep = "\t", row.names = 1)))
+#' 
+#' cgenes <- intersect(rownames(signature), rownames(mixture))
+#' b <- as.vector(as.matrix(mixture[cgenes,1, drop=FALSE]))
+#' A <- as.matrix(signature[cgenes,])
+#' 
+#' G <- matrix(0, ncol = ncol(A), nrow = ncol(A))
+#' diag(G) <- 1
+#' G <- rbind(G, rep(-1, ncol(G)))
+#' H <- c(rep(0, ncol(A)), -1)
+#' cellfrac <- DClsei(b = b, A = A, G= G, H = H, scaling = scaling)
+#' TODO: Fede, does this work for you?
+DClsei <- function(b, A, G, H, scaling = NULL) {
+  
+  # If no scaling factors are provided, estimates are not scaled
+  if (is.null(scaling)) {
+    scaling <- rep(1,ncol(A))
+  }
+  
   sc <- norm(A, "2")
   A <- A / sc
   b <- b / sc
@@ -536,25 +559,48 @@ DClsei <- function(b, A, G, H, scaling) {
   return(est)
 }
 
-#' Title
+#' Perform robust regression
 #'
-#' @param b TODO
-#' @param A TODO
-#' @param method TODO
-#' @param scaling TODO
+#' @param b Numeric vector containing the right-hand side of the quadratic function to be minimised.
+#' @param A Numeric matrix containing the coefficients of the quadratic function to be minimised.
+#' @param method Character specififying the robust regression method to be used among deconvolution 
+#' method to be used: "hampel", "huber", or "bisquare". Default: "hampel".
+#' @param scaling A vector of scaling factors to by applied to the estimates. 
+#' Its length should equal the number of columns of A.
 #'
-#' @return TODO
+#' @return A vector containing robust least-square estimates.
 #'
+#' @details The [MASS::rlm()] function is used as underlying framework. Please
+#' refer to that function for more details.
+#' 
 #' @examples
-#' # TODO
-DCrr <- function(b, A, method, scaling) {
+#' data(dataset_racle)
+#' mixture <- dataset_racle$expr_mat
+#' signature.file <- system.file("extdata", "TIL10_signature.txt", package = "quantiseqr", mustWork = TRUE)
+#' signature <- read.table(signature.file, header = TRUE, sep = "\t", row.names = 1)
+#' scaling.file <- system.file("extdata", "TIL10_mRNA_scaling.txt", package = "quantiseqr", mustWork = TRUE)
+#' scaling <- as.vector(as.matrix(read.table(scaling.file, header = FALSE, sep = "\t", row.names = 1)))
+#' 
+#' cgenes <- intersect(rownames(signature), rownames(mixture))
+#' b <- as.vector(as.matrix(mixture[cgenes,1, drop=FALSE]))
+#' A <- as.matrix(signature[cgenes,])
+#' 
+#' cellfrac <- DCrr(b=b, A=A, scaling=scaling)
+#' TODO: Fede, does this work for you?
+DCrr <- function(b, A, method = c("hampel", "huber", "bisquare"), scaling = NULL) {
 
+  # If no scaling factors are provided, estimates are not scaled
+  if (is.null(scaling)) {
+    scaling <- rep(1,ncol(A))
+  }
+  
   # Robust regression
+  method <- match.arg(method, c("hampel", "huber", "bisquare"))
   m <- paste0("psi.", method)
   if (m == "psi.hampel") {
-    bres <- rlm(b ~ A, psi = m, a = 1.5, b = 3.5, c = 8, maxit = 1e3)
+    bres <- MASS::rlm(b ~ A, psi = m, a = 1.5, b = 3.5, c = 8, maxit = 1e3)
   } else {
-    bres <- rlm(b ~ A, psi = m, maxit = 1e3)
+    bres <- MASS::rlm(b ~ A, psi = m, maxit = 1e3)
   }
   est <- bres$coefficients
 
@@ -577,23 +623,27 @@ DCrr <- function(b, A, method, scaling) {
   return(est)
 }
 
-#' Title
+#' Scale deconvoluted cell fractions to cell densities
 #'
 #' @param DCres Data.frame of deconvoluted cell fractions computed with the "run_quantiseq" function, with sample identifiers as row names.
 #' @param density_info Named numeric vector of total cell densities per sample. The vector names should match the sample identifiers specified in DCres.
 #' derived from imaging data
 #'
-#' @return TODO
+#' @return A data.frame of cell densities, samples by cell types. 
 #'
 #' @examples
-#' # TODO
-get_densities <- function(DCres,
-                          density_info) {
-
-  # checks:
-  ## DCres should be formatted as output coming from quantiseqr
-  ## density info should have the same samples included
-    ## think of which format this needs to be provided
+#' data(dataset_racle)
+#' mixture <- dataset_racle$expr_mat
+#' signature.file <- system.file("extdata", "TIL10_signature.txt", package = "quantiseqr", mustWork = TRUE)
+#' signature <- read.table(signature.file, header = TRUE, sep = "\t", row.names = 1)
+#' 
+#' cellfrac <- quanTIseq(mixture, signature)
+#' cellfrac <- data.frame(Sample = colnames(cellfrac), t(cellfrac))
+#' 
+#' totcells <- rnorm(n = ncol(mixture), mean = 1e4)
+#' names(totcells) <- colnames(mixture)
+#' celldens <- get_densities(cellfrac, totcells)
+get_densities <- function(DCres, density_info) {
 
   ## TODO: check if intersection is empty?
   csbj <- intersect(rownames(DCres), names(density_info))
