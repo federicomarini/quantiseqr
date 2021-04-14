@@ -159,6 +159,7 @@ run_quantiseq <- function(expression_data,
 
   # TODO: a thought: after the checks, what about printing out all
   # options and explain in brief what they should do?
+  # OK for the printing, not sure about explanation (the user should be aware of them before)
 
   # List of genes to be discarded
   if (is.null(rm_genes) && is_arraydata == TRUE) { # For Microarrays
@@ -218,6 +219,7 @@ run_quantiseq <- function(expression_data,
     # TODO: would need to check that these files, if user-specified signatures are allowed
       ## exist
       ## are formatted as expected?
+      ## I would can skip this for the first release
   }
 
 
