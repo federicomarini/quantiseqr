@@ -2,6 +2,7 @@
 
 export(eset_to_matrix)
 export(extract_ti_from_se)
+export(get_densities)
 export(quantiplot)
 export(run_quantiseq)
 export(se_to_matrix)
