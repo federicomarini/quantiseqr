@@ -553,11 +553,14 @@ This figure aims to replicate with live code the one available as [Supplementary
 
 **Q: Do I have to provide my expression data formatted as TPMs? Why is that so?**
 
-A: MyA TODO
+A: The expression data is indeed expected to be provided as TPM values. `quantiseqr` might warn you if you are providing a different format (counts, normalized counts) - this does not mean that it will trigger an error as the computation is still able to proceed.  
+Still: it is not the recommended way. 
+If using a `SummarizedExperiment` object coming from Salmon's quantifications, the `tximeta`/`tximport` pipeline will provide an assay named "abundance", which would be handled internally by the `se_to_matrix()` function - you can simply call `quantiseqr()` and provide the `SummarizedExperiment` object as main parameter.
 
 **Q: Can I use `quantiseqr` with samples from model systems, i.e. not from human?**
 
-A: MyA TODO
+A: You can exploit orthology-based conversions among gene identifiers to use `quantiseqr` e.g. in mouse scenarios.
+Keep in mind, though, that the TIL10 signature has been explicitly designed and validated on human samples.
 
 **Q: My expression data is encoding the features in a different identifier than Gene Symbols. Can I use `quantiseqr` for that?**
 
@@ -565,17 +568,11 @@ A: Sure, just make sure to convert the identifiers beforehand - you can use one 
 
 **Q: I'm interested in other such deconvolution methods. What other options are available?**
 
-A: MyA [@sturm2019, @Sturm2020] TODO
+A: You can check out the works of [@sturm2019, @Sturm2020] to find a collection of methods, provided in the `immunedeconv` package, and benchmarked in the above mentioned manuscripts.
 
 **Q: Can I provide my own signature like the `TIL10` and use that in `quantiseqr`?**
 
-A: MyA TODO
-
-
-
-TODO TODO
-TODO TODO
-
+A: Yes, we recommend you to read up on the methods used in [@quantiseq2019] to see what processing steps have been applied, and additionally have a look at the formatting requirements by inspecting the `TIL10_*` files provided in the `extdata` folder of the installed package. 
 
 # Session Info {- .smaller}
 
