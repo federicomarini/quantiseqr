@@ -233,37 +233,42 @@ run_quantiseq <- function(expression_data,
   }
 
   # Preprocess mixture matrix
-  message(paste0(
+  message(
     "Gene expression normalization and re-annotation (arrays: ",
-    is_arraydata, ")\n"
-  ))
+    is_arraydata,
+    ")\n"
+  )
   mix.mat <- fixMixture(mix.mat, arrays = is_arraydata)
 
   # Remove noisy genes
   n1 <- nrow(sig.mat)
   sig.mat <- sig.mat[!rownames(sig.mat) %in% lrmgenes, , drop = FALSE]
   n2 <- nrow(sig.mat)
-  message(paste0("Removing ", n1 - n2, " noisy genes\n"))
+  message("Removing ",
+          n1 - n2,
+          " noisy genes\n")
 
   # Fix tumor data
   if (is_tumordata) {
     n1 <- nrow(sig.mat)
     sig.mat <- sig.mat[!rownames(sig.mat) %in% abgenes, , drop = FALSE]
     n2 <- nrow(sig.mat)
-    message(paste0("Removing ", n1 - n2, " genes with high expression in tumors\n"))
+    message("Removing ",
+            n1 - n2,
+            " genes with high expression in tumors\n")
   }
 
   # Signature genes present in the mixture
   ns <- nrow(sig.mat)
   us <- length(intersect(rownames(sig.mat), rownames(mix.mat)))
   perc <- round(us * 100 / ns, digits = 2)
-  message(paste0(
+  message(
     "Signature genes found in data set: ",
     us, "/", ns, " (", perc, "%)\n"
-  ))
+  )
 
   # Run deconvolution
-  message(paste0("Mixture deconvolution (method: ", method, ")\n"))
+  message("Mixture deconvolution (method: ", method, ")\n")
   results1 <- quanTIseq(sig.mat,
     mix.mat,
     scaling = mRNA,
