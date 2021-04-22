@@ -47,8 +47,9 @@ TODO
 To install this package, start R and enter:
 
 ```{r install, eval=FALSE}
-if (!requireNamespace("BiocManager", quietly = TRUE))
+if (!requireNamespace("BiocManager", quietly = TRUE)) {
   install.packages("BiocManager")
+}
 
 BiocManager::install("quantiseqr")
 ```
@@ -158,11 +159,13 @@ Flow cytometry estimates for the according immune subpopulations are also availa
 library(GEOquery)
 
 # downloading the supplemental files on the fly
-tpminfo_GSE107572 <- getGEOSuppFiles("GSE107572", baseDir = tempdir(),
-                                     filter_regex = "GSE107572_tpm_PBMC_RNAseq")
+tpminfo_GSE107572 <- getGEOSuppFiles("GSE107572",
+  baseDir = tempdir(),
+  filter_regex = "GSE107572_tpm_PBMC_RNAseq"
+)
 tpm_location <- rownames(tpminfo_GSE107572)[1]
 tpm_location
-tpmdata <-read.table(tpm_location, header = TRUE)
+tpmdata <- read.table(tpm_location, header = TRUE)
 ```
 
 ```{r ex2-ti-run}
@@ -205,7 +208,8 @@ FACSdata <- data.frame(
   Tregs = GEOinfo$`tregs:ch1`
 )
 rownames(FACSdata) <- gsub(
-  "Blood-derived immune-cell mixture from donor ", "pbmc", GEOinfo$title) 
+  "Blood-derived immune-cell mixture from donor ", "pbmc", GEOinfo$title
+)
 
 rownames(ti_PBMCs) <- gsub("_.*$", "", sub("_", "", rownames(ti_PBMCs)))
 
@@ -213,7 +217,7 @@ ccells <- intersect(colnames(ti_PBMCs), colnames(FACSdata))
 csbjs <- intersect(rownames(ti_PBMCs), rownames(FACSdata))
 
 ti_PBMCs <- ti_PBMCs[csbjs, ccells]
-FACSdata <- FACSdata[csbjs, ccells] 
+FACSdata <- FACSdata[csbjs, ccells]
 
 palette <- c("#451C87", "#B3B300", "#CE0648", "#2363C5", "#AB4CA1", "#0A839B", "#DD8C24", "#ED6D42")
 
@@ -272,7 +276,9 @@ data_already_on_ehub <- FALSE
 ```{r ex3-retrieve-run, eval = data_already_on_ehub}
 ### WAS...
 tpmdata <- read.table(
-  system.file("extdata", "tpm_GSE75299.txt.gz", package = "quantiseqr"), header = TRUE)
+  system.file("extdata", "tpm_GSE75299.txt.gz", package = "quantiseqr"),
+  header = TRUE
+)
 
 ### WILL BE...
 library("ExperimentHub")
@@ -318,8 +324,9 @@ gds <- getGEO("GSE75299")
 pdata <- pData(gds[[1]])
 
 sraInfo <- read.csv(
-  system.file("extdata", "SRP066571runtable.txt", package = "quantiseqr"), 
-  header = TRUE, sep = ",", stringsAsFactors = FALSE)
+  system.file("extdata", "SRP066571runtable.txt", package = "quantiseqr"),
+  header = TRUE, sep = ",", stringsAsFactors = FALSE
+)
 
 cdata <- cbind(cdata, sraInfo[, "SampleName"][match(rownames
 (cdata), sraInfo$Run)])
@@ -343,22 +350,25 @@ library(tidyr)
 cellfracs <- pivot_longer(cdata, cols = B.cells:Other)
 
 cellfracs$name <- factor(cellfracs$name,
-                         levels = c("B.cells", "Macrophages.M1", "Macrophages.M2",
-                                    "Monocytes", "Neutrophils", "NK.cells",   
-                                    "T.cells.CD4", "T.cells.CD8", "Tregs", 
-                                    "Dendritic.cells", "Other"))
+  levels = c(
+    "B.cells", "Macrophages.M1", "Macrophages.M2",
+    "Monocytes", "Neutrophils", "NK.cells",
+    "T.cells.CD4", "T.cells.CD8", "Tregs",
+    "Dendritic.cells", "Other"
+  )
+)
 
-ggplot(cellfracs, aes(fill = name, y = value, x = Sample)) + 
-  geom_bar(position = "fill", stat = "identity") + 
-  scale_fill_brewer(palette = "PuOr") + 
+ggplot(cellfracs, aes(fill = name, y = value, x = Sample)) +
+  geom_bar(position = "fill", stat = "identity") +
+  scale_fill_brewer(palette = "PuOr") +
   # viridis::scale_fill_viridis(discrete = TRUE) +
-  xlab("") + 
-  ylab("Cell Fractions") + 
-  theme_minimal() + 
-  theme(axis.text.x = element_text(angle = 45, hjust=1))
+  xlab("") +
+  ylab("Cell Fractions") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 
-prepost_data <- cdata[!is.na(cdata$pt_info),]
+prepost_data <- cdata[!is.na(cdata$pt_info), ]
 prepost_data <- prepost_data[-grep("Other", colnames(prepost_data))]
 
 ### Remove other cells and the last two columns
@@ -372,17 +382,20 @@ prepost_data <- pivot_longer(prepost_data, cols = B.cells:Dendritic.cells)
 prepost_data$groups <- factor(prepost_data$groups, levels = c("PRE", "POST"))
 
 prepost_data$name <- factor(prepost_data$name,
-                            levels = c("B.cells", "Macrophages.M1", "Macrophages.M2",
-                                       "Monocytes", "Neutrophils", "NK.cells",   
-                                       "T.cells.CD4", "T.cells.CD8", "Tregs", 
-                                       "Dendritic.cells"))
+  levels = c(
+    "B.cells", "Macrophages.M1", "Macrophages.M2",
+    "Monocytes", "Neutrophils", "NK.cells",
+    "T.cells.CD4", "T.cells.CD8", "Tregs",
+    "Dendritic.cells"
+  )
+)
 
 ggplot(prepost_data, aes(name, value, fill = groups)) +
   geom_boxplot() +
-  xlab("") + 
+  xlab("") +
   ylab("cell fractions") +
-  theme_bw() + 
-  theme(axis.text.x = element_text(angle = 45, hjust=1)) 
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 # +
 #   stat_compare_means(aes(group = groups),
 #     symnum.args = list(cutpoints = c(0, 0.001, 0.01, 0.05, 0.1, 1), symbols = c("****", "***", "**", "*", "ns")),
@@ -435,15 +448,16 @@ To avoid the download of a large file, we provide the precomputed object `ti_qua
 data(ti_quant_sim1700mixtures)
 dim(ti_quant_sim1700mixtures)
 head(ti_quant_sim1700mixtures)
-quantiplot(ti_quant_sim1700mixtures[1:100,])
+quantiplot(ti_quant_sim1700mixtures[1:100, ])
 ```
 
 We also read in the true proportions, known by design - this is provided as a text file inside `quantiseqr`.
 
 ```{r ex4-gtruth}
 true_prop_1700mix <- read.table(
-  system.file("extdata", "quanTIseq_SimRNAseq_read_fractions.txt.gz", package = "quantiseqr"), 
-  sep = "\t", header = TRUE)
+  system.file("extdata", "quanTIseq_SimRNAseq_read_fractions.txt.gz", package = "quantiseqr"),
+  sep = "\t", header = TRUE
+)
 head(true_prop_1700mix)
 ```
 
@@ -461,14 +475,18 @@ colnames(true_prop_1700mix)[1] <- "Sample"
 colnames(true_prop_1700mix)[12] <- "Other"
 
 library("tidyr")
-ti_long <- pivot_longer(ti_quant_sim1700mixtures, cols = B.cells:Other, 
-                        names_to = "cell_type",
-                        values_to = "value_quantiseq")
+ti_long <- pivot_longer(ti_quant_sim1700mixtures,
+  cols = B.cells:Other,
+  names_to = "cell_type",
+  values_to = "value_quantiseq"
+)
 ti_long$mix_id <- paste(ti_long$Sample, ti_long$cell_type, sep = "_")
 
-tp_long <- pivot_longer(true_prop_1700mix, cols = B.cells:Other, 
-                        names_to = "cell_type",
-                        values_to = "value_trueprop")
+tp_long <- pivot_longer(true_prop_1700mix,
+  cols = B.cells:Other,
+  names_to = "cell_type",
+  values_to = "value_trueprop"
+)
 tp_long$mix_id <- paste(tp_long$Sample, tp_long$cell_type, sep = "_")
 
 
@@ -476,23 +494,34 @@ ti_tp_merged <- merge(ti_long, tp_long, by = "mix_id")
 ti_tp_merged$cell_type.x <- factor(ti_tp_merged$cell_type.x, levels = colnames(true_prop_1700mix)[2:12])
 
 # ti_merged <- rbind(ti_quant_sim1700mixtures,
-                   # true_prop_1700mix)
+# true_prop_1700mix)
 
 # ti_merged_long <- pivot_longer(ti_quant_sim1700mixtures, cols = B.cells:Other)
 
 library("ggplot2")
 
-ggplot(ti_tp_merged,
-     aes(x = value_trueprop, 
-         y = value_quantiseq,
-         col = cell_type.x)) + geom_point(alpha = 0.5) + theme_bw()
+ggplot(
+  ti_tp_merged,
+  aes(
+    x = value_trueprop,
+    y = value_quantiseq,
+    col = cell_type.x
+  )
+) +
+  geom_point(alpha = 0.5) +
+  theme_bw()
 
-ggplot(ti_tp_merged,
-     aes(x = value_trueprop, 
-         y = value_quantiseq,
-         col = cell_type.x)) + 
-  facet_wrap(~cell_type.x, scales = "free") + 
-  geom_point(alpha = 0.5) + theme_bw()
+ggplot(
+  ti_tp_merged,
+  aes(
+    x = value_trueprop,
+    y = value_quantiseq,
+    col = cell_type.x
+  )
+) +
+  facet_wrap(~cell_type.x, scales = "free") +
+  geom_point(alpha = 0.5) +
+  theme_bw()
 
 # for (i in colnames(ti_quant_sim1700mixtures)) {
 #   message(i)
@@ -500,7 +529,6 @@ ggplot(ti_tp_merged,
 #     plot(true_prop_1700mix[[i]], ti_quant_sim1700mixtures[[i]], main = i)
 # }
 # plot( true_prop_1700mix$Tumor, ti_quant_sim1700mixtures$Other, main = "other")
-
 ```
 
 This figure aims to replicate with live code the one available as [Supplementary Figure 1](https://static-content.springer.com/esm/art%3A10.1186%2Fs13073-019-0638-6/MediaObjects/13073_2019_638_MOESM2_ESM.pdf).
