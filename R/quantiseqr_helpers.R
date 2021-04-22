@@ -102,7 +102,7 @@ se_to_matrix <- function(se,
     warning("Found a large majority of row names starting with 'ENS', mostly common ",
             "in the ENSEMBL/Gencode annotation schemes. quanTIseq requires you to ",
             "provide the row names as HGNC gene symbols, please see the example section ",
-            "for an example of how to use annotation packages to convert to this format.") # TODO: or even throw an error? A lot would just probably not work...
+            "for an example of how to use annotation packages to convert to this format.")
 
   return(exp_mat)
 }
@@ -431,7 +431,7 @@ mapGenes <- function(mydata) {
 
   # Take the median if duplicates are present
   if (any(duplicated(rownames(mydata)))) {
-    # message("dupe dupes, might take a little longer: TODO, faster options?")
+    # message("dupe dupes, might take a little longer: maybe work on faster options?")
     outdata <- aggregate(mydata, by = list(newgenes), FUN = median)
     rownames(outdata) <- outdata[, 1]
     outdata <- outdata[, -1, drop = FALSE]
@@ -494,8 +494,9 @@ quanTIseq <- function(currsig, currmix, scaling = TRUE, method = "lsei") {
     )
   }
 
-  if (!identical(rownames(results),colnames(currmix))) results<-t(results)
-  # TODO do extensive testing
+  if (!identical(rownames(results), colnames(currmix)))
+    results <- t(results)
+  # do more extensive testing
 
   return(results)
 }
@@ -662,7 +663,7 @@ DCrr <- function(b, A, method = c("hampel", "huber", "bisquare"), scaling = NULL
 #' celldens <- get_densities(res_quantiseq_run, totcells)
 get_densities <- function(DCres, density_info) {
 
-  ## TODO: check if intersection is empty?
+  # first check if intersection is empty?
   csbj <- intersect(rownames(DCres), names(density_info))
   density_info <- density_info[csbj]
   DCres <- DCres[csbj, , drop = FALSE]
@@ -673,5 +674,4 @@ get_densities <- function(DCres, density_info) {
   }
 
   return(celldens)
-
 }
