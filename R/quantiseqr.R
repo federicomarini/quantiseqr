@@ -19,7 +19,7 @@
 #' @param is_arraydata Logical value. Should be set to TRUE if the expression data
 #' are originating from microarray data. For RNA-seq data, this has to be FALSE
 #' (default value). If set to TRUE, the `rmgenes` parameter (see below) is set
-#' to "none". 
+#' to "none".
 #' @param is_tumordata Logical value. Should be set to TRUE if the expression data
 #' is from tumor samples. Default: FALSE (e.g. for RNA-seq from blood samples)
 #' @param scale_mRNA Logical value. If set to FALSE, it disables the correction
@@ -37,7 +37,7 @@
 #' - a single string among the choices of "none" (no genes are removed) and "default"
 #'   (a list of genes with noisy expression RNA-seq data is removed, as explained
 #'   in the quanTIseq paper).
-#' Default: "default" for RNA-seq data, "none" for microarrays. 
+#' Default: "default" for RNA-seq data, "none" for microarrays.
 #' @param return_se Logical value, controls the format of how the quantification
 #' is returned. If providing a `SummarizedExperiment`, it can simply extend its
 #' `colData` component, without the need to create a separate data frame as output.
@@ -146,20 +146,12 @@ run_quantiseq <- function(expression_data,
             "that quanTIseq required the values formatted as TPM!")
   }
 
-  # TODO: probably move the check above
   if (!is.numeric(mix.mat)) {
     stop("Expecting a matrix/an object with numeric values to be provided")
   }
 
 
-  # TODO - slightly trickier to see how rmgenes should be structured
-  # should be a character, at least
-
   message("\nRunning quanTIseq deconvolution module\n")
-
-  # TODO: a thought: after the checks, what about printing out all
-  # options and explain in brief what they should do?
-  # OK for the printing, not sure about explanation (the user should be aware of them before)
 
   # List of genes to be discarded
   if (is.null(rm_genes) && is_arraydata == TRUE) { # For Microarrays
@@ -216,10 +208,10 @@ run_quantiseq <- function(expression_data,
       stop("Scaling info file not found! ",
            "quantiseqr is expecting to find a file called ", mRNA.file)
     }
-    # TODO: would need to check that these files, if user-specified signatures are allowed
+    # one would need to check that these files, if user-specified signatures are allowed
       ## exist
       ## are formatted as expected?
-      ## I would can skip this for the first release
+      ## could be kept as development for future versions
   }
 
 
