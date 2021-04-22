@@ -286,21 +286,30 @@ eh <- ExperimentHub()
 quantiseqdata_eh <- query(eh, "quantiseqrData")
 se_Song2017_MAPKi_treatment <- quantiseqdata_eh[["EH123"]] # will be edited
 
-tpm_genesymbols <- tpmdata$GENE
-tpmdata <- as.matrix(tpmdata[, -1])
-rownames(tpmdata) <- tpm_genesymbols
+#### tpm_genesymbols <- tpmdata$GENE
+#### tpmdata <- as.matrix(tpmdata[, -1])
+#### rownames(tpmdata) <- tpm_genesymbols
 
-ti_quant <- quantiseqr::run_quantiseq(
-  expression_data = se_Song2017_MAPKi_treatment,
+#### ti_quant <- quantiseqr::run_quantiseq(
+####   expression_data = se_Song2017_MAPKi_treatment,
+####   signature_matrix = "TIL10",
+####   is_arraydata = FALSE,
+####   is_tumordata = TRUE,
+####   scale_mRNA = TRUE
+#### )
+
+Song2017_MAPKi_treatment_tiquant <- quantiseqr::run_quantiseq(
+  expression_data = Song2017_MAPKi_treatment,
   signature_matrix = "TIL10",
   is_arraydata = FALSE,
   is_tumordata = TRUE,
   scale_mRNA = TRUE
 )
 
-dim(ti_quant)
-rownames(ti_quant)
-colnames(ti_quant)
+
+dim(Song2017_MAPKi_treatment_tiquant)
+colData(Song2017_MAPKi_treatment_tiquant)
+colnames(colData(Song2017_MAPKi_treatment_tiquant))
 ```
 
 
@@ -317,6 +326,15 @@ library(reshape2)
 ### Load file with estimated cell fractions by quanTIseq:
 cdata <- # read.csv(paste0(path, "/SRP066571_cell_fractions.txt"), header = TRUE, sep = "\t", stringsAsFactors = FALSE, row.names = 1)
   ti_quant
+
+
+Song2017_MAPKi_treatment_tiquant
+
+ti_quant <- quantiseqr::extract_ti_from_se(Song2017_MAPKi_treatment_tiquant)
+
+
+
+## this will be adjusted!
 
 
 ### Annotation
