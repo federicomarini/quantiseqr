@@ -49,7 +49,7 @@ Suggests:
 biocViews:
     GeneExpression, Software, Transcription, Transcriptomics, Sequencing, Microarray,
     Visualization, Annotation, ImmunoOncology, FeatureExtraction, Classification, 
-    StatisticalMethod
+    StatisticalMethod, ExperimentHubSoftware
 VignetteBuilder: knitr
 Encoding: UTF-8
 LazyData: true
