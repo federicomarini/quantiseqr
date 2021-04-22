@@ -431,13 +431,13 @@ mapGenes <- function(mydata) {
 
   # Take the median if duplicates are present
   if (any(duplicated(rownames(mydata)))) {
-    message("dupe dupes, might take a little longer: TODO, faster options?")
+    # message("dupe dupes, might take a little longer: TODO, faster options?")
     outdata <- aggregate(mydata, by = list(newgenes), FUN = median)
     rownames(outdata) <- outdata[, 1]
     outdata <- outdata[, -1, drop = FALSE]
     outdata <- as.data.frame(outdata)
   } else {
-    message("no dupes")
+    # message("no dupes")
     outdata <- as.data.frame(mydata)
   }
 
