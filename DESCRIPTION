@@ -52,6 +52,5 @@ biocViews:
     StatisticalMethod, ExperimentHubSoftware
 VignetteBuilder: knitr
 Encoding: UTF-8
-LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
