@@ -38,9 +38,9 @@ knitr::opts_chunk$set(
 
 # Introduction {#introduction}
 
-This vignette describes how to use the `r BiocStyle::Biocpkg("quantiseqr")` package for ... .
-
-TODO
+This vignette describes how to use the `r BiocStyle::Biocpkg("quantiseqr")` package for streamlining your workflow around the quanTIseq method.
+This was developed to perform the quantification of the Tumor Immune contexture from RNA-seq data. 
+The TIL10 signature, designed in this context, is used to dissect the contributions of ten immune cell types, and has bee carefully crafted from a collection of human RNA-seq samples. The TIL10 signature has been extensively validated using simulated, flow cytometry, and immunohistochemistry data.
 
 # Getting started {#gettingstarted}
 
