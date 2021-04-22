@@ -60,13 +60,15 @@ Once installed, the package can be loaded and attached to your current workspace
 library("quantiseqr")
 ```
 
-TODO
+In the following chunk, we load a set of additional packages that will be required throughout this vignette.
 
 ```{r loadotherpkgs, message=FALSE, warning=FALSE}
-library(dplyr)
-library(ggplot2)
-library(tidyr)
-library(tibble)
+library("dplyr")
+library("ggplot2")
+library("tidyr")
+library("tibble")
+library("GEOquery")
+library("reshape2")
 ```
 
 In order to use `r BiocStyle::Biocpkg("quantiseqr")` in your workflow, one fundamental input is required, to be provided to `run_quantiseqr()` as `expression_data`. 
@@ -156,7 +158,6 @@ Flow cytometry estimates for the according immune subpopulations are also availa
 # unzip GSE107572_tpm_PBMC_RNAseq.txt.gz
 # read.table("GSE107572_tpm_PBMC_RNAseq.txt", header = TRUE)
 
-library(GEOquery)
 
 # downloading the supplemental files on the fly
 tpminfo_GSE107572 <- getGEOSuppFiles("GSE107572",
@@ -319,9 +320,7 @@ colnames(colData(Song2017_MAPKi_treatment_tiquant))
 #                "SRP066571"),
 #   destfile = "SRP066571runtable.txt",quiet = TRUE)
 
-library(GEOquery)
-library(ggplot2)
-library(reshape2)
+
 
 ### Load file with estimated cell fractions by quanTIseq:
 cdata <- # read.csv(paste0(path, "/SRP066571_cell_fractions.txt"), header = TRUE, sep = "\t", stringsAsFactors = FALSE, row.names = 1)
@@ -364,8 +363,7 @@ class(cdata)
 
 cdata
 
-library(tidyr)
-cellfracs <- pivot_longer(cdata, cols = B.cells:Other)
+cellfracs <- tidyr::pivot_longer(cdata, cols = B.cells:Other)
 
 cellfracs$name <- factor(cellfracs$name,
   levels = c(
@@ -492,8 +490,7 @@ In the following chunk we perform some preprocessing steps to facilitate the com
 colnames(true_prop_1700mix)[1] <- "Sample"
 colnames(true_prop_1700mix)[12] <- "Other"
 
-library("tidyr")
-ti_long <- pivot_longer(ti_quant_sim1700mixtures,
+ti_long <- tidyr::pivot_longer(ti_quant_sim1700mixtures,
   cols = B.cells:Other,
   names_to = "cell_type",
   values_to = "value_quantiseq"
@@ -515,8 +512,6 @@ ti_tp_merged$cell_type.x <- factor(ti_tp_merged$cell_type.x, levels = colnames(t
 # true_prop_1700mix)
 
 # ti_merged_long <- pivot_longer(ti_quant_sim1700mixtures, cols = B.cells:Other)
-
-library("ggplot2")
 
 ggplot(
   ti_tp_merged,
