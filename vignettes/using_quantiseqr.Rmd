@@ -261,11 +261,10 @@ for (i in 1:(ncol(ti_PBMCs) + 1)) {
 
 ## Use case 3: Expression changes in Melanomas pre MAPKi treatment vs. on MAPKi treatment - GSE75299 (Song et al 2017)
 
-Lorem ipsum description of the use case...
+We use here the dataset provided in [@Song2017], where patients and cell lines, before and on treatment with MAPK inhibitors are quantified with RNA-seq.
 
-[@Song2017]
-
-TODO
+The original dataset is available via GEO at the accession GSE75299, but we will be loading a preprocessed version of it, containing the TPM expression values, made available via `ExperimentHub`.  
+This will enable us to performed a paired analysis on the same observation units (the patients) to appreciate differences in the cell proportions induced by the MAPKi treatment.
 
 ```{r}
 data_already_on_ehub <- FALSE
