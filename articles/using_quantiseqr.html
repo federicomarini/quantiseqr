@@ -79,7 +79,7 @@
                         <h4 data-toc-skip class="author">Federico Marini<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>
 </h4>
             <address class="author_afil">
-      Institute of Medical Biostatistics, Epidemiology and Informatics (<a href="https://www.unimedizin-mainz.de/imbei/imbei/welcome-page.html?L=1" class="external-link">IMBEI, Mainz</a>)<br><h4 data-toc-skip class="author">Francesce Finotello<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>
+      Institute of Medical Biostatistics, Epidemiology and Informatics (<a href="https://www.unimedizin-mainz.de/imbei/imbei/welcome-page.html?L=1" class="external-link">IMBEI, Mainz</a>)<br><h4 data-toc-skip class="author">Francesca Finotello<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>
 </h4>
             <address class="author_afil">
       Institute of Bioinformatics, Biocenter Medical University of Innsbruck (<a href="https://icbi.i-med.ac.at/index.html" class="external-link uri">https://icbi.i-med.ac.at/index.html</a>)<br><h4 data-toc-skip class="date">2021-04-23</h4>
@@ -248,7 +248,7 @@ Flow cytometry estimates for the according immune subpopulations are also availa
 <span class="op">)</span>
 <span class="va">tpm_location</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/rownames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">tpminfo_GSE107572</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>
 <span class="va">tpm_location</span>
-<span class="co">#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmp1EkpNU/GSE107572/GSE107572_tpm_PBMC_RNAseq.txt.gz"</span>
+<span class="co">#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpoBdI4M/GSE107572/GSE107572_tpm_PBMC_RNAseq.txt.gz"</span>
 <span class="va">tpmdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.table</a></span><span class="op">(</span><span class="va">tpm_location</span>, header <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">tpm_genesymbols</span> <span class="op">&lt;-</span> <span class="va">tpmdata</span><span class="op">$</span><span class="va">GENE</span>
@@ -337,7 +337,7 @@ This is adapted by <span class="citation">(Plattner, Finotello, and Rieder 2020)
 <span class="co">#&gt;   GSM2871607 = col_character()</span>
 <span class="co">#&gt; )</span>
 <span class="co">#&gt; File stored at:</span>
-<span class="co">#&gt; /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmp1EkpNU/GPL16791.soft</span>
+<span class="co">#&gt; /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpoBdI4M/GPL16791.soft</span>
 <span class="va">GEOinfo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/phenoData.html" class="external-link">pData</a></span><span class="op">(</span><span class="va">gds</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>
 <span class="va">FACSdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>
   B.cells <span class="op">=</span> <span class="va">GEOinfo</span><span class="op">$</span><span class="va">`b cells:ch1`</span>,
