@@ -4,7 +4,7 @@ title: >
 author:
 - name: Federico Marini^[marinif@uni-mainz.de]
   affiliation: Institute of Medical Biostatistics, Epidemiology and Informatics ([IMBEI, Mainz](https://www.unimedizin-mainz.de/imbei/imbei/welcome-page.html?L=1))
-- name: Francesce Finotello^[francesca.finotello@i-med.ac.at]
+- name: Francesca Finotello^[francesca.finotello@i-med.ac.at]
   affiliation: Institute of Bioinformatics, Biocenter Medical University of Innsbruck (https://icbi.i-med.ac.at/index.html)
 date: "`r Sys.Date()`"
 output: 
