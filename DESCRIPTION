@@ -21,7 +21,7 @@ Description: This package provides a streamlined workflow for the quanTIseq meth
     immunohistochemistry data.
 License: GPL-3
 Depends:
-    R (>= 4.0.0)
+    R (>= 4.1.0)
 Imports: 
     Biobase,
     limSolve,
