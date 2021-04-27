@@ -69,6 +69,7 @@ library("tidyr")
 library("tibble")
 library("GEOquery")
 library("reshape2")
+library("SummarizedExperiment")
 ```
 
 In order to use `r BiocStyle::Biocpkg("quantiseqr")` in your workflow, one fundamental input is required, to be provided to `run_quantiseqr()` as `expression_data`. 
@@ -183,7 +184,7 @@ ti_PBMCs <- quantiseqr::run_quantiseq(
 
 To obtain an overview on the cell type compositions, we can print out the result and plot that with the conveniente `quantiplot` wrapper:
 
-```{r ex2-ti-plot}
+```{r ex2-ti-plot, fig.width=7, fig.height=5}
 ti_PBMCs
 quantiplot(ti_PBMCs)
 ```
