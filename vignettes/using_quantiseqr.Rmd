@@ -287,73 +287,33 @@ se_Song2017_MAPKi_treatment <- quantiseqdata_eh[["EH6015"]]
 ####   scale_mRNA = TRUE
 #### )
 
-Song2017_MAPKi_treatment_tiquant <- quantiseqr::run_quantiseq(
-  expression_data = Song2017_MAPKi_treatment,
+se_Song2017_MAPKi_treatment_tiquant <- quantiseqr::run_quantiseq(
+  expression_data = se_Song2017_MAPKi_treatment,
   signature_matrix = "TIL10",
   is_arraydata = FALSE,
   is_tumordata = TRUE,
   scale_mRNA = TRUE
 )
 
-
-dim(Song2017_MAPKi_treatment_tiquant)
-colData(Song2017_MAPKi_treatment_tiquant)
-colnames(colData(Song2017_MAPKi_treatment_tiquant))
+dim(se_Song2017_MAPKi_treatment_tiquant)
+colData(se_Song2017_MAPKi_treatment_tiquant)
+colnames(colData(se_Song2017_MAPKi_treatment_tiquant))
 ```
 
+We first plot the cell fractions by sample, this time with a color palette resembling the one used in [@Plattner2020].
 
-```{r ex3-ti-plot, fig.height=7, fig.width=7, eval = data_already_on_ehub}
-# download.file(
-#   url = paste0("http://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?save=efetch&db=sra&rettype=runinfo&term=",
-#                "SRP066571"),
-#   destfile = "SRP066571runtable.txt",quiet = TRUE)
+```{r ex3-ti-plot, fig.height=5, fig.width=7}
+# to extract the TIL10-relevant parts:
+ti_quant <- quantiseqr::extract_ti_from_se(se_Song2017_MAPKi_treatment_tiquant)
 
+# to access the full column metadata:
+cdata <- colData(se_Song2017_MAPKi_treatment_tiquant)
 
+cellfracs_tidy <- tidyr::pivot_longer(
+  as.data.frame(cdata), 
+  cols = quanTIseq_TIL10_B.cells:quanTIseq_TIL10_Other)
 
-### Load file with estimated cell fractions by quanTIseq:
-cdata <- # read.csv(paste0(path, "/SRP066571_cell_fractions.txt"), header = TRUE, sep = "\t", stringsAsFactors = FALSE, row.names = 1)
-  ti_quant
-
-
-Song2017_MAPKi_treatment_tiquant
-
-ti_quant <- quantiseqr::extract_ti_from_se(Song2017_MAPKi_treatment_tiquant)
-
-
-
-## this will be adjusted!
-
-
-### Annotation
-gds <- getGEO("GSE75299")
-pdata <- pData(gds[[1]])
-
-sraInfo <- read.csv(
-  system.file("extdata", "SRP066571runtable.txt", package = "quantiseqr"),
-  header = TRUE, sep = ",", stringsAsFactors = FALSE
-)
-
-cdata <- cbind(cdata, sraInfo[, "SampleName"][match(rownames
-(cdata), sraInfo$Run)])
-
-colnames(cdata)[length(cdata)] <- "geo_accession"
-dim(pdata)
-pdata <- pdata[grep("^Pt", pdata[, 1]), ]
-
-pt_matchedinfo <- pdata[, "title"][match(cdata$geo_accession, pdata$geo_accession)]
-cdata$pt_info <- pt_matchedinfo
-# rownames(cdata) <- cdata[, length(cdata)]
-
-cdata$groups <- "POST"
-cdata$groups[grep("baseline", cdata$pt_info)] <- "PRE"
-
-class(cdata)
-
-cdata
-
-cellfracs <- tidyr::pivot_longer(cdata, cols = B.cells:Other)
-
-cellfracs$name <- factor(cellfracs$name,
+cellfracs_tidy$name <- factor(gsub("quanTIseq_TIL10_", "", cellfracs_tidy$name),
   levels = c(
     "B.cells", "Macrophages.M1", "Macrophages.M2",
     "Monocytes", "Neutrophils", "NK.cells",
@@ -362,30 +322,30 @@ cellfracs$name <- factor(cellfracs$name,
   )
 )
 
-ggplot(cellfracs, aes(fill = name, y = value, x = Sample)) +
+ggplot(cellfracs_tidy, aes(fill = name, y = value, x = sra_id)) +
   geom_bar(position = "fill", stat = "identity") +
   scale_fill_brewer(palette = "PuOr") +
-  # viridis::scale_fill_viridis(discrete = TRUE) +
   xlab("") +
   ylab("Cell Fractions") +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
+# we could have also used the compact wrapper
+## quantiplot(se_Song2017_MAPKi_treatment_tiquant)
+```
 
-prepost_data <- cdata[!is.na(cdata$pt_info), ]
-prepost_data <- prepost_data[-grep("Other", colnames(prepost_data))]
+Similarly, we proceed by splitting the data in pre- and post-treatment, first filtering out the cell line samples (keeping the ones where `is_patient` is `TRUE`), then manipulating to long format and explicitly building up the plot object.
 
-### Remove other cells and the last two columns
+```{r ex3-ti-plot2, fig.height=5, fig.width=7}
+prepost_data <- cdata[cdata$is_patient, ]
 
-# cdata <- cdata[, -grep("Other", colnames(cdata))]
+prepost_data_tidy <- tidyr::pivot_longer(
+  as.data.frame(prepost_data), 
+  cols = quanTIseq_TIL10_B.cells:quanTIseq_TIL10_Dendritic.cells)
 
-# cdata <- cdata[, -grep("geo_accession", colnames(cdata))]
+prepost_data_tidy$groups <- factor(prepost_data_tidy$mapki.treatment.ch1, levels = c("none", "on-treatment"))
 
-prepost_data <- pivot_longer(prepost_data, cols = B.cells:Dendritic.cells)
-
-prepost_data$groups <- factor(prepost_data$groups, levels = c("PRE", "POST"))
-
-prepost_data$name <- factor(prepost_data$name,
+prepost_data_tidy$name <- factor(gsub("quanTIseq_TIL10_", "", prepost_data_tidy$name),
   levels = c(
     "B.cells", "Macrophages.M1", "Macrophages.M2",
     "Monocytes", "Neutrophils", "NK.cells",
@@ -394,18 +354,12 @@ prepost_data$name <- factor(prepost_data$name,
   )
 )
 
-ggplot(prepost_data, aes(name, value, fill = groups)) +
+ggplot(prepost_data_tidy, aes(name, value, fill = groups)) +
   geom_boxplot() +
   xlab("") +
   ylab("cell fractions") +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
-# +
-#   stat_compare_means(aes(group = groups),
-#     symnum.args = list(cutpoints = c(0, 0.001, 0.01, 0.05, 0.1, 1), symbols = c("****", "***", "**", "*", "ns")),
-#     label = "p.signif",
-#     hide.ns = TRUE, cex = 10
-#   ) # default: Wilcoxon Test
 ```
 
 
