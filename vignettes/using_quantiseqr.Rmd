@@ -266,23 +266,14 @@ We use here the dataset provided in [@Song2017], where patients and cell lines, 
 The original dataset is available via GEO at the accession GSE75299, but we will be loading a preprocessed version of it, containing the TPM expression values, made available via `ExperimentHub`.  
 This will enable us to performed a paired analysis on the same observation units (the patients) to appreciate differences in the cell proportions induced by the MAPKi treatment.
 
-```{r}
-data_already_on_ehub <- FALSE
-```
+```{r ex3-retrieve-run}
 
-
-```{r ex3-retrieve-run, eval = data_already_on_ehub}
-### WAS...
-tpmdata <- read.table(
-  system.file("extdata", "tpm_GSE75299.txt.gz", package = "quantiseqr"),
-  header = TRUE
-)
-
-### WILL BE...
 library("ExperimentHub")
 eh <- ExperimentHub()
-quantiseqdata_eh <- query(eh, "quantiseqrData")
-se_Song2017_MAPKi_treatment <- quantiseqdata_eh[["EH123"]] # will be edited
+quantiseqdata_eh <- query(eh, "quantiseqr")
+quantiseqdata_eh
+
+se_Song2017_MAPKi_treatment <- quantiseqdata_eh[["EH6015"]]
 
 #### tpm_genesymbols <- tpmdata$GENE
 #### tpmdata <- as.matrix(tpmdata[, -1])
