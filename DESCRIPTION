@@ -38,6 +38,7 @@ Suggests:
     AnnotationDbi,
     BiocStyle,
     dplyr,
+    ExperimentHub,
     GEOquery,
     knitr,
     macrophage,
