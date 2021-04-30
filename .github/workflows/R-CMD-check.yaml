@@ -18,9 +18,9 @@ jobs:
       fail-fast: false
       matrix:
         config:
-        - { os: windows-latest, r: '4.1', bioc: 'devel'}
+        - { os: windows-latest, r: 'prerelease', bioc: 'devel'}
         # - { os: macOS-latest, r: 'prerelease', bioc: 'devel'}
-        - { os: macOS-latest, r: '4.1', bioc: 'devel', curlConfigPath: '/usr/bin/'}
+        - { os: macOS-latest, r: 'prerelease', bioc: 'devel', curlConfigPath: '/usr/bin/'}
         - { os: ubuntu-latest, r: 'release', image: 'bioconductor/bioconductor_docker:devel'}
 
     env:
@@ -34,7 +34,8 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Set up R
-        uses: r-lib/actions/setup-r@master
+        # uses: r-lib/actions/setup-r@master
+        uses: grimbough/actions-1/setup-r@master
         if: matrix.config.image == null
         with:
           r-version: ${{ matrix.config.r }}
