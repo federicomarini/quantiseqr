@@ -93,8 +93,9 @@ In case a `SummarizedExperiment` object is passed, the quantifications of the im
 
 `quantiseqr` ships with an example dataset with samples from four patients with metastatic melanoma published in [@EPIC2017]. 
 
-The dataset `quantiseqr::dataset_racle` contains
-- a gene expression matrix (`dataset_racle$expr_mat`) generated using bulk RNA-seq
+The dataset `quantiseqr::dataset_racle` contains:
+
+- a gene expression matrix (`dataset_racle$expr_mat`) generated using bulk RNA-seq;
 - 'gold standard' estimates of immune cell contents profiled with FACS (`dataset_racle$ref`). 
 
 We are going to use the bulk RNA-seq data to run the deconvolution methods and will compare the results to the FACS data in the following steps.
