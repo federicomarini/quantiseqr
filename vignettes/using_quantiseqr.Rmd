@@ -291,6 +291,7 @@ dim(se_Song2017_MAPKi_treatment_tiquant)
 colnames(colData(se_Song2017_MAPKi_treatment_tiquant))
 ```
 
+As visible from the output of the last chunk, the cell type composition is stored in the `colData` slot, if providing a `SummarizedExperiment` as input.  
 We first plot the cell fractions by sample, this time with a color palette resembling the one used in [@Plattner2020].
 
 ```{r ex3-ti-plot, fig.height=5, fig.width=7}
