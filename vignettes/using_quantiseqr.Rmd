@@ -271,7 +271,6 @@ The original dataset is available via GEO at the accession GSE75299, but we will
 This will enable us to performed a paired analysis on the same observation units (the patients) to appreciate differences in the cell proportions induced by the MAPKi treatment.
 
 ```{r ex3-retrieve-run}
-
 library("ExperimentHub")
 eh <- ExperimentHub()
 quantiseqdata_eh <- query(eh, "quantiseqr")
