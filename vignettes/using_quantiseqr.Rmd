@@ -186,7 +186,9 @@ ti_PBMCs <- quantiseqr::run_quantiseq(
 To obtain an overview on the cell type compositions, we can print out the result and plot that with the convenient `quantiplot` wrapper:
 
 ```{r ex2-ti-plot, fig.width=7, fig.height=5}
-ti_PBMCs
+# printing out the percentages for the first 4 samples
+signif(ti_PBMCs[1:4, 2:12], digits = 3)
+# getting a complete visual overview
 quantiplot(ti_PBMCs)
 ```
 
