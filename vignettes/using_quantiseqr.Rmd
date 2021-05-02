@@ -183,7 +183,7 @@ ti_PBMCs <- quantiseqr::run_quantiseq(
 )
 ```
 
-To obtain an overview on the cell type compositions, we can print out the result and plot that with the conveniente `quantiplot` wrapper:
+To obtain an overview on the cell type compositions, we can print out the result and plot that with the convenient `quantiplot` wrapper:
 
 ```{r ex2-ti-plot, fig.width=7, fig.height=5}
 ti_PBMCs
