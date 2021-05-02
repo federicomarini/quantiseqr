@@ -278,18 +278,6 @@ quantiseqdata_eh
 
 se_Song2017_MAPKi_treatment <- quantiseqdata_eh[["EH6015"]]
 
-#### tpm_genesymbols <- tpmdata$GENE
-#### tpmdata <- as.matrix(tpmdata[, -1])
-#### rownames(tpmdata) <- tpm_genesymbols
-
-#### ti_quant <- quantiseqr::run_quantiseq(
-####   expression_data = se_Song2017_MAPKi_treatment,
-####   signature_matrix = "TIL10",
-####   is_arraydata = FALSE,
-####   is_tumordata = TRUE,
-####   scale_mRNA = TRUE
-#### )
-
 se_Song2017_MAPKi_treatment_tiquant <- quantiseqr::run_quantiseq(
   expression_data = se_Song2017_MAPKi_treatment,
   signature_matrix = "TIL10",
@@ -299,7 +287,7 @@ se_Song2017_MAPKi_treatment_tiquant <- quantiseqr::run_quantiseq(
 )
 
 dim(se_Song2017_MAPKi_treatment_tiquant)
-colData(se_Song2017_MAPKi_treatment_tiquant)
+# colData(se_Song2017_MAPKi_treatment_tiquant)
 colnames(colData(se_Song2017_MAPKi_treatment_tiquant))
 ```
 
