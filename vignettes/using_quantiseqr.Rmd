@@ -481,13 +481,6 @@ ggplot(
     col = "Cell type"
   ) + 
   theme_bw()
-
-# for (i in colnames(ti_quant_sim1700mixtures)) {
-#   message(i)
-#   if(i!="Sample")
-#     plot(true_prop_1700mix[[i]], ti_quant_sim1700mixtures[[i]], main = i)
-# }
-# plot( true_prop_1700mix$Tumor, ti_quant_sim1700mixtures$Other, main = "other")
 ```
 
 This figure aims to replicate with live code the one available as [Supplementary Figure 1](https://static-content.springer.com/esm/art%3A10.1186%2Fs13073-019-0638-6/MediaObjects/13073_2019_638_MOESM2_ESM.pdf).
