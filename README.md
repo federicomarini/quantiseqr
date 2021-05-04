@@ -6,7 +6,7 @@
 
 The goal of `quantiseqr` is to streamline the quantification of tumor immune contexture from RNA-seq data using quanTIseq. 
 quanTIseq is deconvolution method based on an RNA-seq-derived signature matrix (i.e., *TIL10*) designed and validated to quantify 10 different immune cell types.
-Please see [(Finotello et al., Genome Medicine 2019)](https://doi.org/10.1186/s13073-019-0638-6) for additional details on quanTIseq.
+Please see [(Finotello F et al., Genome Medicine 2019)](https://doi.org/10.1186/s13073-019-0638-6) for additional details on quanTIseq.
 
 ## Installation
 
