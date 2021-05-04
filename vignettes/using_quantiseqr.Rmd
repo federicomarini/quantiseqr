@@ -474,6 +474,12 @@ ggplot(
 ) +
   facet_wrap(~cell_type.x, scales = "free") +
   geom_point(alpha = 0.5) +
+  geom_abline(slope = 1, col = "lightgrey") + 
+  labs(
+    x = "True fractions",
+    y = "quanTIseq cell fractions",
+    col = "Cell type"
+  ) + 
   theme_bw()
 
 # for (i in colnames(ti_quant_sim1700mixtures)) {
