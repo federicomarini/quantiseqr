@@ -39,7 +39,7 @@ knitr::opts_chunk$set(
 # Introduction {#introduction}
 
 This vignette describes how to use the `r BiocStyle::Biocpkg("quantiseqr")` package for streamlining your workflow around the quanTIseq method. 
-quanTIseq is a trascriptomics deconvolution method that uses an RNA-seq-derived signature matrix (called *TIL10*) for quantifying 10 different immune cell types in bulk tumor or blod transcriptomics data. quanTIseq has been extensively validated using real and simulated RNA-seq data, as well as flow cytometry and immunohistochemistry data.
+quanTIseq is a transcriptomics deconvolution method that uses an RNA-seq-derived signature matrix (called *TIL10*) for quantifying 10 different immune cell types in bulk tumor or blood transcriptomics data. quanTIseq has been extensively validated using real and simulated RNA-seq data, as well as flow cytometry and immunohistochemistry data.
 For detailed information about quanTIseq methodology and its embedded TIL10 signature, please refer to its original publication [@quantiseq2019].
 
 # Getting started {#gettingstarted}
@@ -96,7 +96,7 @@ In case a `SummarizedExperiment` object is passed, the quantifications of the im
 The dataset `quantiseqr::dataset_racle` contains:
 
 - a gene expression matrix (`dataset_racle$expr_mat`) generated using bulk RNA-seq;
-- 'gold standard' estimates of immune cell fractions qauntified with flow cytometry (`dataset_racle$ref`). 
+- 'gold standard' estimates of immune cell fractions quantified with flow cytometry (`dataset_racle$ref`). 
 
 We are going to use the bulk RNA-seq data to run the deconvolution methods and will compare the results to the FACS data in the following steps.
 
@@ -367,7 +367,7 @@ Please refer to https://icbi.i-med.ac.at/software/quantiseq/doc/ and to [@quanti
 
 This dataset is coupled with a table where the original information on the used true fractions is available, and can be used to benchmark the performance of the deconvolution algorithm.
 
-In this case, we set the `scale_mRNA` parameter to `FALSE` because the samples were simulated without modelling any cell-type-specific mRNA bias, so quanTIseq does not have to coorect for it. Instead, when analyzing real RNA-seq data, this parameter should always set to `TRUE` (default) to avoid that some cell types with higher (or lower) total mRNA abundance are systematically under (or over) estimated via deconvolution.
+In this case, we set the `scale_mRNA` parameter to `FALSE` because the samples were simulated without modelling any cell-type-specific mRNA bias, so quanTIseq does not have to correct for it. Instead, when analyzing real RNA-seq data, this parameter should always set to `TRUE` (default) to avoid that some cell types with higher (or lower) total mRNA abundance are systematically under (or over) estimated via deconvolution.
 
 ```{r ex4-setup, eval = FALSE}
 # downloading first the file from https://icbi.i-med.ac.at/software/quantiseq/doc/downloads/quanTIseq_SimRNAseq_mixture.txt
