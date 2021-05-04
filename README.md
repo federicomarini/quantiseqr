@@ -5,7 +5,7 @@
 <!-- badges: end -->
 
 The goal of `quantiseqr` is to streamline the quantification of tumor immune contexture from RNA-seq data.
-It does so using the TIL10 siganture, designed and validated to identify 10 different cell types.
+It does so using the TIL10 signature, designed and validated to identify 10 different cell types.
 
 ## Installation
 
