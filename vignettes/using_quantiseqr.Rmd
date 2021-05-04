@@ -250,12 +250,12 @@ for (i in 1:(ncol(ti_PBMCs) + 1)) {
   xmax <- max(round(max(x), digits = 2), 0.01)
   plot(x, y,
     main = gsub("(\\.)", " ", ccell), pch = 19,
-    xlab = "Flow cytometry cell fractions",
+    xlab = "Flow cytometry fractions",
     ylab = "quanTIseq cell fractions",
     col = col, cex.main = 1.3, ylim = c(0, ymax), xlim = c(0, xmax), las = 1
   )
-  # abline(regl)
-  abline(a = 0, b = 1, lty = "dashed")
+  abline(regl)
+  abline(a = 0, b = 1, lty = "dashed", col = "lightgrey")
   text(0, ymax * 0.98, cex = 1, paste0("r = ", R, ", p = ", p), pos = 4)
   text(0, ymax * 0.9, cex = 1, paste0("RMSE = ", RMSE), pos = 4)
 
