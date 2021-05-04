@@ -38,9 +38,9 @@ knitr::opts_chunk$set(
 
 # Introduction {#introduction}
 
-This vignette describes how to use the `r BiocStyle::Biocpkg("quantiseqr")` package for streamlining your workflow around the quanTIseq method.
-This was developed to perform the quantification of the Tumor Immune contexture from RNA-seq data. 
-The TIL10 signature, designed in this context, is used to dissect the contributions of ten immune cell types, and has bee carefully crafted from a collection of human RNA-seq samples. The TIL10 signature has been extensively validated using simulated, flow cytometry, and immunohistochemistry data.
+This vignette describes how to use the `r BiocStyle::Biocpkg("quantiseqr")` package for streamlining your workflow around the quanTIseq method. 
+quanTIseq is a trascriptomics deconvolution method that uses an RNA-seq-derived signature matrix (called *TIL10*) for quantifying 10 different immune cell types in bulk tumor or blod transcriptomics data. quanTIseq has been extensively validated using real and simulated RNA-seq data, as well as flow cytometry and immunohistochemistry data.
+For detailed information about quanTIseq methodology and its embedded TIL10 signature, please refer to its original publication [@quantiseq2019].
 
 # Getting started {#gettingstarted}
 
@@ -73,7 +73,7 @@ library("SummarizedExperiment")
 ```
 
 In order to use `r BiocStyle::Biocpkg("quantiseqr")` in your workflow, one fundamental input is required, to be provided to `run_quantiseqr()` as `expression_data`. 
-This is an object containing the TPM expression values for the measured features, and can be provided in different ways:
+This is an object containing the gene TPM expression values measured in the sample under investigation, and can be provided in different ways:
 
 - as a simple gene expression matrix, or a data frame (with HGNC gene symbols as row names and sample identifiers as column names)
 - as an `ExpressionSet` object (from the `r BiocStyle::Biocpkg("Biobase")` package), where the HGNC gene symbols are provided in a column of the `fData` slot
@@ -87,7 +87,7 @@ These differ with respect to their size and samples of origin, and we illustrate
 
 The fundamental input for `quantiseqr` is a gene expression matrix-like object, with features on the rows, and samples as the columns.
 `quantiseqr` can also directly handle `SummarizedExperiment` objects, as well as `ExpressionSet` objects, commonly used for microarray data.
-In case a `SummarizedExperiment` object is passed, the quantifications of the immune contexture can be directly returned extending the `colData` of the provided input.
+In case a `SummarizedExperiment` object is passed, the quantifications of the immune cell composition can be directly returned extending the `colData` of the provided input.
 
 ## Use case 1: Metastatic melanoma patients (Racle et al 2017)
 
@@ -96,7 +96,7 @@ In case a `SummarizedExperiment` object is passed, the quantifications of the im
 The dataset `quantiseqr::dataset_racle` contains:
 
 - a gene expression matrix (`dataset_racle$expr_mat`) generated using bulk RNA-seq;
-- 'gold standard' estimates of immune cell contents profiled with FACS (`dataset_racle$ref`). 
+- 'gold standard' estimates of immune cell fractions qauntified with flow cytometry (`dataset_racle$ref`). 
 
 We are going to use the bulk RNA-seq data to run the deconvolution methods and will compare the results to the FACS data in the following steps.
 
@@ -120,13 +120,13 @@ ti_racle <- quantiseqr::run_quantiseq(
 )
 ```
 
-The call above means that we are passing the expression data as simple matrix (in `dataset_racle$expr_mat`) and quantifying the tumor immune contexture using the (default) TIL10 signature.
-This is a dataset stemming from tumor RNA-seq samples (therefore the values specified for `is_tumordata` and `is_arraydata`). 
-With `scale_mRNA` set to `TRUE`, we are performing the correction of cell-type-specific mRNA content bias.
+The call above means that we are passing the expression data as simple matrix (in `dataset_racle$expr_mat`) and quantifying the tumor immune cell composition using the (default) TIL10 signature.
+This is a dataset stemming from tumor RNA-seq samples. Therefore `is_tumordata` is set to `TRUE`, whereas `is_arraydata` is set to `FALSE` (default). 
+With `scale_mRNA` set to `TRUE` (default), we are performing the correction of cell-type-specific mRNA content bias.
 
-The output of `quantiseqr` can be further processed and represented in a tabular or visual manner to facilitate the comparisons across samples/conditions.
+The output of `quantiseqr` can be further processed and visualized in a tabular or graphical manner to facilitate the comparisons across samples/conditions.
 
-The scores returned by `quantiseqr` can be interpreted as a cell-type fraction, making it possible to represent them as a stacked bar chart.
+The estimates returned by `quantiseqr` can be interpreted as a cell-type fractions that can be compared between and within samples, making it possible to represent them as a stacked bar chart.
 
 ```{r ex1-ti-plot, fig.height=4, fig.width=8, fig.cap="TODO-figurecaption"}
 quantiplot(ti_racle)
@@ -135,8 +135,8 @@ quantiplot(ti_racle)
 We observe that
 
 * two samples (LAU355, LAU1314) appear to contain a large amount of CD4+ T cells and B cells
-* the other two samples (LAU1255, LAU125) appear to contain a large amount of "uncharacterized cells"
-* one sample (LAU125) appears to contain no CD8+ T cells, often associated with bad prognosis. 
+* the other two samples (LAU1255, LAU125) appear to contain a large amount of "uncharacterized cells", likely quantifying tumor cell content 
+* one sample (LAU125) appears to contain no CD8+ T cells. 
 
 Estimating the amount of "uncharacterized cells" is a novel feature introduced by quanTIseq and EPIC [@quantiseq2019, @EPIC2017]. 
 This estimate often corresponds to the fraction of tumor cells in the sample. 
@@ -150,7 +150,7 @@ Here we show how to use `quantiseqr` to deconvolute blood-derived immune-cell mi
 This is also presented as an example in [@Plattner2020], please refer to this later publication for additional details on the processing steps.
 
 The example dataset is available online at the Gene Expression Omnibus (accession number GSE107572), and is provided as preprocessed RNA-seq data from blood-derived immune-cell mixtures from nine healthy donors.   
-Flow cytometry estimates for the according immune subpopulations are also available
+Flow cytometry estimates for the according immune subpopulations are also available.
 
 ```{r ex2-pbmcs-retrieve}
 ## While downloading by hand is possible, it is recommended to use GEOquery
@@ -183,7 +183,7 @@ ti_PBMCs <- quantiseqr::run_quantiseq(
 )
 ```
 
-To obtain an overview on the cell type compositions, we can print out the result and plot that with the convenient `quantiplot` wrapper:
+To obtain an overview on immune cell type compositions, we can print out the results and plot them with the convenient `quantiplot` wrapper:
 
 ```{r ex2-ti-plot, fig.width=7, fig.height=5, fig.cap="TODO-figurecaption"}
 # printing out the percentages for the first 4 samples
@@ -264,12 +264,12 @@ for (i in 1:(ncol(ti_PBMCs) + 1)) {
 ```
 
 
-## Use case 3: Expression changes in Melanomas pre MAPKi treatment vs. on MAPKi treatment - GSE75299 (Song et al 2017)
+## Use case 3: Expression changes in melanoma patients on vs. pre kinase-inhibitor treatment - GSE75299 (Song et al 2017)
 
-We use here the dataset provided in [@Song2017], where patients and cell lines, before and on treatment with MAPK inhibitors are quantified with RNA-seq.
+We use here the dataset provided in [@Song2017], where the transcriptomes of cancer cell lines and patients' tumors were characterized with RNA-seq before and during treatment with kinase inhibitors.
 
-The original dataset is available via GEO at the accession GSE75299, but we will be loading a preprocessed version of it, containing the TPM expression values, made available via `ExperimentHub`.  
-This will enable us to performed a paired analysis on the same observation units (the patients) to appreciate differences in the cell proportions induced by the MAPKi treatment.
+The original dataset is available via GEO at the accession GSE75299, but we will be loading a preprocessed version of it, containing the precomputed TPM expression values, made available via `ExperimentHub`.  
+This will enable us to performed a paired analysis on the same observation units (the patients) to appreciate differences in the cell proportions induced by the kinase-inhibitor treatment.
 
 ```{r ex3-retrieve-run}
 library("ExperimentHub")
@@ -358,7 +358,7 @@ ggplot(prepost_data_tidy, aes(name, value, fill = groups)) +
 
 ## Use case 4: Running on simulated data for validation
 
-We will now display the performance of `quantiseqr` on a dataset for which the ground truth parameters are known.  
+We will now display the performance of `quantiseqr` on a dataset for which the ground truth mRNA fractions are known.  
 The large simulated dataset represents the RNA-seq expression data from breast tumors with different immune-infiltration scenarios, consisting of a total of 1700 samples, that were generated by mixing RNA-seq reads from purified immune cell types and from a MCF7 breast tumor cell line.
 
 These samples were generated considering different immune relative cell proportions, tumor purity values (0:10:100%), and at different sequencing depths (1, 2, 5, 10, 20, 50, and 100 million read pairs).
@@ -366,6 +366,8 @@ These samples were generated considering different immune relative cell proporti
 Please refer to https://icbi.i-med.ac.at/software/quantiseq/doc/ and to [@quantiseq2019] for more details.
 
 This dataset is coupled with a table where the original information on the used true fractions is available, and can be used to benchmark the performance of the deconvolution algorithm.
+
+In this case, we set the `scale_mRNA` parameter to `FALSE` because the samples were simulated without modelling any cell-type-specific mRNA bias, so quanTIseq does not have to coorect for it. Instead, when analyzing real RNA-seq data, this parameter should always set to `TRUE` (default) to avoid that some cell types with higher (or lower) total mRNA abundance are systematically under (or over) estimated via deconvolution.
 
 ```{r ex4-setup, eval = FALSE}
 # downloading first the file from https://icbi.i-med.ac.at/software/quantiseq/doc/downloads/quanTIseq_SimRNAseq_mixture.txt
@@ -494,7 +496,7 @@ If using a `SummarizedExperiment` object coming from Salmon's quantifications, t
 
 **Q: Can I use `quantiseqr` with samples from model systems, i.e. not from human?**
 
-A: You can exploit orthology-based conversions among gene identifiers to use `quantiseqr` e.g. in mouse scenarios.
+A: You might exploit orthology-based conversions among gene identifiers to use `quantiseqr` e.g. in mouse scenarios.
 Keep in mind, though, that the TIL10 signature has been explicitly designed and validated on human samples.
 
 **Q: My expression data is encoding the features in a different identifier than Gene Symbols. Can I use `quantiseqr` for that?**
@@ -507,7 +509,7 @@ A: You can check out the works of [@sturm2019, @Sturm2020] to find a collection 
 
 **Q: Can I provide my own signature like the `TIL10` and use that in `quantiseqr`?**
 
-A: Yes, we recommend you to read up on the methods used in [@quantiseq2019] to see what processing steps have been applied, and additionally have a look at the formatting requirements by inspecting the `TIL10_*` files provided in the `extdata` folder of the installed package. 
+A: No, for now it is only possible to use the TIL10 signature matrix. 
 
 # Session Info {- .smaller}
 
