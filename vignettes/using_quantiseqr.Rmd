@@ -459,7 +459,12 @@ ggplot(
   )
 ) +
   geom_point(alpha = 0.5) +
-  theme_bw()
+  theme_bw() + 
+  labs(
+    x = "True fractions",
+    y = "quanTIseq cell fractions",
+    col = "Cell type"
+  )
 ```
 
 
