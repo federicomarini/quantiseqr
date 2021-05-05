@@ -57,6 +57,7 @@ The TIL10 signature can quantify cell fractions for
 
 For detailed information about quanTIseq methodology and its embedded TIL10 signature, please refer to its original publication [@quantiseq2019], or consult the documentation for the quanTIseq pipeline (https://icbi.i-med.ac.at/software/quantiseq/doc/).
 
+`quantiseqr` returns a cell type by sample quantification of these cell types, either as a simple data frame object, or alternatively, when providing an object derived from the `SummarizedExperiment` class, adds this information in the `colData` slot, where it can be further accessed.
 
 # Getting started {#gettingstarted}
 
