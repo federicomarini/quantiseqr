@@ -44,16 +44,16 @@ quanTIseq is a transcriptomics deconvolution method that uses an RNA-seq-derived
 The TIL10 signature can quantify cell fractions for
 
 - B cells
-- M1 Macrophages (classically activated, pro-inflammatory type)
-- M2 Macrophages (alternatively activated, with anti-inflammatory properties)
+- Classically-activated (M1) macrophages
+- Alternatively-activated (M2) macrophages
 - Monocytes 
 - Neutrophils
-- NK cells (natural killer cells)
-- CD4+ T cells (non-regulatory "helper" T cells)
-- CD8+ T cells ("killer" T cells)
-- Tregs (regulatory T cells)
-- Dendritic cells
-- Other (uncharacterized cells)
+- Natural killer (NK) cells
+- Non-regulatory (helper) CD4+ T cells
+- Cytotoxic CD8+ T cells
+- Regulatory CD4+ T (Treg) cells
+- Myeloid dendritic cells
+- Other uncharacterized cells.
 
 For detailed information about quanTIseq methodology and its embedded TIL10 signature, please refer to its original publication [@quantiseq2019], or consult the documentation for the quanTIseq pipeline (https://icbi.i-med.ac.at/software/quantiseq/doc/).
 
