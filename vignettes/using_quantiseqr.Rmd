@@ -38,9 +38,26 @@ knitr::opts_chunk$set(
 
 # Introduction {#introduction}
 
-This vignette describes how to use the `r BiocStyle::Biocpkg("quantiseqr")` package for streamlining your workflow around the quanTIseq method.
-This was developed to perform the quantification of the Tumor Immune contexture from RNA-seq data. 
-The TIL10 signature, designed in this context, is used to dissect the contributions of ten immune cell types, and has bee carefully crafted from a collection of human RNA-seq samples. The TIL10 signature has been extensively validated using simulated, flow cytometry, and immunohistochemistry data.
+This vignette describes how to use the `r BiocStyle::Biocpkg("quantiseqr")` package for streamlining your workflow around the quanTIseq method. 
+quanTIseq is a transcriptomics deconvolution method that uses an RNA-seq-derived signature matrix (called *TIL10*) for quantifying 10 different immune cell types in bulk tumor or blood transcriptomics data. quanTIseq has been extensively validated using real and simulated RNA-seq data, as well as flow cytometry and immunohistochemistry data.
+
+The TIL10 signature can quantify cell fractions for
+
+- B cells
+- Classically-activated (M1) macrophages
+- Alternatively-activated (M2) macrophages
+- Monocytes 
+- Neutrophils
+- Natural killer (NK) cells
+- Non-regulatory (helper) CD4+ T cells
+- Cytotoxic CD8+ T cells
+- Regulatory CD4+ T (Treg) cells
+- Myeloid dendritic cells
+- Other uncharacterized cells.
+
+For detailed information about quanTIseq methodology and its embedded TIL10 signature, please refer to its original publication [@quantiseq2019], or consult the documentation for the quanTIseq pipeline (https://icbi.i-med.ac.at/software/quantiseq/doc/).
+
+`quantiseqr` returns a cell type by sample quantification of these cell types, either as a simple data frame object, or alternatively, when providing an object derived from the `SummarizedExperiment` class, adds this information in the `colData` slot, where it can be further accessed.
 
 # Getting started {#gettingstarted}
 
@@ -73,7 +90,7 @@ library("SummarizedExperiment")
 ```
 
 In order to use `r BiocStyle::Biocpkg("quantiseqr")` in your workflow, one fundamental input is required, to be provided to `run_quantiseqr()` as `expression_data`. 
-This is an object containing the TPM expression values for the measured features, and can be provided in different ways:
+This is an object containing the gene TPM expression values measured in the sample under investigation, and can be provided in different ways:
 
 - as a simple gene expression matrix, or a data frame (with HGNC gene symbols as row names and sample identifiers as column names)
 - as an `ExpressionSet` object (from the `r BiocStyle::Biocpkg("Biobase")` package), where the HGNC gene symbols are provided in a column of the `fData` slot
@@ -87,15 +104,16 @@ These differ with respect to their size and samples of origin, and we illustrate
 
 The fundamental input for `quantiseqr` is a gene expression matrix-like object, with features on the rows, and samples as the columns.
 `quantiseqr` can also directly handle `SummarizedExperiment` objects, as well as `ExpressionSet` objects, commonly used for microarray data.
-In case a `SummarizedExperiment` object is passed, the quantifications of the immune contexture can be directly returned extending the `colData` of the provided input.
+In case a `SummarizedExperiment` object is passed, the quantifications of the immune cell composition can be directly returned extending the `colData` of the provided input.
 
 ## Use case 1: Metastatic melanoma patients (Racle et al 2017)
 
 `quantiseqr` ships with an example dataset with samples from four patients with metastatic melanoma published in [@EPIC2017]. 
 
-The dataset `quantiseqr::dataset_racle` contains
-- a gene expression matrix (`dataset_racle$expr_mat`) generated using bulk RNA-seq
-- 'gold standard' estimates of immune cell contents profiled with FACS (`dataset_racle$ref`). 
+The dataset `quantiseqr::dataset_racle` contains:
+
+- a gene expression matrix (`dataset_racle$expr_mat`) generated using bulk RNA-seq;
+- 'gold standard' estimates of immune cell fractions quantified with flow cytometry (`dataset_racle$ref`). 
 
 We are going to use the bulk RNA-seq data to run the deconvolution methods and will compare the results to the FACS data in the following steps.
 
@@ -119,23 +137,23 @@ ti_racle <- quantiseqr::run_quantiseq(
 )
 ```
 
-The call above means that we are passing the expression data as simple matrix (in `dataset_racle$expr_mat`) and quantifying the tumor immune contexture using the (default) TIL10 signature.
-This is a dataset stemming from tumor RNA-seq samples (therefore the values specified for `is_tumordata` and `is_arraydata`). 
-With `scale_mRNA` set to `TRUE`, we are performing the correction of cell-type-specific mRNA content bias.
+The call above means that we are passing the expression data as simple matrix (in `dataset_racle$expr_mat`) and quantifying the tumor immune cell composition using the (default) TIL10 signature.
+This is a dataset stemming from tumor RNA-seq samples. Therefore `is_tumordata` is set to `TRUE`, whereas `is_arraydata` is set to `FALSE` (default). 
+With `scale_mRNA` set to `TRUE` (default), we are performing the correction of cell-type-specific mRNA content bias.
 
-The output of `quantiseqr` can be further processed and represented in a tabular or visual manner to facilitate the comparisons across samples/conditions.
+The output of `quantiseqr` can be further processed and visualized in a tabular or graphical manner to facilitate the comparisons across samples/conditions.
 
-The scores returned by `quantiseqr` can be interpreted as a cell-type fraction, making it possible to represent them as a stacked bar chart.
+The estimates returned by `quantiseqr` can be interpreted as a cell-type fractions that can be compared between and within samples, making it possible to represent them as a stacked bar chart.
 
-```{r ex1-ti-plot, fig.height=4, fig.width=8}
+```{r ex1-ti-plot, fig.height=4, fig.width=8, fig.cap="Stacked barplot of quanTIseq cell fractions computed on the Racle dataset (patients with metastatic melanoma)."}
 quantiplot(ti_racle)
 ```
 
 We observe that
 
 * two samples (LAU355, LAU1314) appear to contain a large amount of CD4+ T cells and B cells
-* the other two samples (LAU1255, LAU125) appear to contain a large amount of "uncharacterized cells"
-* one sample (LAU125) appears to contain no CD8+ T cells, often associated with bad prognosis. 
+* the other two samples (LAU1255, LAU125) appear to contain a large amount of "uncharacterized cells", likely quantifying tumor cell content 
+* one sample (LAU125) appears to contain no CD8+ T cells. 
 
 Estimating the amount of "uncharacterized cells" is a novel feature introduced by quanTIseq and EPIC [@quantiseq2019, @EPIC2017]. 
 This estimate often corresponds to the fraction of tumor cells in the sample. 
@@ -149,7 +167,7 @@ Here we show how to use `quantiseqr` to deconvolute blood-derived immune-cell mi
 This is also presented as an example in [@Plattner2020], please refer to this later publication for additional details on the processing steps.
 
 The example dataset is available online at the Gene Expression Omnibus (accession number GSE107572), and is provided as preprocessed RNA-seq data from blood-derived immune-cell mixtures from nine healthy donors.   
-Flow cytometry estimates for the according immune subpopulations are also available
+Flow cytometry estimates for the according immune subpopulations are also available.
 
 ```{r ex2-pbmcs-retrieve}
 ## While downloading by hand is possible, it is recommended to use GEOquery
@@ -182,10 +200,12 @@ ti_PBMCs <- quantiseqr::run_quantiseq(
 )
 ```
 
-To obtain an overview on the cell type compositions, we can print out the result and plot that with the conveniente `quantiplot` wrapper:
+To obtain an overview on immune cell type compositions, we can print out the results and plot them with the convenient `quantiplot` wrapper:
 
-```{r ex2-ti-plot, fig.width=7, fig.height=5}
-ti_PBMCs
+```{r ex2-ti-plot, fig.width=7, fig.height=5, fig.cap="Stacked barplot of quanTIseq cell fractions computed on the blood derived PBMCs dataset."}
+# printing out the percentages for the first 4 samples
+signif(ti_PBMCs[1:4, 2:12], digits = 3)
+# getting a complete visual overview
 quantiplot(ti_PBMCs)
 ```
 
@@ -193,7 +213,9 @@ Notably, for these samples, corresponding quantifications of the true cell fract
 In the chunk that follows, we retrieve that information and generate scatter plots to display how the estimated values from `quantiseqr` correlate with the ground truth values.  
 This is adapted by [@Plattner2020] to match the output format generated by `quantiseqr` - and can be used as a template in case other types of matched ground-truth information are available.
 
-```{r ex2-comparison, fig.width=9, fig.height=9}
+We start by retrieving the information from the GSE107572 entry via `GEOquery` (this will be cached locally after the first execution), and process the information matching it to the quantification of cell fractions we just obtained as `ti_PBMCs`.
+
+```{r ex2-comparison}
 GEOid <- "GSE107572"
 gds <- getGEO(GEOid)
 GEOinfo <- pData(gds[[1]])
@@ -218,7 +240,11 @@ csbjs <- intersect(rownames(ti_PBMCs), rownames(FACSdata))
 
 ti_PBMCs <- ti_PBMCs[csbjs, ccells]
 FACSdata <- FACSdata[csbjs, ccells]
+```
 
+Then we proceed to plot the agreement between the computed cell fractions and the estimated values extracted from flow cytometry experiments.
+
+```{r ex2-comparison-plot, fig.width=9, fig.height=9, fig.cap="Scatterplot of quanTIseq cell fractions for the PBMCs dataset, plotted against the fractions estimated from flow cytometry. Each subplot display a specific cell type, and all cells are summarized in the lower right corner. The dashed grey line indicates the diagonal, corresponding to the identity line, while the black solid line is the linear model fit. The text annotation reports the r correlation coefficient, its significance, and the root mean squared error."}
 palette <- c("#451C87", "#B3B300", "#CE0648", "#2363C5", "#AB4CA1", "#0A839B", "#DD8C24", "#ED6D42")
 
 names(palette) <- c("T.cells.CD4", "Dendritic.cells", "Monocytes", "T.cells.CD8", "Tregs", "B.cells", "NK.cells", "Neutrophils")
@@ -247,11 +273,12 @@ for (i in 1:(ncol(ti_PBMCs) + 1)) {
   xmax <- max(round(max(x), digits = 2), 0.01)
   plot(x, y,
     main = gsub("(\\.)", " ", ccell), pch = 19,
-    xlab = "Flow cytometry cell fractions",
+    xlab = "Flow cytometry fractions",
     ylab = "quanTIseq cell fractions",
     col = col, cex.main = 1.3, ylim = c(0, ymax), xlim = c(0, xmax), las = 1
   )
   abline(regl)
+  abline(a = 0, b = 1, lty = "dashed", col = "lightgrey")
   text(0, ymax * 0.98, cex = 1, paste0("r = ", R, ", p = ", p), pos = 4)
   text(0, ymax * 0.9, cex = 1, paste0("RMSE = ", RMSE), pos = 4)
 
@@ -260,33 +287,20 @@ for (i in 1:(ncol(ti_PBMCs) + 1)) {
 ```
 
 
-## Use case 3: Expression changes in Melanomas pre MAPKi treatment vs. on MAPKi treatment - GSE75299 (Song et al 2017)
+## Use case 3: Expression changes in melanoma patients on vs. pre kinase-inhibitor treatment - GSE75299 (Song et al 2017)
 
-We use here the dataset provided in [@Song2017], where patients and cell lines, before and on treatment with MAPK inhibitors are quantified with RNA-seq.
+We use here the dataset provided in [@Song2017], where the transcriptomes of cancer cell lines and patients' tumors were characterized with RNA-seq before and during treatment with kinase inhibitors.
 
-The original dataset is available via GEO at the accession GSE75299, but we will be loading a preprocessed version of it, containing the TPM expression values, made available via `ExperimentHub`.  
-This will enable us to performed a paired analysis on the same observation units (the patients) to appreciate differences in the cell proportions induced by the MAPKi treatment.
+The original dataset is available via GEO at the accession GSE75299, but we will be loading a preprocessed version of it, containing the precomputed TPM expression values, made available via `ExperimentHub`.  
+This will enable us to performed a paired analysis on the same observation units (the patients) to appreciate differences in the cell proportions induced by the kinase-inhibitor treatment.
 
 ```{r ex3-retrieve-run}
-
 library("ExperimentHub")
 eh <- ExperimentHub()
 quantiseqdata_eh <- query(eh, "quantiseqr")
 quantiseqdata_eh
 
 se_Song2017_MAPKi_treatment <- quantiseqdata_eh[["EH6015"]]
-
-#### tpm_genesymbols <- tpmdata$GENE
-#### tpmdata <- as.matrix(tpmdata[, -1])
-#### rownames(tpmdata) <- tpm_genesymbols
-
-#### ti_quant <- quantiseqr::run_quantiseq(
-####   expression_data = se_Song2017_MAPKi_treatment,
-####   signature_matrix = "TIL10",
-####   is_arraydata = FALSE,
-####   is_tumordata = TRUE,
-####   scale_mRNA = TRUE
-#### )
 
 se_Song2017_MAPKi_treatment_tiquant <- quantiseqr::run_quantiseq(
   expression_data = se_Song2017_MAPKi_treatment,
@@ -297,13 +311,14 @@ se_Song2017_MAPKi_treatment_tiquant <- quantiseqr::run_quantiseq(
 )
 
 dim(se_Song2017_MAPKi_treatment_tiquant)
-colData(se_Song2017_MAPKi_treatment_tiquant)
+# colData(se_Song2017_MAPKi_treatment_tiquant)
 colnames(colData(se_Song2017_MAPKi_treatment_tiquant))
 ```
 
+As visible from the output of the last chunk, the cell type composition is stored in the `colData` slot, if providing a `SummarizedExperiment` as input.  
 We first plot the cell fractions by sample, this time with a color palette resembling the one used in [@Plattner2020].
 
-```{r ex3-ti-plot, fig.height=5, fig.width=7}
+```{r ex3-ti-plot, fig.height=5, fig.width=7, fig.cap="Stacked barplot of quanTIseq cell fractions computed on the Song et al. dataset, this time using a customized color palette."}
 # to extract the TIL10-relevant parts:
 ti_quant <- quantiseqr::extract_ti_from_se(se_Song2017_MAPKi_treatment_tiquant)
 
@@ -337,7 +352,7 @@ ggplot(cellfracs_tidy, aes(fill = name, y = value, x = sra_id)) +
 
 Similarly, we proceed by splitting the data in pre- and post-treatment, first filtering out the cell line samples (keeping the ones where `is_patient` is `TRUE`), then manipulating to long format and explicitly building up the plot object.
 
-```{r ex3-ti-plot2, fig.height=5, fig.width=7}
+```{r ex3-ti-plot2, fig.height=5, fig.width=7, fig.cap="Boxplot of quanTIseq cell fractions computed on the Song et al. dataset, showing the effect of the MAPKi treatment."}
 prepost_data <- cdata[cdata$is_patient, ]
 
 prepost_data_tidy <- tidyr::pivot_longer(
@@ -366,7 +381,7 @@ ggplot(prepost_data_tidy, aes(name, value, fill = groups)) +
 
 ## Use case 4: Running on simulated data for validation
 
-We will now display the performance of `quantiseqr` on a dataset for which the ground truth parameters are known.  
+We will now display the performance of `quantiseqr` on a dataset for which the ground truth mRNA fractions are known.  
 The large simulated dataset represents the RNA-seq expression data from breast tumors with different immune-infiltration scenarios, consisting of a total of 1700 samples, that were generated by mixing RNA-seq reads from purified immune cell types and from a MCF7 breast tumor cell line.
 
 These samples were generated considering different immune relative cell proportions, tumor purity values (0:10:100%), and at different sequencing depths (1, 2, 5, 10, 20, 50, and 100 million read pairs).
@@ -374,6 +389,8 @@ These samples were generated considering different immune relative cell proporti
 Please refer to https://icbi.i-med.ac.at/software/quantiseq/doc/ and to [@quantiseq2019] for more details.
 
 This dataset is coupled with a table where the original information on the used true fractions is available, and can be used to benchmark the performance of the deconvolution algorithm.
+
+In this case, we set the `scale_mRNA` parameter to `FALSE` because the samples were simulated without modelling any cell-type-specific mRNA bias, so quanTIseq does not have to correct for it. Instead, when analyzing real RNA-seq data, this parameter should always set to `TRUE` (default) to avoid that some cell types with higher (or lower) total mRNA abundance are systematically under (or over) estimated via deconvolution.
 
 ```{r ex4-setup, eval = FALSE}
 # downloading first the file from https://icbi.i-med.ac.at/software/quantiseq/doc/downloads/quanTIseq_SimRNAseq_mixture.txt
@@ -403,7 +420,7 @@ ti_quant_sim1700mixtures <- quantiseqr::run_quantiseq(
 
 To avoid the download of a large file, we provide the precomputed object `ti_quant_sim1700mixtures` in the `quantiseqr` package - the chunk above is still fully functional once the mixture file has been retrieved.
 
-```{r ex4-load-plot, fig.height=8, fig.width=6}
+```{r ex4-load-plot, fig.height=10, fig.width=6, fig.cap="Stacked barplot of quanTIseq cell fractions computed on the first 100 samples from the simulated dataset."}
 data(ti_quant_sim1700mixtures)
 dim(ti_quant_sim1700mixtures)
 head(ti_quant_sim1700mixtures)
@@ -422,7 +439,7 @@ head(true_prop_1700mix)
 
 In the following chunk we perform some preprocessing steps to facilitate the comparison, also in a graphical manner.
 
-```{r ex4-compare-plot, fig.width=7}
+```{r ex4-compare-plot, fig.width=7, fig.cap="Scatterplot of quanTIseq cell fractions computed on the simulated dataset, plotted against the true fractions."}
 # merging the two sets to facilitate the visualization
 # colnames(ti_quant_sim1700mixtures) <- paste0("quantiseq_", colnames(ti_quant_sim1700mixtures))
 # colnames(true_prop_1700mix) <- paste0("trueprops_", colnames(true_prop_1700mix))
@@ -465,8 +482,16 @@ ggplot(
   )
 ) +
   geom_point(alpha = 0.5) +
-  theme_bw()
+  theme_bw() + 
+  labs(
+    x = "True fractions",
+    y = "quanTIseq cell fractions",
+    col = "Cell type"
+  )
+```
 
+
+```{r ex4-compare-plot2, fig.width=7, fig.cap="Scatterplot of quanTIseq cell fractions computed on the simulated dataset, plotted against the true fractions - this time using small multiples for each cell type. The light grey line is the identity line, 'y = x'"}
 ggplot(
   ti_tp_merged,
   aes(
@@ -477,20 +502,16 @@ ggplot(
 ) +
   facet_wrap(~cell_type.x, scales = "free") +
   geom_point(alpha = 0.5) +
+  geom_abline(slope = 1, col = "lightgrey") + 
+  labs(
+    x = "True fractions",
+    y = "quanTIseq cell fractions",
+    col = "Cell type"
+  ) + 
   theme_bw()
-
-# for (i in colnames(ti_quant_sim1700mixtures)) {
-#   message(i)
-#   if(i!="Sample")
-#     plot(true_prop_1700mix[[i]], ti_quant_sim1700mixtures[[i]], main = i)
-# }
-# plot( true_prop_1700mix$Tumor, ti_quant_sim1700mixtures$Other, main = "other")
 ```
 
 This figure aims to replicate with live code the one available as [Supplementary Figure 1](https://static-content.springer.com/esm/art%3A10.1186%2Fs13073-019-0638-6/MediaObjects/13073_2019_638_MOESM2_ESM.pdf).
-
-...
-
 
 # FAQs {#faqs}
 
@@ -502,7 +523,7 @@ If using a `SummarizedExperiment` object coming from Salmon's quantifications, t
 
 **Q: Can I use `quantiseqr` with samples from model systems, i.e. not from human?**
 
-A: You can exploit orthology-based conversions among gene identifiers to use `quantiseqr` e.g. in mouse scenarios.
+A: You might exploit orthology-based conversions among gene identifiers to use `quantiseqr` e.g. in mouse scenarios.
 Keep in mind, though, that the TIL10 signature has been explicitly designed and validated on human samples.
 
 **Q: My expression data is encoding the features in a different identifier than Gene Symbols. Can I use `quantiseqr` for that?**
@@ -515,7 +536,7 @@ A: You can check out the works of [@sturm2019, @Sturm2020] to find a collection 
 
 **Q: Can I provide my own signature like the `TIL10` and use that in `quantiseqr`?**
 
-A: Yes, we recommend you to read up on the methods used in [@quantiseq2019] to see what processing steps have been applied, and additionally have a look at the formatting requirements by inspecting the `TIL10_*` files provided in the `extdata` folder of the installed package. 
+A: No, for now it is only possible to use the TIL10 signature matrix. 
 
 # Session Info {- .smaller}
 
