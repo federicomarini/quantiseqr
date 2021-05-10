@@ -50,7 +50,7 @@ Suggests:
 biocViews:
     GeneExpression, Software, Transcription, Transcriptomics, Sequencing, Microarray,
     Visualization, Annotation, ImmunoOncology, FeatureExtraction, Classification, 
-    StatisticalMethod, ExperimentHubSoftware
+    StatisticalMethod, ExperimentHubSoftware, FlowCytometry
 VignetteBuilder: knitr
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
