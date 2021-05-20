@@ -18,9 +18,9 @@ jobs:
       fail-fast: false
       matrix:
         config:
-        - { os: windows-latest, r: 'prerelease', bioc: 'devel'}
-        # - { os: macOS-latest, r: 'prerelease', bioc: 'devel'}
-        - { os: macOS-latest, r: 'prerelease', bioc: 'devel', curlConfigPath: '/usr/bin/'}
+        - { os: windows-latest, r: 'release', bioc: 'devel'}
+        - { os: macOS-latest, r: 'release', bioc: '3.13'}
+        - { os: macOS-latest, r: 'release', bioc: 'devel', curlConfigPath: '/usr/bin/'}
         - { os: ubuntu-latest, r: 'release', image: 'bioconductor/bioconductor_docker:devel'}
 
     env:
@@ -132,7 +132,7 @@ jobs:
         shell: Rscript {0}
 
       - name: Deploy
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && matrix.config.os == 'macOS-latest' && matrix.config.r == 'devel' && matrix.config.bioc == 'devel'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && matrix.config.os == 'macOS-latest' && matrix.config.r == 'release' && matrix.config.bioc == 'devel'
         run: |
           R CMD INSTALL .
           Rscript -e "remotes::install_dev('pkgdown'); pkgdown::deploy_to_branch(new_process = FALSE)"
