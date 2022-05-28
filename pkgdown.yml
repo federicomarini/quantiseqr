@@ -1,7 +1,7 @@
 pandoc: 2.7.3
-pkgdown: 1.6.1.9001
-pkgdown_sha: 1224e7d19dc1247a45d2885cf7b18b37bd02797b
+pkgdown: 2.0.3.9000
+pkgdown_sha: 374c615670c9eb52ac2f7646a273fff974031fa6
 articles:
   using_quantiseqr: using_quantiseqr.html
-last_built: 2021-04-24T06:09Z
+last_built: 2022-05-28T08:20Z
 
