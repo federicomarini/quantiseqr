@@ -429,17 +429,10 @@ mapGenes <- function(mydata) {
   mydata <- mydata[which(!is.na(newgenes)), ]
   newgenes <- newgenes[which(!is.na(newgenes))]
 
-  # Take the median if duplicates are present
-  if (any(duplicated(rownames(mydata)))) {
-    # message("dupe dupes, might take a little longer: maybe work on faster options?")
-    outdata <- aggregate(mydata, by = list(newgenes), FUN = median)
-    rownames(outdata) <- outdata[, 1]
-    outdata <- outdata[, -1, drop = FALSE]
-    outdata <- as.data.frame(outdata)
-  } else {
-    # message("no dupes")
-    outdata <- as.data.frame(mydata)
-  }
+  outdata <- aggregate(mydata, by = list(newgenes), FUN = median)
+  rownames(outdata) <- outdata[, 1]
+  outdata <- outdata[, -1, drop = FALSE]
+  outdata <- as.data.frame(outdata)
 
   return(outdata)
 }
