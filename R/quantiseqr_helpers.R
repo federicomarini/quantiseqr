@@ -429,6 +429,7 @@ mapGenes <- function(mydata) {
   mydata <- mydata[which(!is.na(newgenes)), ]
   newgenes <- newgenes[which(!is.na(newgenes))]
 
+  # Take the median if duplicates are present
   outdata <- aggregate(mydata, by = list(newgenes), FUN = median)
   rownames(outdata) <- outdata[, 1]
   outdata <- outdata[, -1, drop = FALSE]
