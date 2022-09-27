@@ -439,6 +439,7 @@ mapGenes <- function(mydata) {
   } else {
     # message("no dupes")
     outdata <- as.data.frame(mydata)
+    rownames(outdata) <- newgenes 
   }
 
   return(outdata)
