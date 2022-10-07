@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quantiseqr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.1</span>
       </span>
     </div>
 
@@ -58,7 +58,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">se_to_matrix</span><span class="op">(</span><span class="va">se</span>, assay <span class="op">=</span> <span class="st">"abundance"</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">se_to_matrix</span><span class="op">(</span><span class="va">se</span>, assay <span class="op">=</span> <span class="st">"abundance"</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -67,56 +67,63 @@
 <dd><p>A <code>SummarizedExperiment</code> object, or any of its derivates, which
 contains the information on the TPM expression values, which are stored in a
 specified assay slot.</p></dd>
+
+
 <dt>assay</dt>
 <dd><p>A character string, specifying the name of the <code>assays</code> component
 of the <code>se</code> object. Defaults to "abundance", as this is the common convention
 used e.g. by the <code>tximport</code> package to store the values imported from the
 transcript level quantifications</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A matrix object, containing the TPM values, ready to be used in the
+    
+
+<p>A matrix object, containing the TPM values, ready to be used in the
 framework of <code>quantiseqr</code></p>
+
+
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://bioconductor.org/packages/SummarizedExperiment" class="external-link">"SummarizedExperiment"</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"macrophage"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"gse"</span>, package <span class="op">=</span> <span class="st">"macrophage"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">se</span> <span class="op">&lt;-</span> <span class="va">gse</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># If using ENSEMBL or Gencode gene annotation, you might want to convert the row names</span></span>
-<span class="r-in"><span class="co">## in this case, the gene symbols are provided as rowData information</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">se</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData</a></span><span class="op">(</span><span class="va">se</span><span class="op">)</span><span class="op">$</span><span class="va">SYMBOL</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">tpm_matrix</span> <span class="op">&lt;-</span> <span class="fu">se_to_matrix</span><span class="op">(</span><span class="va">se</span>, assay <span class="op">=</span> <span class="st">"abundance"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## otherwise, you can map the identifiers via</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"org.Hs.eg.db"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://bioconductor.org/packages/SummarizedExperiment" class="external-link">"SummarizedExperiment"</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"macrophage"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"gse"</span>, package <span class="op">=</span> <span class="st">"macrophage"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">se</span> <span class="op">&lt;-</span> <span class="va">gse</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># If using ENSEMBL or Gencode gene annotation, you might want to convert the row names</span></span></span>
+<span class="r-in"><span><span class="co">## in this case, the gene symbols are provided as rowData information</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">se</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData</a></span><span class="op">(</span><span class="va">se</span><span class="op">)</span><span class="op">$</span><span class="va">SYMBOL</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">tpm_matrix</span> <span class="op">&lt;-</span> <span class="fu">se_to_matrix</span><span class="op">(</span><span class="va">se</span>, assay <span class="op">=</span> <span class="st">"abundance"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## otherwise, you can map the identifiers via</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"org.Hs.eg.db"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: AnnotationDbi</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://bioconductor.org/packages/AnnotationDbi" class="external-link">"AnnotationDbi"</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="va">se</span> <span class="op">&lt;-</span> <span class="va">gse</span></span>
-<span class="r-in"><span class="co"># keep the parts before the '.', used in the Gencode annotation</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">se</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/substr.html" class="external-link">substr</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">se</span><span class="op">)</span>, <span class="fl">1</span>, <span class="fl">15</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">gene_names</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/AnnotationDbi/man/AnnotationDb-class.html" class="external-link">mapIds</a></span><span class="op">(</span><span class="va">org.Hs.eg.db</span>,</span>
-<span class="r-in">                     keys <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">se</span><span class="op">)</span>,</span>
-<span class="r-in">                     column <span class="op">=</span> <span class="st">"SYMBOL"</span>,</span>
-<span class="r-in">                     keytype <span class="op">=</span> <span class="st">"ENSEMBL"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://bioconductor.org/packages/AnnotationDbi" class="external-link">"AnnotationDbi"</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">se</span> <span class="op">&lt;-</span> <span class="va">gse</span></span></span>
+<span class="r-in"><span><span class="co"># keep the parts before the '.', used in the Gencode annotation</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">se</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/substr.html" class="external-link">substr</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">se</span><span class="op">)</span>, <span class="fl">1</span>, <span class="fl">15</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">gene_names</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/AnnotationDbi/man/AnnotationDb-class.html" class="external-link">mapIds</a></span><span class="op">(</span><span class="va">org.Hs.eg.db</span>,</span></span>
+<span class="r-in"><span>                     keys <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">se</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                     column <span class="op">=</span> <span class="st">"SYMBOL"</span>,</span></span>
+<span class="r-in"><span>                     keytype <span class="op">=</span> <span class="st">"ENSEMBL"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 'select()' returned 1:many mapping between keys and columns</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">se</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">gene_names</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># If you require to convert the counts to TPMs by hand, you need a vector of</span></span>
-<span class="r-in"><span class="co"># gene lengths as well, and then run this simple function on the count matrix</span></span>
-<span class="r-in"><span class="va">counts_to_tpm</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">counts</span>, <span class="va">lengths</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="va">ratio</span> <span class="op">&lt;-</span> <span class="va">counts</span> <span class="op">/</span> <span class="va">lengths</span></span>
-<span class="r-in">  <span class="va">mytpm</span> <span class="op">&lt;-</span> <span class="va">ratio</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">ratio</span><span class="op">)</span> <span class="op">*</span> <span class="fl">1e6</span></span>
-<span class="r-in">  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">mytpm</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"><span class="co"># then run via</span></span>
-<span class="r-in"><span class="co"># tpmdata &lt;- counts_to_tpm(count_matrix, genelength_vector)</span></span>
-<span class="r-in"></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">se</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">gene_names</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># If you require to convert the counts to TPMs by hand, you need a vector of</span></span></span>
+<span class="r-in"><span><span class="co"># gene lengths as well, and then run this simple function on the count matrix</span></span></span>
+<span class="r-in"><span><span class="va">counts_to_tpm</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">counts</span>, <span class="va">lengths</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">ratio</span> <span class="op">&lt;-</span> <span class="va">counts</span> <span class="op">/</span> <span class="va">lengths</span></span></span>
+<span class="r-in"><span>  <span class="va">mytpm</span> <span class="op">&lt;-</span> <span class="va">ratio</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">ratio</span><span class="op">)</span> <span class="op">*</span> <span class="fl">1e6</span></span></span>
+<span class="r-in"><span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">mytpm</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="co"># then run via</span></span></span>
+<span class="r-in"><span><span class="co"># tpmdata &lt;- counts_to_tpm(count_matrix, genelength_vector)</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -131,7 +138,7 @@ framework of <code>quantiseqr</code></p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

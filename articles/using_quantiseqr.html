@@ -35,7 +35,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quantiseqr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.1</span>
       </span>
     </div>
 
@@ -82,7 +82,7 @@
       Institute of Medical Biostatistics, Epidemiology and Informatics (<a href="https://www.unimedizin-mainz.de/imbei/imbei/welcome-page.html?L=1" class="external-link">IMBEI, Mainz</a>)<br><h4 data-toc-skip class="author">Francesca Finotello<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>
 </h4>
             <address class="author_afil">
-      Institute of Bioinformatics, Biocenter Medical University of Innsbruck (<a href="https://icbi.i-med.ac.at/index.html" class="external-link uri">https://icbi.i-med.ac.at/index.html</a>)<br><h4 data-toc-skip class="date">2022-05-28</h4>
+      Institute of Bioinformatics, Biocenter Medical University of Innsbruck (<a href="https://icbi.i-med.ac.at/index.html" class="external-link uri">https://icbi.i-med.ac.at/index.html</a>)<br><h4 data-toc-skip class="date">2022-10-07</h4>
       
       
       <div class="hidden name"><code>using_quantiseqr.Rmd</code></div>
@@ -124,23 +124,23 @@
 </h2>
 <p>To install this package, start R and enter:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"quantiseqr"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"quantiseqr"</span><span class="op">)</span></span></code></pre></div>
 <p>Once installed, the package can be loaded and attached to your current workspace as follows:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"quantiseqr"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"quantiseqr"</span><span class="op">)</span></span></code></pre></div>
 <p>In the following chunk, we load a set of additional packages that will be required throughout this vignette.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://dplyr.tidyverse.org" class="external-link">"dplyr"</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://ggplot2.tidyverse.org" class="external-link">"ggplot2"</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://tidyr.tidyverse.org" class="external-link">"tidyr"</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://tibble.tidyverse.org/" class="external-link">"tibble"</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/seandavi/GEOquery" class="external-link">"GEOquery"</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/hadley/reshape" class="external-link">"reshape2"</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://bioconductor.org/packages/SummarizedExperiment" class="external-link">"SummarizedExperiment"</a></span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://dplyr.tidyverse.org" class="external-link">"dplyr"</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://ggplot2.tidyverse.org" class="external-link">"ggplot2"</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://tidyr.tidyverse.org" class="external-link">"tidyr"</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://tibble.tidyverse.org/" class="external-link">"tibble"</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/seandavi/GEOquery" class="external-link">"GEOquery"</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/hadley/reshape" class="external-link">"reshape2"</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://bioconductor.org/packages/SummarizedExperiment" class="external-link">"SummarizedExperiment"</a></span><span class="op">)</span></span></code></pre></div>
 <p>In order to use <em><a href="https://bioconductor.org/packages/3.16/quantiseqr" class="external-link">quantiseqr</a></em> in your workflow, one fundamental input is required, to be provided to <code>run_quantiseqr()</code> as <code>expression_data</code>. This is an object containing the gene TPM expression values measured in the sample under investigation, and can be provided in different ways:</p>
 <ul>
 <li>as a simple gene expression matrix, or a data frame (with HGNC gene symbols as row names and sample identifiers as column names)</li>
@@ -165,10 +165,10 @@
 <p>We are going to use the bulk RNA-seq data to run the deconvolution methods and will compare the results to the FACS data in the following steps.</p>
 <p>Let’s inspect the expression matrix first:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"dataset_racle"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">dataset_racle</span><span class="op">$</span><span class="va">expr_mat</span><span class="op">)</span>
-<span class="co">#&gt; [1] 32467     4</span>
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">dataset_racle</span><span class="op">$</span><span class="va">expr_mat</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="op">]</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"dataset_racle"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">dataset_racle</span><span class="op">$</span><span class="va">expr_mat</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 32467     4</span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">dataset_racle</span><span class="op">$</span><span class="va">expr_mat</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left"></th>
@@ -217,26 +217,26 @@
 </table>
 <p>The quantification of the immune cell types with <code>quantiseqr</code> can be done as in the chunk below:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ti_racle</span> <span class="op">&lt;-</span> <span class="fu">quantiseqr</span><span class="fu">::</span><span class="fu"><a href="../reference/run_quantiseq.html">run_quantiseq</a></span><span class="op">(</span>
-  expression_data <span class="op">=</span> <span class="va">dataset_racle</span><span class="op">$</span><span class="va">expr_mat</span>,
-  signature_matrix <span class="op">=</span> <span class="st">"TIL10"</span>,
-  is_arraydata <span class="op">=</span> <span class="cn">FALSE</span>,
-  is_tumordata <span class="op">=</span> <span class="cn">TRUE</span>,
-  scale_mRNA <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Running quanTIseq deconvolution module</span>
-<span class="co">#&gt; Gene expression normalization and re-annotation (arrays: FALSE)</span>
-<span class="co">#&gt; Removing 17 noisy genes</span>
-<span class="co">#&gt; Removing 15 genes with high expression in tumors</span>
-<span class="co">#&gt; Signature genes found in data set: 135/138 (97.83%)</span>
-<span class="co">#&gt; Mixture deconvolution (method: lsei)</span>
-<span class="co">#&gt; Deconvolution successful!</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">ti_racle</span> <span class="op">&lt;-</span> <span class="fu">quantiseqr</span><span class="fu">::</span><span class="fu"><a href="../reference/run_quantiseq.html">run_quantiseq</a></span><span class="op">(</span></span>
+<span>  expression_data <span class="op">=</span> <span class="va">dataset_racle</span><span class="op">$</span><span class="va">expr_mat</span>,</span>
+<span>  signature_matrix <span class="op">=</span> <span class="st">"TIL10"</span>,</span>
+<span>  is_arraydata <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  is_tumordata <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  scale_mRNA <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Running quanTIseq deconvolution module</span></span>
+<span><span class="co">#&gt; Gene expression normalization and re-annotation (arrays: FALSE)</span></span>
+<span><span class="co">#&gt; Removing 17 noisy genes</span></span>
+<span><span class="co">#&gt; Removing 15 genes with high expression in tumors</span></span>
+<span><span class="co">#&gt; Signature genes found in data set: 135/138 (97.83%)</span></span>
+<span><span class="co">#&gt; Mixture deconvolution (method: lsei)</span></span>
+<span><span class="co">#&gt; Deconvolution successful!</span></span></code></pre></div>
 <p>The call above means that we are passing the expression data as simple matrix (in <code>dataset_racle$expr_mat</code>) and quantifying the tumor immune cell composition using the (default) TIL10 signature. This is a dataset stemming from tumor RNA-seq samples. Therefore <code>is_tumordata</code> is set to <code>TRUE</code>, whereas <code>is_arraydata</code> is set to <code>FALSE</code> (default). With <code>scale_mRNA</code> set to <code>TRUE</code> (default), we are performing the correction of cell-type-specific mRNA content bias.</p>
 <p>The output of <code>quantiseqr</code> can be further processed and visualized in a tabular or graphical manner to facilitate the comparisons across samples/conditions.</p>
 <p>The estimates returned by <code>quantiseqr</code> can be interpreted as a cell-type fractions that can be compared between and within samples, making it possible to represent them as a stacked bar chart.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/quantiplot.html">quantiplot</a></span><span class="op">(</span><span class="va">ti_racle</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/quantiplot.html">quantiplot</a></span><span class="op">(</span><span class="va">ti_racle</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="using_quantiseqr_files/figure-html/ex1-ti-plot-1.png" alt="Stacked barplot of quanTIseq cell fractions computed on the Racle dataset (patients with metastatic melanoma)." width="768"><p class="caption">
 Stacked barplot of quanTIseq cell fractions computed on the Racle dataset (patients with metastatic melanoma).
@@ -259,61 +259,61 @@ Stacked barplot of quanTIseq cell fractions computed on the Racle dataset (patie
 <p>The example dataset is available online at the Gene Expression Omnibus (accession number GSE107572), and is provided as preprocessed RNA-seq data from blood-derived immune-cell mixtures from nine healthy donors.<br>
 Flow cytometry estimates for the according immune subpopulations are also available.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## While downloading by hand is possible, it is recommended to use GEOquery</span>
-<span class="co"># wget -c ftp://ftp.ncbi.nlm.nih.gov/geo/series/GSE107nnn/GSE107572/suppl/GSE107572%5Ftpm%5FPBMC%5FRNAseq%2Etxt%2Egz</span>
-<span class="co"># unzip GSE107572_tpm_PBMC_RNAseq.txt.gz</span>
-<span class="co"># read.table("GSE107572_tpm_PBMC_RNAseq.txt", header = TRUE)</span>
-
-
-<span class="co"># downloading the supplemental files on the fly</span>
-<span class="va">tpminfo_GSE107572</span> <span class="op">&lt;-</span> <span class="fu"><a href="http://seandavi.github.io/GEOquery/reference/getGEOSuppFiles.html" class="external-link">getGEOSuppFiles</a></span><span class="op">(</span><span class="st">"GSE107572"</span>,
-  baseDir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,
-  filter_regex <span class="op">=</span> <span class="st">"GSE107572_tpm_PBMC_RNAseq"</span>
-<span class="op">)</span>
-<span class="va">tpm_location</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/rownames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">tpminfo_GSE107572</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>
-<span class="va">tpm_location</span>
-<span class="co">#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpCtUL7k/GSE107572/GSE107572_tpm_PBMC_RNAseq.txt.gz"</span>
-<span class="va">tpmdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.table</a></span><span class="op">(</span><span class="va">tpm_location</span>, header <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">## While downloading by hand is possible, it is recommended to use GEOquery</span></span>
+<span><span class="co"># wget -c ftp://ftp.ncbi.nlm.nih.gov/geo/series/GSE107nnn/GSE107572/suppl/GSE107572%5Ftpm%5FPBMC%5FRNAseq%2Etxt%2Egz</span></span>
+<span><span class="co"># unzip GSE107572_tpm_PBMC_RNAseq.txt.gz</span></span>
+<span><span class="co"># read.table("GSE107572_tpm_PBMC_RNAseq.txt", header = TRUE)</span></span>
+<span></span>
+<span></span>
+<span><span class="co"># downloading the supplemental files on the fly</span></span>
+<span><span class="va">tpminfo_GSE107572</span> <span class="op">&lt;-</span> <span class="fu"><a href="http://seandavi.github.io/GEOquery/reference/getGEOSuppFiles.html" class="external-link">getGEOSuppFiles</a></span><span class="op">(</span><span class="st">"GSE107572"</span>,</span>
+<span>  baseDir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  filter_regex <span class="op">=</span> <span class="st">"GSE107572_tpm_PBMC_RNAseq"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">tpm_location</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">tpminfo_GSE107572</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
+<span><span class="va">tpm_location</span></span>
+<span><span class="co">#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmpoab6FC/GSE107572/GSE107572_tpm_PBMC_RNAseq.txt.gz"</span></span>
+<span><span class="va">tpmdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.table</a></span><span class="op">(</span><span class="va">tpm_location</span>, header <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">tpm_genesymbols</span> <span class="op">&lt;-</span> <span class="va">tpmdata</span><span class="op">$</span><span class="va">GENE</span>
-<span class="va">tpmdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">tpmdata</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>
-<span class="fu"><a href="https://tibble.tidyverse.org/reference/rownames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">tpmdata</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">tpm_genesymbols</span>
-
-<span class="va">ti_PBMCs</span> <span class="op">&lt;-</span> <span class="fu">quantiseqr</span><span class="fu">::</span><span class="fu"><a href="../reference/run_quantiseq.html">run_quantiseq</a></span><span class="op">(</span>
-  expression_data <span class="op">=</span> <span class="va">tpmdata</span>,
-  signature_matrix <span class="op">=</span> <span class="st">"TIL10"</span>,
-  is_arraydata <span class="op">=</span> <span class="cn">FALSE</span>,
-  is_tumordata <span class="op">=</span> <span class="cn">FALSE</span>,
-  scale_mRNA <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Running quanTIseq deconvolution module</span>
-<span class="co">#&gt; Gene expression normalization and re-annotation (arrays: FALSE)</span>
-<span class="co">#&gt; Removing 17 noisy genes</span>
-<span class="co">#&gt; Signature genes found in data set: 149/153 (97.39%)</span>
-<span class="co">#&gt; Mixture deconvolution (method: lsei)</span>
-<span class="co">#&gt; Deconvolution successful!</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">tpm_genesymbols</span> <span class="op">&lt;-</span> <span class="va">tpmdata</span><span class="op">$</span><span class="va">GENE</span></span>
+<span><span class="va">tpmdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">tpmdata</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">tpmdata</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">tpm_genesymbols</span></span>
+<span></span>
+<span><span class="va">ti_PBMCs</span> <span class="op">&lt;-</span> <span class="fu">quantiseqr</span><span class="fu">::</span><span class="fu"><a href="../reference/run_quantiseq.html">run_quantiseq</a></span><span class="op">(</span></span>
+<span>  expression_data <span class="op">=</span> <span class="va">tpmdata</span>,</span>
+<span>  signature_matrix <span class="op">=</span> <span class="st">"TIL10"</span>,</span>
+<span>  is_arraydata <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  is_tumordata <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  scale_mRNA <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Running quanTIseq deconvolution module</span></span>
+<span><span class="co">#&gt; Gene expression normalization and re-annotation (arrays: FALSE)</span></span>
+<span><span class="co">#&gt; Removing 17 noisy genes</span></span>
+<span><span class="co">#&gt; Signature genes found in data set: 153/153 (100%)</span></span>
+<span><span class="co">#&gt; Mixture deconvolution (method: lsei)</span></span>
+<span><span class="co">#&gt; Deconvolution successful!</span></span></code></pre></div>
 <p>To obtain an overview on immune cell type compositions, we can print out the results and plot them with the convenient <code>quantiplot</code> wrapper:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># printing out the percentages for the first 4 samples</span>
-<span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">signif</a></span><span class="op">(</span><span class="va">ti_PBMCs</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="fl">2</span><span class="op">:</span><span class="fl">12</span><span class="op">]</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>
-<span class="co">#&gt;                        B.cells Macrophages.M1 Macrophages.M2 Monocytes</span>
-<span class="co">#&gt; pbmc_1                  0.0939              0        0.01720     0.171</span>
-<span class="co">#&gt; pbmc_10                 0.0963              0        0.00966     0.206</span>
-<span class="co">#&gt; pbmc_12_merged_1.fastq  0.0656              0        0.01030     0.107</span>
-<span class="co">#&gt; pbmc_2_merged_1.fastq   0.0479              0        0.01670     0.150</span>
-<span class="co">#&gt;                        Neutrophils NK.cells T.cells.CD4 T.cells.CD8   Tregs</span>
-<span class="co">#&gt; pbmc_1                      0.0229  0.02400       0.295       0.225 0.03850</span>
-<span class="co">#&gt; pbmc_10                     0.0267  0.00454       0.231       0.197 0.03300</span>
-<span class="co">#&gt; pbmc_12_merged_1.fastq      0.0148  0.06140       0.101       0.367 0.00953</span>
-<span class="co">#&gt; pbmc_2_merged_1.fastq       0.0509  0.02600       0.232       0.189 0.02890</span>
-<span class="co">#&gt;                        Dendritic.cells Other</span>
-<span class="co">#&gt; pbmc_1                          0.0214 0.091</span>
-<span class="co">#&gt; pbmc_10                         0.0390 0.157</span>
-<span class="co">#&gt; pbmc_12_merged_1.fastq          0.0709 0.192</span>
-<span class="co">#&gt; pbmc_2_merged_1.fastq           0.0209 0.237</span>
-<span class="co"># getting a complete visual overview</span>
-<span class="fu"><a href="../reference/quantiplot.html">quantiplot</a></span><span class="op">(</span><span class="va">ti_PBMCs</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># printing out the percentages for the first 4 samples</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">signif</a></span><span class="op">(</span><span class="va">ti_PBMCs</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="fl">2</span><span class="op">:</span><span class="fl">12</span><span class="op">]</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                        B.cells Macrophages.M1 Macrophages.M2 Monocytes</span></span>
+<span><span class="co">#&gt; pbmc_1                  0.0929       0.000000         0.0182     0.175</span></span>
+<span><span class="co">#&gt; pbmc_10                 0.0949       0.000000         0.0113     0.215</span></span>
+<span><span class="co">#&gt; pbmc_12_merged_1.fastq  0.0643       0.000605         0.0121     0.115</span></span>
+<span><span class="co">#&gt; pbmc_2_merged_1.fastq   0.0471       0.000000         0.0172     0.152</span></span>
+<span><span class="co">#&gt;                        Neutrophils NK.cells T.cells.CD4 T.cells.CD8   Tregs</span></span>
+<span><span class="co">#&gt; pbmc_1                      0.0275  0.02080       0.303       0.225 0.03800</span></span>
+<span><span class="co">#&gt; pbmc_10                     0.0336  0.00261       0.240       0.196 0.03330</span></span>
+<span><span class="co">#&gt; pbmc_12_merged_1.fastq      0.0222  0.05580       0.116       0.364 0.00935</span></span>
+<span><span class="co">#&gt; pbmc_2_merged_1.fastq       0.0546  0.02320       0.238       0.189 0.02830</span></span>
+<span><span class="co">#&gt;                        Dendritic.cells  Other</span></span>
+<span><span class="co">#&gt; pbmc_1                          0.0176 0.0827</span></span>
+<span><span class="co">#&gt; pbmc_10                         0.0326 0.1400</span></span>
+<span><span class="co">#&gt; pbmc_12_merged_1.fastq          0.0654 0.1750</span></span>
+<span><span class="co">#&gt; pbmc_2_merged_1.fastq           0.0170 0.2340</span></span>
+<span><span class="co"># getting a complete visual overview</span></span>
+<span><span class="fu"><a href="../reference/quantiplot.html">quantiplot</a></span><span class="op">(</span><span class="va">ti_PBMCs</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="using_quantiseqr_files/figure-html/ex2-ti-plot-1.png" alt="Stacked barplot of quanTIseq cell fractions computed on the blood derived PBMCs dataset." width="672"><p class="caption">
 Stacked barplot of quanTIseq cell fractions computed on the blood derived PBMCs dataset.
@@ -324,73 +324,73 @@ In the chunk that follows, we retrieve that information and generate scatter plo
 This is adapted by <span class="citation">(Plattner, Finotello, and Rieder 2020)</span> to match the output format generated by <code>quantiseqr</code> - and can be used as a template in case other types of matched ground-truth information are available.</p>
 <p>We start by retrieving the information from the GSE107572 entry via <code>GEOquery</code> (this will be cached locally after the first execution), and process the information matching it to the quantification of cell fractions we just obtained as <code>ti_PBMCs</code>.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">GEOid</span> <span class="op">&lt;-</span> <span class="st">"GSE107572"</span>
-<span class="va">gds</span> <span class="op">&lt;-</span> <span class="fu"><a href="http://seandavi.github.io/GEOquery/reference/getGEO.html" class="external-link">getGEO</a></span><span class="op">(</span><span class="va">GEOid</span><span class="op">)</span>
-<span class="co">#&gt; Found 1 file(s)</span>
-<span class="co">#&gt; GSE107572_series_matrix.txt.gz</span>
-<span class="va">GEOinfo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/phenoData.html" class="external-link">pData</a></span><span class="op">(</span><span class="va">gds</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>
-<span class="va">FACSdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>
-  B.cells <span class="op">=</span> <span class="va">GEOinfo</span><span class="op">$</span><span class="va">`b cells:ch1`</span>,
-  T.cells.CD4 <span class="op">=</span> <span class="va">GEOinfo</span><span class="op">$</span><span class="va">`cd4+ t cells:ch1`</span>,
-  T.cells.CD8 <span class="op">=</span> <span class="va">GEOinfo</span><span class="op">$</span><span class="va">`cd8+ t cells:ch1`</span>,
-  Monocytes <span class="op">=</span> <span class="va">GEOinfo</span><span class="op">$</span><span class="va">`monocytes:ch1`</span>,
-  Dendritic.cells <span class="op">=</span> <span class="va">GEOinfo</span><span class="op">$</span><span class="va">`myeloid dendritic cells:ch1`</span>,
-  NK.cells <span class="op">=</span> <span class="va">GEOinfo</span><span class="op">$</span><span class="va">`natural killer cells:ch1`</span>,
-  Neutrophils <span class="op">=</span> <span class="va">GEOinfo</span><span class="op">$</span><span class="va">`neutrophils:ch1`</span>,
-  Tregs <span class="op">=</span> <span class="va">GEOinfo</span><span class="op">$</span><span class="va">`tregs:ch1`</span>
-<span class="op">)</span>
-<span class="fu"><a href="https://tibble.tidyverse.org/reference/rownames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">FACSdata</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span>
-  <span class="st">"Blood-derived immune-cell mixture from donor "</span>, <span class="st">"pbmc"</span>, <span class="va">GEOinfo</span><span class="op">$</span><span class="va">title</span>
-<span class="op">)</span>
-
-<span class="fu"><a href="https://tibble.tidyverse.org/reference/rownames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">ti_PBMCs</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">"_.*$"</span>, <span class="st">""</span>, <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">sub</a></span><span class="op">(</span><span class="st">"_"</span>, <span class="st">""</span>, <span class="fu"><a href="https://tibble.tidyverse.org/reference/rownames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">ti_PBMCs</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-
-<span class="va">ccells</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/setops.html" class="external-link">intersect</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/AnnotationDbi/man/Bimap-toTable.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">ti_PBMCs</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/pkg/AnnotationDbi/man/Bimap-toTable.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">FACSdata</span><span class="op">)</span><span class="op">)</span>
-<span class="va">csbjs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/setops.html" class="external-link">intersect</a></span><span class="op">(</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/rownames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">ti_PBMCs</span><span class="op">)</span>, <span class="fu"><a href="https://tibble.tidyverse.org/reference/rownames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">FACSdata</span><span class="op">)</span><span class="op">)</span>
-
-<span class="va">ti_PBMCs</span> <span class="op">&lt;-</span> <span class="va">ti_PBMCs</span><span class="op">[</span><span class="va">csbjs</span>, <span class="va">ccells</span><span class="op">]</span>
-<span class="va">FACSdata</span> <span class="op">&lt;-</span> <span class="va">FACSdata</span><span class="op">[</span><span class="va">csbjs</span>, <span class="va">ccells</span><span class="op">]</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">GEOid</span> <span class="op">&lt;-</span> <span class="st">"GSE107572"</span></span>
+<span><span class="va">gds</span> <span class="op">&lt;-</span> <span class="fu"><a href="http://seandavi.github.io/GEOquery/reference/getGEO.html" class="external-link">getGEO</a></span><span class="op">(</span><span class="va">GEOid</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Found 1 file(s)</span></span>
+<span><span class="co">#&gt; GSE107572_series_matrix.txt.gz</span></span>
+<span><span class="va">GEOinfo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/phenoData.html" class="external-link">pData</a></span><span class="op">(</span><span class="va">gds</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">FACSdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  B.cells <span class="op">=</span> <span class="va">GEOinfo</span><span class="op">$</span><span class="va">`b cells:ch1`</span>,</span>
+<span>  T.cells.CD4 <span class="op">=</span> <span class="va">GEOinfo</span><span class="op">$</span><span class="va">`cd4+ t cells:ch1`</span>,</span>
+<span>  T.cells.CD8 <span class="op">=</span> <span class="va">GEOinfo</span><span class="op">$</span><span class="va">`cd8+ t cells:ch1`</span>,</span>
+<span>  Monocytes <span class="op">=</span> <span class="va">GEOinfo</span><span class="op">$</span><span class="va">`monocytes:ch1`</span>,</span>
+<span>  Dendritic.cells <span class="op">=</span> <span class="va">GEOinfo</span><span class="op">$</span><span class="va">`myeloid dendritic cells:ch1`</span>,</span>
+<span>  NK.cells <span class="op">=</span> <span class="va">GEOinfo</span><span class="op">$</span><span class="va">`natural killer cells:ch1`</span>,</span>
+<span>  Neutrophils <span class="op">=</span> <span class="va">GEOinfo</span><span class="op">$</span><span class="va">`neutrophils:ch1`</span>,</span>
+<span>  Tregs <span class="op">=</span> <span class="va">GEOinfo</span><span class="op">$</span><span class="va">`tregs:ch1`</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">FACSdata</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span></span>
+<span>  <span class="st">"Blood-derived immune-cell mixture from donor "</span>, <span class="st">"pbmc"</span>, <span class="va">GEOinfo</span><span class="op">$</span><span class="va">title</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">ti_PBMCs</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">"_.*$"</span>, <span class="st">""</span>, <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">sub</a></span><span class="op">(</span><span class="st">"_"</span>, <span class="st">""</span>, <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">ti_PBMCs</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ccells</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/setops.html" class="external-link">intersect</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">ti_PBMCs</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">FACSdata</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">csbjs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/setops.html" class="external-link">intersect</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">ti_PBMCs</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">FACSdata</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ti_PBMCs</span> <span class="op">&lt;-</span> <span class="va">ti_PBMCs</span><span class="op">[</span><span class="va">csbjs</span>, <span class="va">ccells</span><span class="op">]</span></span>
+<span><span class="va">FACSdata</span> <span class="op">&lt;-</span> <span class="va">FACSdata</span><span class="op">[</span><span class="va">csbjs</span>, <span class="va">ccells</span><span class="op">]</span></span></code></pre></div>
 <p>Then we proceed to plot the agreement between the computed cell fractions and the estimated values extracted from flow cytometry experiments.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">palette</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#451C87"</span>, <span class="st">"#B3B300"</span>, <span class="st">"#CE0648"</span>, <span class="st">"#2363C5"</span>, <span class="st">"#AB4CA1"</span>, <span class="st">"#0A839B"</span>, <span class="st">"#DD8C24"</span>, <span class="st">"#ED6D42"</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">palette</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"T.cells.CD4"</span>, <span class="st">"Dendritic.cells"</span>, <span class="st">"Monocytes"</span>, <span class="st">"T.cells.CD8"</span>, <span class="st">"Tregs"</span>, <span class="st">"B.cells"</span>, <span class="st">"NK.cells"</span>, <span class="st">"Neutrophils"</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span>
-<span class="va">colall</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span>
-<span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/AnnotationDbi/man/Bimap-toTable.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">ti_PBMCs</span><span class="op">)</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-  <span class="kw">if</span> <span class="op">(</span><span class="va">i</span> <span class="op">&lt;=</span> <span class="fu"><a href="https://rdrr.io/pkg/AnnotationDbi/man/Bimap-toTable.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">ti_PBMCs</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-    <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">FACSdata</span><span class="op">[</span>, <span class="va">i</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>
-    <span class="va">y</span> <span class="op">&lt;-</span> <span class="va">ti_PBMCs</span><span class="op">[</span>, <span class="va">i</span><span class="op">]</span>
-    <span class="va">ccell</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/AnnotationDbi/man/Bimap-toTable.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">ti_PBMCs</span><span class="op">)</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>
-    <span class="va">col</span> <span class="op">&lt;-</span> <span class="va">palette</span><span class="op">[</span><span class="va">ccell</span><span class="op">]</span>
-  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span>
-    <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/as.vector.html" class="external-link">as.vector</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">FACSdata</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-    <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/as.vector.html" class="external-link">as.vector</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">ti_PBMCs</span><span class="op">)</span><span class="op">)</span>
-    <span class="va">ccell</span> <span class="op">&lt;-</span> <span class="st">"All cells"</span>
-    <span class="va">col</span> <span class="op">&lt;-</span> <span class="va">colall</span>
-  <span class="op">}</span>
-  <span class="va">res.cor</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/cor.test.html" class="external-link">cor.test</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">x</span><span class="op">)</span>
-  <span class="va">R</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">res.cor</span><span class="op">$</span><span class="va">estimate</span>, digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
-  <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/format.pval.html" class="external-link">format.pval</a></span><span class="op">(</span><span class="va">res.cor</span><span class="op">$</span><span class="va">p.value</span>, digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
-  <span class="va">RMSE</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">(</span><span class="va">y</span> <span class="op">-</span> <span class="va">x</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>, digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
-
-  <span class="va">regl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">x</span><span class="op">)</span>
-  <span class="va">ymax</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span>, digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">*</span> <span class="fl">1.3</span>, <span class="fl">0.01</span><span class="op">)</span>
-  <span class="va">xmax</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>, <span class="fl">0.01</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>,
-    main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">"(\\.)"</span>, <span class="st">" "</span>, <span class="va">ccell</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fl">19</span>,
-    xlab <span class="op">=</span> <span class="st">"Flow cytometry fractions"</span>,
-    ylab <span class="op">=</span> <span class="st">"quanTIseq cell fractions"</span>,
-    col <span class="op">=</span> <span class="va">col</span>, cex.main <span class="op">=</span> <span class="fl">1.3</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">ymax</span><span class="op">)</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">xmax</span><span class="op">)</span>, las <span class="op">=</span> <span class="fl">1</span>
-  <span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span><span class="va">regl</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">0</span>, b <span class="op">=</span> <span class="fl">1</span>, lty <span class="op">=</span> <span class="st">"dashed"</span>, col <span class="op">=</span> <span class="st">"lightgrey"</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/graphics/text.html" class="external-link">text</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">ymax</span> <span class="op">*</span> <span class="fl">0.98</span>, cex <span class="op">=</span> <span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"r = "</span>, <span class="va">R</span>, <span class="st">", p = "</span>, <span class="va">p</span><span class="op">)</span>, pos <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/graphics/text.html" class="external-link">text</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">ymax</span> <span class="op">*</span> <span class="fl">0.9</span>, cex <span class="op">=</span> <span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"RMSE = "</span>, <span class="va">RMSE</span><span class="op">)</span>, pos <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>
-
-  <span class="va">colall</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">colall</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="va">col</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">palette</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#451C87"</span>, <span class="st">"#B3B300"</span>, <span class="st">"#CE0648"</span>, <span class="st">"#2363C5"</span>, <span class="st">"#AB4CA1"</span>, <span class="st">"#0A839B"</span>, <span class="st">"#DD8C24"</span>, <span class="st">"#ED6D42"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">palette</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"T.cells.CD4"</span>, <span class="st">"Dendritic.cells"</span>, <span class="st">"Monocytes"</span>, <span class="st">"T.cells.CD8"</span>, <span class="st">"Tregs"</span>, <span class="st">"B.cells"</span>, <span class="st">"NK.cells"</span>, <span class="st">"Neutrophils"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">colall</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">ti_PBMCs</span><span class="op">)</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="va">i</span> <span class="op">&lt;=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">ti_PBMCs</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">FACSdata</span><span class="op">[</span>, <span class="va">i</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="va">y</span> <span class="op">&lt;-</span> <span class="va">ti_PBMCs</span><span class="op">[</span>, <span class="va">i</span><span class="op">]</span></span>
+<span>    <span class="va">ccell</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">ti_PBMCs</span><span class="op">)</span><span class="op">[</span><span class="va">i</span><span class="op">]</span></span>
+<span>    <span class="va">col</span> <span class="op">&lt;-</span> <span class="va">palette</span><span class="op">[</span><span class="va">ccell</span><span class="op">]</span></span>
+<span>  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
+<span>    <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/as.vector.html" class="external-link">as.vector</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">FACSdata</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/as.vector.html" class="external-link">as.vector</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">ti_PBMCs</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="va">ccell</span> <span class="op">&lt;-</span> <span class="st">"All cells"</span></span>
+<span>    <span class="va">col</span> <span class="op">&lt;-</span> <span class="va">colall</span></span>
+<span>  <span class="op">}</span></span>
+<span>  <span class="va">res.cor</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/cor.test.html" class="external-link">cor.test</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">x</span><span class="op">)</span></span>
+<span>  <span class="va">R</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">res.cor</span><span class="op">$</span><span class="va">estimate</span>, digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span>  <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/format.pval.html" class="external-link">format.pval</a></span><span class="op">(</span><span class="va">res.cor</span><span class="op">$</span><span class="va">p.value</span>, digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span>  <span class="va">RMSE</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">(</span><span class="va">y</span> <span class="op">-</span> <span class="va">x</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>, digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="va">regl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">x</span><span class="op">)</span></span>
+<span>  <span class="va">ymax</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span>, digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">*</span> <span class="fl">1.3</span>, <span class="fl">0.01</span><span class="op">)</span></span>
+<span>  <span class="va">xmax</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>, <span class="fl">0.01</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>,</span>
+<span>    main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">"(\\.)"</span>, <span class="st">" "</span>, <span class="va">ccell</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fl">19</span>,</span>
+<span>    xlab <span class="op">=</span> <span class="st">"Flow cytometry fractions"</span>,</span>
+<span>    ylab <span class="op">=</span> <span class="st">"quanTIseq cell fractions"</span>,</span>
+<span>    col <span class="op">=</span> <span class="va">col</span>, cex.main <span class="op">=</span> <span class="fl">1.3</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">ymax</span><span class="op">)</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">xmax</span><span class="op">)</span>, las <span class="op">=</span> <span class="fl">1</span></span>
+<span>  <span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span><span class="va">regl</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">0</span>, b <span class="op">=</span> <span class="fl">1</span>, lty <span class="op">=</span> <span class="st">"dashed"</span>, col <span class="op">=</span> <span class="st">"lightgrey"</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/graphics/text.html" class="external-link">text</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">ymax</span> <span class="op">*</span> <span class="fl">0.98</span>, cex <span class="op">=</span> <span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"r = "</span>, <span class="va">R</span>, <span class="st">", p = "</span>, <span class="va">p</span><span class="op">)</span>, pos <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/graphics/text.html" class="external-link">text</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">ymax</span> <span class="op">*</span> <span class="fl">0.9</span>, cex <span class="op">=</span> <span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"RMSE = "</span>, <span class="va">RMSE</span><span class="op">)</span>, pos <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="va">colall</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">colall</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="va">col</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <div class="figure">
 <img src="using_quantiseqr_files/figure-html/ex2-comparison-plot-1.png" alt="Scatterplot of quanTIseq cell fractions for the PBMCs dataset, plotted against the fractions estimated from flow cytometry. Each subplot display a specific cell type, and all cells are summarized in the lower right corner. The dashed grey line indicates the diagonal, corresponding to the identity line, while the black solid line is the linear model fit. The text annotation reports the r correlation coefficient, its significance, and the root mean squared error." width="864"><p class="caption">
 Scatterplot of quanTIseq cell fractions for the PBMCs dataset, plotted against the fractions estimated from flow cytometry. Each subplot display a specific cell type, and all cells are summarized in the lower right corner. The dashed grey line indicates the diagonal, corresponding to the identity line, while the black solid line is the linear model fit. The text annotation reports the r correlation coefficient, its significance, and the root mean squared error.
@@ -404,162 +404,162 @@ Scatterplot of quanTIseq cell fractions for the PBMCs dataset, plotted against t
 <p>The original dataset is available via GEO at the accession GSE75299, but we will be loading a preprocessed version of it, containing the precomputed TPM expression values, made available via <code>ExperimentHub</code>.<br>
 This will enable us to performed a paired analysis on the same observation units (the patients) to appreciate differences in the cell proportions induced by the kinase-inhibitor treatment.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"ExperimentHub"</span><span class="op">)</span>
-<span class="co">#&gt; Loading required package: AnnotationHub</span>
-<span class="co">#&gt; Loading required package: BiocFileCache</span>
-<span class="co">#&gt; Loading required package: dbplyr</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Attaching package: 'dbplyr'</span>
-<span class="co">#&gt; The following objects are masked from 'package:dplyr':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     ident, sql</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Attaching package: 'AnnotationHub'</span>
-<span class="co">#&gt; The following object is masked from 'package:Biobase':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     cache</span>
-<span class="va">eh</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ExperimentHub/man/ExperimentHub-class.html" class="external-link">ExperimentHub</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; snapshotDate(): 2022-05-17</span>
-<span class="va">quantiseqdata_eh</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/AnnotationHub/man/AnnotationHub-class.html" class="external-link">query</a></span><span class="op">(</span><span class="va">eh</span>, <span class="st">"quantiseqr"</span><span class="op">)</span>
-<span class="va">quantiseqdata_eh</span>
-<span class="co">#&gt; ExperimentHub with 1 record</span>
-<span class="co">#&gt; # snapshotDate(): 2022-05-17</span>
-<span class="co">#&gt; # names(): EH6015</span>
-<span class="co">#&gt; # package(): quantiseqr</span>
-<span class="co">#&gt; # $dataprovider: GEO</span>
-<span class="co">#&gt; # $species: Homo sapiens</span>
-<span class="co">#&gt; # $rdataclass: SummarizedExperiment</span>
-<span class="co">#&gt; # $rdatadateadded: 2021-04-27</span>
-<span class="co">#&gt; # $title: Song2017_MAPKi_treatment</span>
-<span class="co">#&gt; # $description: RNA-seq data, quantified as TPM, for tumor samples  pre and ...</span>
-<span class="co">#&gt; # $taxonomyid: 9606</span>
-<span class="co">#&gt; # $genome: NA</span>
-<span class="co">#&gt; # $sourcetype: tar.gz</span>
-<span class="co">#&gt; # $sourceurl: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE75299</span>
-<span class="co">#&gt; # $sourcesize: NA</span>
-<span class="co">#&gt; # $tags: c("Annotation", "Classification", "ExperimentHubSoftware",</span>
-<span class="co">#&gt; #   "FeatureExtraction", "GeneExpression", "ImmunoOncology",</span>
-<span class="co">#&gt; #   "Microarray", "Sequencing", "StatisticalMethod", "Transcription",</span>
-<span class="co">#&gt; #   "Transcriptomics", "Visualization") </span>
-<span class="co">#&gt; # retrieve record with 'object[["EH6015"]]'</span>
-
-<span class="va">se_Song2017_MAPKi_treatment</span> <span class="op">&lt;-</span> <span class="va">quantiseqdata_eh</span><span class="op">[[</span><span class="st">"EH6015"</span><span class="op">]</span><span class="op">]</span>
-<span class="co">#&gt; see ?quantiseqr and browseVignettes('quantiseqr') for documentation</span>
-<span class="co">#&gt; loading from cache</span>
-
-<span class="va">se_Song2017_MAPKi_treatment_tiquant</span> <span class="op">&lt;-</span> <span class="fu">quantiseqr</span><span class="fu">::</span><span class="fu"><a href="../reference/run_quantiseq.html">run_quantiseq</a></span><span class="op">(</span>
-  expression_data <span class="op">=</span> <span class="va">se_Song2017_MAPKi_treatment</span>,
-  signature_matrix <span class="op">=</span> <span class="st">"TIL10"</span>,
-  is_arraydata <span class="op">=</span> <span class="cn">FALSE</span>,
-  is_tumordata <span class="op">=</span> <span class="cn">TRUE</span>,
-  scale_mRNA <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Running quanTIseq deconvolution module</span>
-<span class="co">#&gt; Gene expression normalization and re-annotation (arrays: FALSE)</span>
-<span class="co">#&gt; Removing 17 noisy genes</span>
-<span class="co">#&gt; Removing 15 genes with high expression in tumors</span>
-<span class="co">#&gt; Signature genes found in data set: 134/138 (97.1%)</span>
-<span class="co">#&gt; Mixture deconvolution (method: lsei)</span>
-<span class="co">#&gt; Deconvolution successful!</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">se_Song2017_MAPKi_treatment_tiquant</span><span class="op">)</span>
-<span class="co">#&gt; [1] 19423    39</span>
-<span class="co"># colData(se_Song2017_MAPKi_treatment_tiquant)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData</a></span><span class="op">(</span><span class="va">se_Song2017_MAPKi_treatment_tiquant</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt;  [1] "geo_accession"                   "sra_id"                         </span>
-<span class="co">#&gt;  [3] "title"                           "status"                         </span>
-<span class="co">#&gt;  [5] "submission_date"                 "last_update_date"               </span>
-<span class="co">#&gt;  [7] "type"                            "channel_count"                  </span>
-<span class="co">#&gt;  [9] "source_name_ch1"                 "organism_ch1"                   </span>
-<span class="co">#&gt; [11] "characteristics_ch1"             "characteristics_ch1.1"          </span>
-<span class="co">#&gt; [13] "characteristics_ch1.2"           "molecule_ch1"                   </span>
-<span class="co">#&gt; [15] "extract_protocol_ch1"            "extract_protocol_ch1.1"         </span>
-<span class="co">#&gt; [17] "extract_protocol_ch1.2"          "taxid_ch1"                      </span>
-<span class="co">#&gt; [19] "description"                     "description.1"                  </span>
-<span class="co">#&gt; [21] "data_processing"                 "data_processing.1"              </span>
-<span class="co">#&gt; [23] "data_processing.2"               "data_processing.3"              </span>
-<span class="co">#&gt; [25] "platform_id"                     "contact_name"                   </span>
-<span class="co">#&gt; [27] "contact_email"                   "contact_department"             </span>
-<span class="co">#&gt; [29] "contact_institute"               "contact_address"                </span>
-<span class="co">#&gt; [31] "contact_city"                    "contact_state"                  </span>
-<span class="co">#&gt; [33] "contact_zip/postal_code"         "contact_country"                </span>
-<span class="co">#&gt; [35] "data_row_count"                  "instrument_model"               </span>
-<span class="co">#&gt; [37] "library_selection"               "library_source"                 </span>
-<span class="co">#&gt; [39] "library_strategy"                "relation"                       </span>
-<span class="co">#&gt; [41] "relation.1"                      "relation.2"                     </span>
-<span class="co">#&gt; [43] "supplementary_file_1"            "cell line:ch1"                  </span>
-<span class="co">#&gt; [45] "mapki treatment:ch1"             "mapki type:ch1"                 </span>
-<span class="co">#&gt; [47] "is_patient"                      "quanTIseq_TIL10_B.cells"        </span>
-<span class="co">#&gt; [49] "quanTIseq_TIL10_Macrophages.M1"  "quanTIseq_TIL10_Macrophages.M2" </span>
-<span class="co">#&gt; [51] "quanTIseq_TIL10_Monocytes"       "quanTIseq_TIL10_Neutrophils"    </span>
-<span class="co">#&gt; [53] "quanTIseq_TIL10_NK.cells"        "quanTIseq_TIL10_T.cells.CD4"    </span>
-<span class="co">#&gt; [55] "quanTIseq_TIL10_T.cells.CD8"     "quanTIseq_TIL10_Tregs"          </span>
-<span class="co">#&gt; [57] "quanTIseq_TIL10_Dendritic.cells" "quanTIseq_TIL10_Other"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"ExperimentHub"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Loading required package: AnnotationHub</span></span>
+<span><span class="co">#&gt; Loading required package: BiocFileCache</span></span>
+<span><span class="co">#&gt; Loading required package: dbplyr</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'dbplyr'</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:dplyr':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     ident, sql</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'AnnotationHub'</span></span>
+<span><span class="co">#&gt; The following object is masked from 'package:Biobase':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     cache</span></span>
+<span><span class="va">eh</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ExperimentHub/man/ExperimentHub-class.html" class="external-link">ExperimentHub</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; snapshotDate(): 2022-10-03</span></span>
+<span><span class="va">quantiseqdata_eh</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/AnnotationHub/man/AnnotationHub-class.html" class="external-link">query</a></span><span class="op">(</span><span class="va">eh</span>, <span class="st">"quantiseqr"</span><span class="op">)</span></span>
+<span><span class="va">quantiseqdata_eh</span></span>
+<span><span class="co">#&gt; ExperimentHub with 1 record</span></span>
+<span><span class="co">#&gt; # snapshotDate(): 2022-10-03</span></span>
+<span><span class="co">#&gt; # names(): EH6015</span></span>
+<span><span class="co">#&gt; # package(): quantiseqr</span></span>
+<span><span class="co">#&gt; # $dataprovider: GEO</span></span>
+<span><span class="co">#&gt; # $species: Homo sapiens</span></span>
+<span><span class="co">#&gt; # $rdataclass: SummarizedExperiment</span></span>
+<span><span class="co">#&gt; # $rdatadateadded: 2021-04-27</span></span>
+<span><span class="co">#&gt; # $title: Song2017_MAPKi_treatment</span></span>
+<span><span class="co">#&gt; # $description: RNA-seq data, quantified as TPM, for tumor samples  pre and ...</span></span>
+<span><span class="co">#&gt; # $taxonomyid: 9606</span></span>
+<span><span class="co">#&gt; # $genome: NA</span></span>
+<span><span class="co">#&gt; # $sourcetype: tar.gz</span></span>
+<span><span class="co">#&gt; # $sourceurl: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE75299</span></span>
+<span><span class="co">#&gt; # $sourcesize: NA</span></span>
+<span><span class="co">#&gt; # $tags: c("Annotation", "Classification", "ExperimentHubSoftware",</span></span>
+<span><span class="co">#&gt; #   "FeatureExtraction", "GeneExpression", "ImmunoOncology",</span></span>
+<span><span class="co">#&gt; #   "Microarray", "Sequencing", "StatisticalMethod", "Transcription",</span></span>
+<span><span class="co">#&gt; #   "Transcriptomics", "Visualization") </span></span>
+<span><span class="co">#&gt; # retrieve record with 'object[["EH6015"]]'</span></span>
+<span></span>
+<span><span class="va">se_Song2017_MAPKi_treatment</span> <span class="op">&lt;-</span> <span class="va">quantiseqdata_eh</span><span class="op">[[</span><span class="st">"EH6015"</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="co">#&gt; see ?quantiseqr and browseVignettes('quantiseqr') for documentation</span></span>
+<span><span class="co">#&gt; loading from cache</span></span>
+<span></span>
+<span><span class="va">se_Song2017_MAPKi_treatment_tiquant</span> <span class="op">&lt;-</span> <span class="fu">quantiseqr</span><span class="fu">::</span><span class="fu"><a href="../reference/run_quantiseq.html">run_quantiseq</a></span><span class="op">(</span></span>
+<span>  expression_data <span class="op">=</span> <span class="va">se_Song2017_MAPKi_treatment</span>,</span>
+<span>  signature_matrix <span class="op">=</span> <span class="st">"TIL10"</span>,</span>
+<span>  is_arraydata <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  is_tumordata <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  scale_mRNA <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Running quanTIseq deconvolution module</span></span>
+<span><span class="co">#&gt; Gene expression normalization and re-annotation (arrays: FALSE)</span></span>
+<span><span class="co">#&gt; Removing 17 noisy genes</span></span>
+<span><span class="co">#&gt; Removing 15 genes with high expression in tumors</span></span>
+<span><span class="co">#&gt; Signature genes found in data set: 138/138 (100%)</span></span>
+<span><span class="co">#&gt; Mixture deconvolution (method: lsei)</span></span>
+<span><span class="co">#&gt; Deconvolution successful!</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">se_Song2017_MAPKi_treatment_tiquant</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 19423    39</span></span>
+<span><span class="co"># colData(se_Song2017_MAPKi_treatment_tiquant)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData</a></span><span class="op">(</span><span class="va">se_Song2017_MAPKi_treatment_tiquant</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  [1] "geo_accession"                   "sra_id"                         </span></span>
+<span><span class="co">#&gt;  [3] "title"                           "status"                         </span></span>
+<span><span class="co">#&gt;  [5] "submission_date"                 "last_update_date"               </span></span>
+<span><span class="co">#&gt;  [7] "type"                            "channel_count"                  </span></span>
+<span><span class="co">#&gt;  [9] "source_name_ch1"                 "organism_ch1"                   </span></span>
+<span><span class="co">#&gt; [11] "characteristics_ch1"             "characteristics_ch1.1"          </span></span>
+<span><span class="co">#&gt; [13] "characteristics_ch1.2"           "molecule_ch1"                   </span></span>
+<span><span class="co">#&gt; [15] "extract_protocol_ch1"            "extract_protocol_ch1.1"         </span></span>
+<span><span class="co">#&gt; [17] "extract_protocol_ch1.2"          "taxid_ch1"                      </span></span>
+<span><span class="co">#&gt; [19] "description"                     "description.1"                  </span></span>
+<span><span class="co">#&gt; [21] "data_processing"                 "data_processing.1"              </span></span>
+<span><span class="co">#&gt; [23] "data_processing.2"               "data_processing.3"              </span></span>
+<span><span class="co">#&gt; [25] "platform_id"                     "contact_name"                   </span></span>
+<span><span class="co">#&gt; [27] "contact_email"                   "contact_department"             </span></span>
+<span><span class="co">#&gt; [29] "contact_institute"               "contact_address"                </span></span>
+<span><span class="co">#&gt; [31] "contact_city"                    "contact_state"                  </span></span>
+<span><span class="co">#&gt; [33] "contact_zip/postal_code"         "contact_country"                </span></span>
+<span><span class="co">#&gt; [35] "data_row_count"                  "instrument_model"               </span></span>
+<span><span class="co">#&gt; [37] "library_selection"               "library_source"                 </span></span>
+<span><span class="co">#&gt; [39] "library_strategy"                "relation"                       </span></span>
+<span><span class="co">#&gt; [41] "relation.1"                      "relation.2"                     </span></span>
+<span><span class="co">#&gt; [43] "supplementary_file_1"            "cell line:ch1"                  </span></span>
+<span><span class="co">#&gt; [45] "mapki treatment:ch1"             "mapki type:ch1"                 </span></span>
+<span><span class="co">#&gt; [47] "is_patient"                      "quanTIseq_TIL10_B.cells"        </span></span>
+<span><span class="co">#&gt; [49] "quanTIseq_TIL10_Macrophages.M1"  "quanTIseq_TIL10_Macrophages.M2" </span></span>
+<span><span class="co">#&gt; [51] "quanTIseq_TIL10_Monocytes"       "quanTIseq_TIL10_Neutrophils"    </span></span>
+<span><span class="co">#&gt; [53] "quanTIseq_TIL10_NK.cells"        "quanTIseq_TIL10_T.cells.CD4"    </span></span>
+<span><span class="co">#&gt; [55] "quanTIseq_TIL10_T.cells.CD8"     "quanTIseq_TIL10_Tregs"          </span></span>
+<span><span class="co">#&gt; [57] "quanTIseq_TIL10_Dendritic.cells" "quanTIseq_TIL10_Other"</span></span></code></pre></div>
 <p>As visible from the output of the last chunk, the cell type composition is stored in the <code>colData</code> slot, if providing a <code>SummarizedExperiment</code> as input.<br>
 We first plot the cell fractions by sample, this time with a color palette resembling the one used in <span class="citation">(Plattner, Finotello, and Rieder 2020)</span>.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># to extract the TIL10-relevant parts:</span>
-<span class="va">ti_quant</span> <span class="op">&lt;-</span> <span class="fu">quantiseqr</span><span class="fu">::</span><span class="fu"><a href="../reference/extract_ti_from_se.html">extract_ti_from_se</a></span><span class="op">(</span><span class="va">se_Song2017_MAPKi_treatment_tiquant</span><span class="op">)</span>
-<span class="co">#&gt; Found quantifications for the TIL10 signature...</span>
-
-<span class="co"># to access the full column metadata:</span>
-<span class="va">cdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData</a></span><span class="op">(</span><span class="va">se_Song2017_MAPKi_treatment_tiquant</span><span class="op">)</span>
-
-<span class="va">cellfracs_tidy</span> <span class="op">&lt;-</span> <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html" class="external-link">pivot_longer</a></span><span class="op">(</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">cdata</span><span class="op">)</span>, 
-  cols <span class="op">=</span> <span class="va">quanTIseq_TIL10_B.cells</span><span class="op">:</span><span class="va">quanTIseq_TIL10_Other</span><span class="op">)</span>
-
-<span class="va">cellfracs_tidy</span><span class="op">$</span><span class="va">name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">"quanTIseq_TIL10_"</span>, <span class="st">""</span>, <span class="va">cellfracs_tidy</span><span class="op">$</span><span class="va">name</span><span class="op">)</span>,
-  levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>
-    <span class="st">"B.cells"</span>, <span class="st">"Macrophages.M1"</span>, <span class="st">"Macrophages.M2"</span>,
-    <span class="st">"Monocytes"</span>, <span class="st">"Neutrophils"</span>, <span class="st">"NK.cells"</span>,
-    <span class="st">"T.cells.CD4"</span>, <span class="st">"T.cells.CD8"</span>, <span class="st">"Tregs"</span>,
-    <span class="st">"Dendritic.cells"</span>, <span class="st">"Other"</span>
-  <span class="op">)</span>
-<span class="op">)</span>
-
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">cellfracs_tidy</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">name</span>, y <span class="op">=</span> <span class="va">value</span>, x <span class="op">=</span> <span class="va">sra_id</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_bar</a></span><span class="op">(</span>position <span class="op">=</span> <span class="st">"fill"</span>, stat <span class="op">=</span> <span class="st">"identity"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html" class="external-link">scale_fill_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"PuOr"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">xlab</a></span><span class="op">(</span><span class="st">""</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ylab</a></span><span class="op">(</span><span class="st">"Cell Fractions"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">45</span>, hjust <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># to extract the TIL10-relevant parts:</span></span>
+<span><span class="va">ti_quant</span> <span class="op">&lt;-</span> <span class="fu">quantiseqr</span><span class="fu">::</span><span class="fu"><a href="../reference/extract_ti_from_se.html">extract_ti_from_se</a></span><span class="op">(</span><span class="va">se_Song2017_MAPKi_treatment_tiquant</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Found quantifications for the TIL10 signature...</span></span>
+<span></span>
+<span><span class="co"># to access the full column metadata:</span></span>
+<span><span class="va">cdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData</a></span><span class="op">(</span><span class="va">se_Song2017_MAPKi_treatment_tiquant</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">cellfracs_tidy</span> <span class="op">&lt;-</span> <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html" class="external-link">pivot_longer</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">cdata</span><span class="op">)</span>, </span>
+<span>  cols <span class="op">=</span> <span class="va">quanTIseq_TIL10_B.cells</span><span class="op">:</span><span class="va">quanTIseq_TIL10_Other</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">cellfracs_tidy</span><span class="op">$</span><span class="va">name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">"quanTIseq_TIL10_"</span>, <span class="st">""</span>, <span class="va">cellfracs_tidy</span><span class="op">$</span><span class="va">name</span><span class="op">)</span>,</span>
+<span>  levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>    <span class="st">"B.cells"</span>, <span class="st">"Macrophages.M1"</span>, <span class="st">"Macrophages.M2"</span>,</span>
+<span>    <span class="st">"Monocytes"</span>, <span class="st">"Neutrophils"</span>, <span class="st">"NK.cells"</span>,</span>
+<span>    <span class="st">"T.cells.CD4"</span>, <span class="st">"T.cells.CD8"</span>, <span class="st">"Tregs"</span>,</span>
+<span>    <span class="st">"Dendritic.cells"</span>, <span class="st">"Other"</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">cellfracs_tidy</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">name</span>, y <span class="op">=</span> <span class="va">value</span>, x <span class="op">=</span> <span class="va">sra_id</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_bar</a></span><span class="op">(</span>position <span class="op">=</span> <span class="st">"fill"</span>, stat <span class="op">=</span> <span class="st">"identity"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html" class="external-link">scale_fill_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"PuOr"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">xlab</a></span><span class="op">(</span><span class="st">""</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ylab</a></span><span class="op">(</span><span class="st">"Cell Fractions"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">45</span>, hjust <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="using_quantiseqr_files/figure-html/ex3-ti-plot-1.png" alt="Stacked barplot of quanTIseq cell fractions computed on the Song et al. dataset, this time using a customized color palette." width="672"><p class="caption">
 Stacked barplot of quanTIseq cell fractions computed on the Song et al. dataset, this time using a customized color palette.
 </p>
 </div>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="co"># we could have also used the compact wrapper</span>
-<span class="co">## quantiplot(se_Song2017_MAPKi_treatment_tiquant)</span></code></pre></div>
+<code class="sourceCode R"><span></span>
+<span><span class="co"># we could have also used the compact wrapper</span></span>
+<span><span class="co">## quantiplot(se_Song2017_MAPKi_treatment_tiquant)</span></span></code></pre></div>
 <p>Similarly, we proceed by splitting the data in pre- and post-treatment, first filtering out the cell line samples (keeping the ones where <code>is_patient</code> is <code>TRUE</code>), then manipulating to long format and explicitly building up the plot object.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">prepost_data</span> <span class="op">&lt;-</span> <span class="va">cdata</span><span class="op">[</span><span class="va">cdata</span><span class="op">$</span><span class="va">is_patient</span>, <span class="op">]</span>
-
-<span class="va">prepost_data_tidy</span> <span class="op">&lt;-</span> <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html" class="external-link">pivot_longer</a></span><span class="op">(</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">prepost_data</span><span class="op">)</span>, 
-  cols <span class="op">=</span> <span class="va">quanTIseq_TIL10_B.cells</span><span class="op">:</span><span class="va">quanTIseq_TIL10_Dendritic.cells</span><span class="op">)</span>
-
-<span class="va">prepost_data_tidy</span><span class="op">$</span><span class="va">groups</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">prepost_data_tidy</span><span class="op">$</span><span class="va">mapki.treatment.ch1</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"none"</span>, <span class="st">"on-treatment"</span><span class="op">)</span><span class="op">)</span>
-
-<span class="va">prepost_data_tidy</span><span class="op">$</span><span class="va">name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">"quanTIseq_TIL10_"</span>, <span class="st">""</span>, <span class="va">prepost_data_tidy</span><span class="op">$</span><span class="va">name</span><span class="op">)</span>,
-  levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>
-    <span class="st">"B.cells"</span>, <span class="st">"Macrophages.M1"</span>, <span class="st">"Macrophages.M2"</span>,
-    <span class="st">"Monocytes"</span>, <span class="st">"Neutrophils"</span>, <span class="st">"NK.cells"</span>,
-    <span class="st">"T.cells.CD4"</span>, <span class="st">"T.cells.CD8"</span>, <span class="st">"Tregs"</span>,
-    <span class="st">"Dendritic.cells"</span>
-  <span class="op">)</span>
-<span class="op">)</span>
-
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">prepost_data_tidy</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">name</span>, <span class="va">value</span>, fill <span class="op">=</span> <span class="va">groups</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html" class="external-link">geom_boxplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">xlab</a></span><span class="op">(</span><span class="st">""</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ylab</a></span><span class="op">(</span><span class="st">"cell fractions"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">45</span>, hjust <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">prepost_data</span> <span class="op">&lt;-</span> <span class="va">cdata</span><span class="op">[</span><span class="va">cdata</span><span class="op">$</span><span class="va">is_patient</span>, <span class="op">]</span></span>
+<span></span>
+<span><span class="va">prepost_data_tidy</span> <span class="op">&lt;-</span> <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html" class="external-link">pivot_longer</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">prepost_data</span><span class="op">)</span>, </span>
+<span>  cols <span class="op">=</span> <span class="va">quanTIseq_TIL10_B.cells</span><span class="op">:</span><span class="va">quanTIseq_TIL10_Dendritic.cells</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">prepost_data_tidy</span><span class="op">$</span><span class="va">groups</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">prepost_data_tidy</span><span class="op">$</span><span class="va">mapki.treatment.ch1</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"none"</span>, <span class="st">"on-treatment"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">prepost_data_tidy</span><span class="op">$</span><span class="va">name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">"quanTIseq_TIL10_"</span>, <span class="st">""</span>, <span class="va">prepost_data_tidy</span><span class="op">$</span><span class="va">name</span><span class="op">)</span>,</span>
+<span>  levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>    <span class="st">"B.cells"</span>, <span class="st">"Macrophages.M1"</span>, <span class="st">"Macrophages.M2"</span>,</span>
+<span>    <span class="st">"Monocytes"</span>, <span class="st">"Neutrophils"</span>, <span class="st">"NK.cells"</span>,</span>
+<span>    <span class="st">"T.cells.CD4"</span>, <span class="st">"T.cells.CD8"</span>, <span class="st">"Tregs"</span>,</span>
+<span>    <span class="st">"Dendritic.cells"</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">prepost_data_tidy</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">name</span>, <span class="va">value</span>, fill <span class="op">=</span> <span class="va">groups</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html" class="external-link">geom_boxplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">xlab</a></span><span class="op">(</span><span class="st">""</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ylab</a></span><span class="op">(</span><span class="st">"cell fractions"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">45</span>, hjust <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="using_quantiseqr_files/figure-html/ex3-ti-plot2-1.png" alt="Boxplot of quanTIseq cell fractions computed on the Song et al. dataset, showing the effect of the MAPKi treatment." width="672"><p class="caption">
 Boxplot of quanTIseq cell fractions computed on the Song et al. dataset, showing the effect of the MAPKi treatment.
@@ -576,57 +576,57 @@ The large simulated dataset represents the RNA-seq expression data from breast t
 <p>This dataset is coupled with a table where the original information on the used true fractions is available, and can be used to benchmark the performance of the deconvolution algorithm.</p>
 <p>In this case, we set the <code>scale_mRNA</code> parameter to <code>FALSE</code> because the samples were simulated without modelling any cell-type-specific mRNA bias, so quanTIseq does not have to correct for it. Instead, when analyzing real RNA-seq data, this parameter should always set to <code>TRUE</code> (default) to avoid that some cell types with higher (or lower) total mRNA abundance are systematically under (or over) estimated via deconvolution.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># downloading first the file from https://icbi.i-med.ac.at/software/quantiseq/doc/downloads/quanTIseq_SimRNAseq_mixture.txt</span>
-
-<span class="co"># https://icbi.i-med.ac.at/software/quantiseq/doc/</span>
-
-<span class="va">tpm_1700mixtures</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span><span class="st">"quanTIseq_SimRNAseq_mixture.txt.gz"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">tpm_1700mixtures</span><span class="op">)</span>
-
-<span class="co"># extracting the gene names, restructuring the matrix by dropping the column</span>
-<span class="va">tpm_genesymbols</span> <span class="op">&lt;-</span> <span class="va">tpm_1700mixtures</span><span class="op">$</span><span class="va">Gene</span>
-<span class="va">tpm_1700mixtures</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">tpm_1700mixtures</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">tpm_1700mixtures</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">tpm_genesymbols</span>
-
-<span class="co"># running quantiseq on that set</span>
-<span class="co"># True mRNA fractions were simulated with no total-mRNA bias. Thus, these data should be analyzed specifying the option scale_mRNA set to FALSE</span>
-<span class="va">ti_quant_sim1700mixtures</span> <span class="op">&lt;-</span> <span class="fu">quantiseqr</span><span class="fu">::</span><span class="fu"><a href="../reference/run_quantiseq.html">run_quantiseq</a></span><span class="op">(</span>
-  expression_data <span class="op">=</span> <span class="va">tpm_1700mixtures</span>,
-  signature_matrix <span class="op">=</span> <span class="st">"TIL10"</span>,
-  is_arraydata <span class="op">=</span> <span class="cn">FALSE</span>,
-  is_tumordata <span class="op">=</span> <span class="cn">TRUE</span>,
-  scale_mRNA <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span>
-
-<span class="co"># save(ti_quant_sim1700mixtures, file = "data/ti_quant_sim1700mixtures.RData")</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># downloading first the file from https://icbi.i-med.ac.at/software/quantiseq/doc/downloads/quanTIseq_SimRNAseq_mixture.txt</span></span>
+<span></span>
+<span><span class="co"># https://icbi.i-med.ac.at/software/quantiseq/doc/</span></span>
+<span></span>
+<span><span class="va">tpm_1700mixtures</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span><span class="st">"quanTIseq_SimRNAseq_mixture.txt.gz"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">tpm_1700mixtures</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># extracting the gene names, restructuring the matrix by dropping the column</span></span>
+<span><span class="va">tpm_genesymbols</span> <span class="op">&lt;-</span> <span class="va">tpm_1700mixtures</span><span class="op">$</span><span class="va">Gene</span></span>
+<span><span class="va">tpm_1700mixtures</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">tpm_1700mixtures</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">tpm_1700mixtures</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">tpm_genesymbols</span></span>
+<span></span>
+<span><span class="co"># running quantiseq on that set</span></span>
+<span><span class="co"># True mRNA fractions were simulated with no total-mRNA bias. Thus, these data should be analyzed specifying the option scale_mRNA set to FALSE</span></span>
+<span><span class="va">ti_quant_sim1700mixtures</span> <span class="op">&lt;-</span> <span class="fu">quantiseqr</span><span class="fu">::</span><span class="fu"><a href="../reference/run_quantiseq.html">run_quantiseq</a></span><span class="op">(</span></span>
+<span>  expression_data <span class="op">=</span> <span class="va">tpm_1700mixtures</span>,</span>
+<span>  signature_matrix <span class="op">=</span> <span class="st">"TIL10"</span>,</span>
+<span>  is_arraydata <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  is_tumordata <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  scale_mRNA <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># save(ti_quant_sim1700mixtures, file = "data/ti_quant_sim1700mixtures.RData")</span></span></code></pre></div>
 <p>To avoid the download of a large file, we provide the precomputed object <code>ti_quant_sim1700mixtures</code> in the <code>quantiseqr</code> package - the chunk above is still fully functional once the mixture file has been retrieved.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">ti_quant_sim1700mixtures</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">ti_quant_sim1700mixtures</span><span class="op">)</span>
-<span class="co">#&gt; [1] 1700   12</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">ti_quant_sim1700mixtures</span><span class="op">)</span>
-<span class="co">#&gt;                  Sample     B.cells Macrophages.M1 Macrophages.M2  Monocytes</span>
-<span class="co">#&gt; SimData1       SimData1 0.019844435   0.0597686387     0.27196959 0.23806843</span>
-<span class="co">#&gt; SimData10     SimData10 0.009382905   0.0249402719     0.08979368 0.09425353</span>
-<span class="co">#&gt; SimData100   SimData100 0.033495650   0.0096198517     0.03057850 0.00000000</span>
-<span class="co">#&gt; SimData1000 SimData1000 0.042487150   0.0149141815     0.05204647 0.03813509</span>
-<span class="co">#&gt; SimData1001 SimData1001 0.029230069   0.0139994722     0.02193008 0.01626132</span>
-<span class="co">#&gt; SimData1002 SimData1002 0.013160627   0.0003221679     0.02475316 0.03709523</span>
-<span class="co">#&gt;             Neutrophils   NK.cells T.cells.CD4 T.cells.CD8       Tregs</span>
-<span class="co">#&gt; SimData1    0.002813382 0.10095469  0.00000000  0.08827795 0.169366189</span>
-<span class="co">#&gt; SimData10   0.005454131 0.03922658  0.00000000  0.04532855 0.067272535</span>
-<span class="co">#&gt; SimData100  0.016667177 0.04231232  0.00000000  0.04674569 0.010138803</span>
-<span class="co">#&gt; SimData1000 0.032586376 0.03811065  0.03650752  0.03029464 0.017042234</span>
-<span class="co">#&gt; SimData1001 0.021034018 0.02682053  0.02145636  0.01624266 0.011879932</span>
-<span class="co">#&gt; SimData1002 0.007311373 0.01710432  0.00000000  0.01314424 0.008695806</span>
-<span class="co">#&gt;             Dendritic.cells     Other</span>
-<span class="co">#&gt; SimData1        0.048936698 0.0000000</span>
-<span class="co">#&gt; SimData10       0.015406051 0.6089418</span>
-<span class="co">#&gt; SimData100      0.023892748 0.7865493</span>
-<span class="co">#&gt; SimData1000     0.015217518 0.6826582</span>
-<span class="co">#&gt; SimData1001     0.028108596 0.7930370</span>
-<span class="co">#&gt; SimData1002     0.001104581 0.8773085</span>
-<span class="fu"><a href="../reference/quantiplot.html">quantiplot</a></span><span class="op">(</span><span class="va">ti_quant_sim1700mixtures</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, <span class="op">]</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">ti_quant_sim1700mixtures</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">ti_quant_sim1700mixtures</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 1700   12</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">ti_quant_sim1700mixtures</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                  Sample     B.cells Macrophages.M1 Macrophages.M2  Monocytes</span></span>
+<span><span class="co">#&gt; SimData1       SimData1 0.019844435   0.0597686387     0.27196959 0.23806843</span></span>
+<span><span class="co">#&gt; SimData10     SimData10 0.009382905   0.0249402719     0.08979368 0.09425353</span></span>
+<span><span class="co">#&gt; SimData100   SimData100 0.033495650   0.0096198517     0.03057850 0.00000000</span></span>
+<span><span class="co">#&gt; SimData1000 SimData1000 0.042487150   0.0149141815     0.05204647 0.03813509</span></span>
+<span><span class="co">#&gt; SimData1001 SimData1001 0.029230069   0.0139994722     0.02193008 0.01626132</span></span>
+<span><span class="co">#&gt; SimData1002 SimData1002 0.013160627   0.0003221679     0.02475316 0.03709523</span></span>
+<span><span class="co">#&gt;             Neutrophils   NK.cells T.cells.CD4 T.cells.CD8       Tregs</span></span>
+<span><span class="co">#&gt; SimData1    0.002813382 0.10095469  0.00000000  0.08827795 0.169366189</span></span>
+<span><span class="co">#&gt; SimData10   0.005454131 0.03922658  0.00000000  0.04532855 0.067272535</span></span>
+<span><span class="co">#&gt; SimData100  0.016667177 0.04231232  0.00000000  0.04674569 0.010138803</span></span>
+<span><span class="co">#&gt; SimData1000 0.032586376 0.03811065  0.03650752  0.03029464 0.017042234</span></span>
+<span><span class="co">#&gt; SimData1001 0.021034018 0.02682053  0.02145636  0.01624266 0.011879932</span></span>
+<span><span class="co">#&gt; SimData1002 0.007311373 0.01710432  0.00000000  0.01314424 0.008695806</span></span>
+<span><span class="co">#&gt;             Dendritic.cells     Other</span></span>
+<span><span class="co">#&gt; SimData1        0.048936698 0.0000000</span></span>
+<span><span class="co">#&gt; SimData10       0.015406051 0.6089418</span></span>
+<span><span class="co">#&gt; SimData100      0.023892748 0.7865493</span></span>
+<span><span class="co">#&gt; SimData1000     0.015217518 0.6826582</span></span>
+<span><span class="co">#&gt; SimData1001     0.028108596 0.7930370</span></span>
+<span><span class="co">#&gt; SimData1002     0.001104581 0.8773085</span></span>
+<span><span class="fu"><a href="../reference/quantiplot.html">quantiplot</a></span><span class="op">(</span><span class="va">ti_quant_sim1700mixtures</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, <span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="using_quantiseqr_files/figure-html/ex4-load-plot-1.png" alt="Stacked barplot of quanTIseq cell fractions computed on the first 100 samples from the simulated dataset." width="576"><p class="caption">
 Stacked barplot of quanTIseq cell fractions computed on the first 100 samples from the simulated dataset.
@@ -634,98 +634,98 @@ Stacked barplot of quanTIseq cell fractions computed on the first 100 samples fr
 </div>
 <p>We also read in the true proportions, known by design - this is provided as a text file inside <code>quantiseqr</code>.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">true_prop_1700mix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.table</a></span><span class="op">(</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"quanTIseq_SimRNAseq_read_fractions.txt.gz"</span>, package <span class="op">=</span> <span class="st">"quantiseqr"</span><span class="op">)</span>,
-  sep <span class="op">=</span> <span class="st">"\t"</span>, header <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">true_prop_1700mix</span><span class="op">)</span>
-<span class="co">#&gt;           Mix    B.cells Macrophages.M1 Macrophages.M2  Monocytes Neutrophils</span>
-<span class="co">#&gt; 1    SimData1 0.01890000    0.067800000     0.22910000 0.22560000 0.007200000</span>
-<span class="co">#&gt; 2   SimData10 0.00756000    0.027120000     0.09164000 0.09024000 0.002880000</span>
-<span class="co">#&gt; 3  SimData100 0.03178064    0.017140343     0.01076022 0.02004040 0.019540391</span>
-<span class="co">#&gt; 4 SimData1000 0.04103877    0.009149726     0.04553863 0.05792826 0.028139156</span>
-<span class="co">#&gt; 5 SimData1001 0.02735945    0.006099878     0.03035939 0.03861923 0.018759625</span>
-<span class="co">#&gt; 6 SimData1002 0.01367986    0.003049970     0.01517985 0.01930981 0.009379906</span>
-<span class="co">#&gt;     NK.cells T.cells.CD4 T.cells.CD8       Tregs Dendritic.cells    Tumor</span>
-<span class="co">#&gt; 1 0.09700000  0.00960000 0.108700000 0.203900000     0.032200000 0.000000</span>
-<span class="co">#&gt; 2 0.03880000  0.00384000 0.043480000 0.081560000     0.012880000 0.600000</span>
-<span class="co">#&gt; 3 0.03480070  0.02140043 0.036440729 0.001720034     0.006360127 0.800016</span>
-<span class="co">#&gt; 4 0.03437897  0.03677890 0.029279122 0.012719618     0.005069848 0.699979</span>
-<span class="co">#&gt; 5 0.02291954  0.02451951 0.019519610 0.008479830     0.003379932 0.799984</span>
-<span class="co">#&gt; 6 0.01145989  0.01225988 0.009759902 0.004239958     0.001689983 0.899991</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">true_prop_1700mix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.table</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"quanTIseq_SimRNAseq_read_fractions.txt.gz"</span>, package <span class="op">=</span> <span class="st">"quantiseqr"</span><span class="op">)</span>,</span>
+<span>  sep <span class="op">=</span> <span class="st">"\t"</span>, header <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">true_prop_1700mix</span><span class="op">)</span></span>
+<span><span class="co">#&gt;           Mix    B.cells Macrophages.M1 Macrophages.M2  Monocytes Neutrophils</span></span>
+<span><span class="co">#&gt; 1    SimData1 0.01890000    0.067800000     0.22910000 0.22560000 0.007200000</span></span>
+<span><span class="co">#&gt; 2   SimData10 0.00756000    0.027120000     0.09164000 0.09024000 0.002880000</span></span>
+<span><span class="co">#&gt; 3  SimData100 0.03178064    0.017140343     0.01076022 0.02004040 0.019540391</span></span>
+<span><span class="co">#&gt; 4 SimData1000 0.04103877    0.009149726     0.04553863 0.05792826 0.028139156</span></span>
+<span><span class="co">#&gt; 5 SimData1001 0.02735945    0.006099878     0.03035939 0.03861923 0.018759625</span></span>
+<span><span class="co">#&gt; 6 SimData1002 0.01367986    0.003049970     0.01517985 0.01930981 0.009379906</span></span>
+<span><span class="co">#&gt;     NK.cells T.cells.CD4 T.cells.CD8       Tregs Dendritic.cells    Tumor</span></span>
+<span><span class="co">#&gt; 1 0.09700000  0.00960000 0.108700000 0.203900000     0.032200000 0.000000</span></span>
+<span><span class="co">#&gt; 2 0.03880000  0.00384000 0.043480000 0.081560000     0.012880000 0.600000</span></span>
+<span><span class="co">#&gt; 3 0.03480070  0.02140043 0.036440729 0.001720034     0.006360127 0.800016</span></span>
+<span><span class="co">#&gt; 4 0.03437897  0.03677890 0.029279122 0.012719618     0.005069848 0.699979</span></span>
+<span><span class="co">#&gt; 5 0.02291954  0.02451951 0.019519610 0.008479830     0.003379932 0.799984</span></span>
+<span><span class="co">#&gt; 6 0.01145989  0.01225988 0.009759902 0.004239958     0.001689983 0.899991</span></span></code></pre></div>
 <p>In the following chunk we perform some preprocessing steps to facilitate the comparison, also in a graphical manner.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># merging the two sets to facilitate the visualization</span>
-<span class="co"># colnames(ti_quant_sim1700mixtures) &lt;- paste0("quantiseq_", colnames(ti_quant_sim1700mixtures))</span>
-<span class="co"># colnames(true_prop_1700mix) &lt;- paste0("trueprops_", colnames(true_prop_1700mix))</span>
-
-<span class="co"># ti_quant_sim1700mixtures$method &lt;- "quanTIseq"</span>
-<span class="co"># true_prop_1700mix$method &lt;- "ground_truth"</span>
-
-<span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">true_prop_1700mix</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Sample"</span>
-<span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">true_prop_1700mix</span><span class="op">)</span><span class="op">[</span><span class="fl">12</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Other"</span>
-
-<span class="va">ti_long</span> <span class="op">&lt;-</span> <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html" class="external-link">pivot_longer</a></span><span class="op">(</span><span class="va">ti_quant_sim1700mixtures</span>,
-  cols <span class="op">=</span> <span class="va">B.cells</span><span class="op">:</span><span class="va">Other</span>,
-  names_to <span class="op">=</span> <span class="st">"cell_type"</span>,
-  values_to <span class="op">=</span> <span class="st">"value_quantiseq"</span>
-<span class="op">)</span>
-<span class="va">ti_long</span><span class="op">$</span><span class="va">mix_id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">ti_long</span><span class="op">$</span><span class="va">Sample</span>, <span class="va">ti_long</span><span class="op">$</span><span class="va">cell_type</span>, sep <span class="op">=</span> <span class="st">"_"</span><span class="op">)</span>
-
-<span class="va">tp_long</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html" class="external-link">pivot_longer</a></span><span class="op">(</span><span class="va">true_prop_1700mix</span>,
-  cols <span class="op">=</span> <span class="va">B.cells</span><span class="op">:</span><span class="va">Other</span>,
-  names_to <span class="op">=</span> <span class="st">"cell_type"</span>,
-  values_to <span class="op">=</span> <span class="st">"value_trueprop"</span>
-<span class="op">)</span>
-<span class="va">tp_long</span><span class="op">$</span><span class="va">mix_id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">tp_long</span><span class="op">$</span><span class="va">Sample</span>, <span class="va">tp_long</span><span class="op">$</span><span class="va">cell_type</span>, sep <span class="op">=</span> <span class="st">"_"</span><span class="op">)</span>
-
-
-<span class="va">ti_tp_merged</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">ti_long</span>, <span class="va">tp_long</span>, by <span class="op">=</span> <span class="st">"mix_id"</span><span class="op">)</span>
-<span class="va">ti_tp_merged</span><span class="op">$</span><span class="va">cell_type.x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">ti_tp_merged</span><span class="op">$</span><span class="va">cell_type.x</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">true_prop_1700mix</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">:</span><span class="fl">12</span><span class="op">]</span><span class="op">)</span>
-
-<span class="co"># ti_merged &lt;- rbind(ti_quant_sim1700mixtures,</span>
-<span class="co"># true_prop_1700mix)</span>
-
-<span class="co"># ti_merged_long &lt;- pivot_longer(ti_quant_sim1700mixtures, cols = B.cells:Other)</span>
-
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>
-  <span class="va">ti_tp_merged</span>,
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>
-    x <span class="op">=</span> <span class="va">value_trueprop</span>,
-    y <span class="op">=</span> <span class="va">value_quantiseq</span>,
-    col <span class="op">=</span> <span class="va">cell_type.x</span>
-  <span class="op">)</span>
-<span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>
-    x <span class="op">=</span> <span class="st">"True fractions"</span>,
-    y <span class="op">=</span> <span class="st">"quanTIseq cell fractions"</span>,
-    col <span class="op">=</span> <span class="st">"Cell type"</span>
-  <span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># merging the two sets to facilitate the visualization</span></span>
+<span><span class="co"># colnames(ti_quant_sim1700mixtures) &lt;- paste0("quantiseq_", colnames(ti_quant_sim1700mixtures))</span></span>
+<span><span class="co"># colnames(true_prop_1700mix) &lt;- paste0("trueprops_", colnames(true_prop_1700mix))</span></span>
+<span></span>
+<span><span class="co"># ti_quant_sim1700mixtures$method &lt;- "quanTIseq"</span></span>
+<span><span class="co"># true_prop_1700mix$method &lt;- "ground_truth"</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">true_prop_1700mix</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Sample"</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">true_prop_1700mix</span><span class="op">)</span><span class="op">[</span><span class="fl">12</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Other"</span></span>
+<span></span>
+<span><span class="va">ti_long</span> <span class="op">&lt;-</span> <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html" class="external-link">pivot_longer</a></span><span class="op">(</span><span class="va">ti_quant_sim1700mixtures</span>,</span>
+<span>  cols <span class="op">=</span> <span class="va">B.cells</span><span class="op">:</span><span class="va">Other</span>,</span>
+<span>  names_to <span class="op">=</span> <span class="st">"cell_type"</span>,</span>
+<span>  values_to <span class="op">=</span> <span class="st">"value_quantiseq"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">ti_long</span><span class="op">$</span><span class="va">mix_id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">ti_long</span><span class="op">$</span><span class="va">Sample</span>, <span class="va">ti_long</span><span class="op">$</span><span class="va">cell_type</span>, sep <span class="op">=</span> <span class="st">"_"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">tp_long</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html" class="external-link">pivot_longer</a></span><span class="op">(</span><span class="va">true_prop_1700mix</span>,</span>
+<span>  cols <span class="op">=</span> <span class="va">B.cells</span><span class="op">:</span><span class="va">Other</span>,</span>
+<span>  names_to <span class="op">=</span> <span class="st">"cell_type"</span>,</span>
+<span>  values_to <span class="op">=</span> <span class="st">"value_trueprop"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">tp_long</span><span class="op">$</span><span class="va">mix_id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">tp_long</span><span class="op">$</span><span class="va">Sample</span>, <span class="va">tp_long</span><span class="op">$</span><span class="va">cell_type</span>, sep <span class="op">=</span> <span class="st">"_"</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="va">ti_tp_merged</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">ti_long</span>, <span class="va">tp_long</span>, by <span class="op">=</span> <span class="st">"mix_id"</span><span class="op">)</span></span>
+<span><span class="va">ti_tp_merged</span><span class="op">$</span><span class="va">cell_type.x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">ti_tp_merged</span><span class="op">$</span><span class="va">cell_type.x</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">true_prop_1700mix</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">:</span><span class="fl">12</span><span class="op">]</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># ti_merged &lt;- rbind(ti_quant_sim1700mixtures,</span></span>
+<span><span class="co"># true_prop_1700mix)</span></span>
+<span></span>
+<span><span class="co"># ti_merged_long &lt;- pivot_longer(ti_quant_sim1700mixtures, cols = B.cells:Other)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span></span>
+<span>  <span class="va">ti_tp_merged</span>,</span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span></span>
+<span>    x <span class="op">=</span> <span class="va">value_trueprop</span>,</span>
+<span>    y <span class="op">=</span> <span class="va">value_quantiseq</span>,</span>
+<span>    col <span class="op">=</span> <span class="va">cell_type.x</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
+<span>    x <span class="op">=</span> <span class="st">"True fractions"</span>,</span>
+<span>    y <span class="op">=</span> <span class="st">"quanTIseq cell fractions"</span>,</span>
+<span>    col <span class="op">=</span> <span class="st">"Cell type"</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="using_quantiseqr_files/figure-html/ex4-compare-plot-1.png" alt="Scatterplot of quanTIseq cell fractions computed on the simulated dataset, plotted against the true fractions." width="672"><p class="caption">
 Scatterplot of quanTIseq cell fractions computed on the simulated dataset, plotted against the true fractions.
 </p>
 </div>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>
-  <span class="va">ti_tp_merged</span>,
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>
-    x <span class="op">=</span> <span class="va">value_trueprop</span>,
-    y <span class="op">=</span> <span class="va">value_quantiseq</span>,
-    col <span class="op">=</span> <span class="va">cell_type.x</span>
-  <span class="op">)</span>
-<span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">cell_type.x</span>, scales <span class="op">=</span> <span class="st">"free"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_abline</a></span><span class="op">(</span>slope <span class="op">=</span> <span class="fl">1</span>, col <span class="op">=</span> <span class="st">"lightgrey"</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>
-    x <span class="op">=</span> <span class="st">"True fractions"</span>,
-    y <span class="op">=</span> <span class="st">"quanTIseq cell fractions"</span>,
-    col <span class="op">=</span> <span class="st">"Cell type"</span>
-  <span class="op">)</span> <span class="op">+</span> 
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span></span>
+<span>  <span class="va">ti_tp_merged</span>,</span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span></span>
+<span>    x <span class="op">=</span> <span class="va">value_trueprop</span>,</span>
+<span>    y <span class="op">=</span> <span class="va">value_quantiseq</span>,</span>
+<span>    col <span class="op">=</span> <span class="va">cell_type.x</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">cell_type.x</span>, scales <span class="op">=</span> <span class="st">"free"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_abline</a></span><span class="op">(</span>slope <span class="op">=</span> <span class="fl">1</span>, col <span class="op">=</span> <span class="st">"lightgrey"</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
+<span>    x <span class="op">=</span> <span class="st">"True fractions"</span>,</span>
+<span>    y <span class="op">=</span> <span class="st">"quanTIseq cell fractions"</span>,</span>
+<span>    col <span class="op">=</span> <span class="st">"Cell type"</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="using_quantiseqr_files/figure-html/ex4-compare-plot2-1.png" alt="Scatterplot of quanTIseq cell fractions computed on the simulated dataset, plotted against the true fractions - this time using small multiples for each cell type. The light grey line is the identity line, 'y = x'" width="672"><p class="caption">
 Scatterplot of quanTIseq cell fractions computed on the simulated dataset, plotted against the true fractions - this time using small multiples for each cell type. The light grey line is the identity line, ‘y = x’
@@ -753,85 +753,85 @@ Still: it is not the recommended way. If using a <code>SummarizedExperiment</cod
 <h2 id="session-info">Session Info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; R version 4.2.0 (2022-04-22)</span>
-<span class="co">#&gt; Platform: x86_64-apple-darwin17.0 (64-bit)</span>
-<span class="co">#&gt; Running under: macOS Big Sur/Monterey 10.16</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Matrix products: default</span>
-<span class="co">#&gt; BLAS:   /Library/Frameworks/R.framework/Versions/4.2/Resources/lib/libRblas.0.dylib</span>
-<span class="co">#&gt; LAPACK: /Library/Frameworks/R.framework/Versions/4.2/Resources/lib/libRlapack.dylib</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; locale:</span>
-<span class="co">#&gt; [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; attached base packages:</span>
-<span class="co">#&gt; [1] stats4    stats     graphics  grDevices utils     datasets  methods  </span>
-<span class="co">#&gt; [8] base     </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; other attached packages:</span>
-<span class="co">#&gt;  [1] ExperimentHub_2.5.0         AnnotationHub_3.5.0        </span>
-<span class="co">#&gt;  [3] BiocFileCache_2.5.0         dbplyr_2.1.1               </span>
-<span class="co">#&gt;  [5] SummarizedExperiment_1.27.1 GenomicRanges_1.49.0       </span>
-<span class="co">#&gt;  [7] GenomeInfoDb_1.33.3         IRanges_2.31.0             </span>
-<span class="co">#&gt;  [9] S4Vectors_0.35.0            MatrixGenerics_1.9.0       </span>
-<span class="co">#&gt; [11] matrixStats_0.62.0          reshape2_1.4.4             </span>
-<span class="co">#&gt; [13] GEOquery_2.65.2             Biobase_2.57.1             </span>
-<span class="co">#&gt; [15] BiocGenerics_0.43.0         tibble_3.1.7               </span>
-<span class="co">#&gt; [17] tidyr_1.2.0                 ggplot2_3.3.6              </span>
-<span class="co">#&gt; [19] dplyr_1.0.9                 quantiseqr_1.5.0           </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; loaded via a namespace (and not attached):</span>
-<span class="co">#&gt;  [1] colorspace_2.0-3              ellipsis_0.3.2               </span>
-<span class="co">#&gt;  [3] rprojroot_2.0.3               XVector_0.37.0               </span>
-<span class="co">#&gt;  [5] fs_1.5.2                      farver_2.1.0                 </span>
-<span class="co">#&gt;  [7] bit64_4.0.5                   interactiveDisplayBase_1.35.0</span>
-<span class="co">#&gt;  [9] AnnotationDbi_1.59.1          fansi_1.0.3                  </span>
-<span class="co">#&gt; [11] xml2_1.3.3                    R.methodsS3_1.8.1            </span>
-<span class="co">#&gt; [13] cachem_1.0.6                  knitr_1.39                   </span>
-<span class="co">#&gt; [15] jsonlite_1.8.0                png_0.1-7                    </span>
-<span class="co">#&gt; [17] R.oo_1.24.0                   shiny_1.7.1                  </span>
-<span class="co">#&gt; [19] BiocManager_1.30.18           readr_2.1.2                  </span>
-<span class="co">#&gt; [21] compiler_4.2.0                httr_1.4.3                   </span>
-<span class="co">#&gt; [23] assertthat_0.2.1              Matrix_1.4-1                 </span>
-<span class="co">#&gt; [25] fastmap_1.1.0                 limma_3.53.2                 </span>
-<span class="co">#&gt; [27] cli_3.3.0                     later_1.3.0                  </span>
-<span class="co">#&gt; [29] htmltools_0.5.2               tools_4.2.0                  </span>
-<span class="co">#&gt; [31] gtable_0.3.0                  glue_1.6.2                   </span>
-<span class="co">#&gt; [33] GenomeInfoDbData_1.2.8        rappdirs_0.3.3               </span>
-<span class="co">#&gt; [35] Rcpp_1.0.8.3                  limSolve_1.5.6               </span>
-<span class="co">#&gt; [37] jquerylib_0.1.4               pkgdown_2.0.3.9000           </span>
-<span class="co">#&gt; [39] vctrs_0.4.1                   Biostrings_2.65.0            </span>
-<span class="co">#&gt; [41] preprocessCore_1.59.0         xfun_0.31                    </span>
-<span class="co">#&gt; [43] stringr_1.4.0                 mime_0.12                    </span>
-<span class="co">#&gt; [45] lpSolve_5.6.15                lifecycle_1.0.1              </span>
-<span class="co">#&gt; [47] zlibbioc_1.43.0               MASS_7.3-57                  </span>
-<span class="co">#&gt; [49] scales_1.2.0                  BiocStyle_2.25.0             </span>
-<span class="co">#&gt; [51] ragg_1.2.2                    hms_1.1.1                    </span>
-<span class="co">#&gt; [53] promises_1.2.0.1              RColorBrewer_1.1-3           </span>
-<span class="co">#&gt; [55] yaml_2.3.5                    curl_4.3.2                   </span>
-<span class="co">#&gt; [57] memoise_2.0.1                 sass_0.4.1                   </span>
-<span class="co">#&gt; [59] stringi_1.7.6                 RSQLite_2.2.14               </span>
-<span class="co">#&gt; [61] BiocVersion_3.16.0            highr_0.9                    </span>
-<span class="co">#&gt; [63] desc_1.4.1                    filelock_1.0.2               </span>
-<span class="co">#&gt; [65] rlang_1.0.2                   pkgconfig_2.0.3              </span>
-<span class="co">#&gt; [67] systemfonts_1.0.4             bitops_1.0-7                 </span>
-<span class="co">#&gt; [69] evaluate_0.15                 lattice_0.20-45              </span>
-<span class="co">#&gt; [71] purrr_0.3.4                   labeling_0.4.2               </span>
-<span class="co">#&gt; [73] bit_4.0.4                     tidyselect_1.1.2             </span>
-<span class="co">#&gt; [75] plyr_1.8.7                    magrittr_2.0.3               </span>
-<span class="co">#&gt; [77] R6_2.5.1                      generics_0.1.2               </span>
-<span class="co">#&gt; [79] DelayedArray_0.23.0           DBI_1.1.2                    </span>
-<span class="co">#&gt; [81] pillar_1.7.0                  withr_2.5.0                  </span>
-<span class="co">#&gt; [83] KEGGREST_1.37.0               RCurl_1.98-1.6               </span>
-<span class="co">#&gt; [85] crayon_1.5.1                  utf8_1.2.2                   </span>
-<span class="co">#&gt; [87] tzdb_0.3.0                    rmarkdown_2.14               </span>
-<span class="co">#&gt; [89] grid_4.2.0                    data.table_1.14.2            </span>
-<span class="co">#&gt; [91] blob_1.2.3                    digest_0.6.29                </span>
-<span class="co">#&gt; [93] xtable_1.8-4                  httpuv_1.6.5                 </span>
-<span class="co">#&gt; [95] R.utils_2.11.0                textshaping_0.3.6            </span>
-<span class="co">#&gt; [97] munsell_0.5.0                 bslib_0.3.1                  </span>
-<span class="co">#&gt; [99] quadprog_1.5-8</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; R version 4.2.1 (2022-06-23)</span></span>
+<span><span class="co">#&gt; Platform: x86_64-apple-darwin17.0 (64-bit)</span></span>
+<span><span class="co">#&gt; Running under: macOS Big Sur ... 10.16</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Matrix products: default</span></span>
+<span><span class="co">#&gt; BLAS:   /Library/Frameworks/R.framework/Versions/4.2/Resources/lib/libRblas.0.dylib</span></span>
+<span><span class="co">#&gt; LAPACK: /Library/Frameworks/R.framework/Versions/4.2/Resources/lib/libRlapack.dylib</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; locale:</span></span>
+<span><span class="co">#&gt; [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; attached base packages:</span></span>
+<span><span class="co">#&gt; [1] stats4    stats     graphics  grDevices utils     datasets  methods  </span></span>
+<span><span class="co">#&gt; [8] base     </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; other attached packages:</span></span>
+<span><span class="co">#&gt;  [1] ExperimentHub_2.5.0         AnnotationHub_3.5.2        </span></span>
+<span><span class="co">#&gt;  [3] BiocFileCache_2.5.1         dbplyr_2.2.1               </span></span>
+<span><span class="co">#&gt;  [5] SummarizedExperiment_1.27.3 GenomicRanges_1.49.1       </span></span>
+<span><span class="co">#&gt;  [7] GenomeInfoDb_1.33.7         IRanges_2.31.2             </span></span>
+<span><span class="co">#&gt;  [9] S4Vectors_0.35.4            MatrixGenerics_1.9.1       </span></span>
+<span><span class="co">#&gt; [11] matrixStats_0.62.0          reshape2_1.4.4             </span></span>
+<span><span class="co">#&gt; [13] GEOquery_2.65.2             Biobase_2.57.1             </span></span>
+<span><span class="co">#&gt; [15] BiocGenerics_0.43.4         tibble_3.1.8               </span></span>
+<span><span class="co">#&gt; [17] tidyr_1.2.1                 ggplot2_3.3.6              </span></span>
+<span><span class="co">#&gt; [19] dplyr_1.0.10                quantiseqr_1.5.1           </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
+<span><span class="co">#&gt;  [1] colorspace_2.0-3              ellipsis_0.3.2               </span></span>
+<span><span class="co">#&gt;  [3] rprojroot_2.0.3               XVector_0.37.1               </span></span>
+<span><span class="co">#&gt;  [5] fs_1.5.2                      farver_2.1.1                 </span></span>
+<span><span class="co">#&gt;  [7] bit64_4.0.5                   interactiveDisplayBase_1.35.0</span></span>
+<span><span class="co">#&gt;  [9] AnnotationDbi_1.59.1          fansi_1.0.3                  </span></span>
+<span><span class="co">#&gt; [11] xml2_1.3.3                    R.methodsS3_1.8.2            </span></span>
+<span><span class="co">#&gt; [13] cachem_1.0.6                  knitr_1.40                   </span></span>
+<span><span class="co">#&gt; [15] jsonlite_1.8.2                png_0.1-7                    </span></span>
+<span><span class="co">#&gt; [17] R.oo_1.25.0                   shiny_1.7.2                  </span></span>
+<span><span class="co">#&gt; [19] BiocManager_1.30.18           readr_2.1.3                  </span></span>
+<span><span class="co">#&gt; [21] compiler_4.2.1                httr_1.4.4                   </span></span>
+<span><span class="co">#&gt; [23] assertthat_0.2.1              Matrix_1.5-1                 </span></span>
+<span><span class="co">#&gt; [25] fastmap_1.1.0                 limma_3.53.10                </span></span>
+<span><span class="co">#&gt; [27] cli_3.4.1                     later_1.3.0                  </span></span>
+<span><span class="co">#&gt; [29] htmltools_0.5.3               tools_4.2.1                  </span></span>
+<span><span class="co">#&gt; [31] gtable_0.3.1                  glue_1.6.2                   </span></span>
+<span><span class="co">#&gt; [33] GenomeInfoDbData_1.2.9        rappdirs_0.3.3               </span></span>
+<span><span class="co">#&gt; [35] Rcpp_1.0.9                    limSolve_1.5.6               </span></span>
+<span><span class="co">#&gt; [37] jquerylib_0.1.4               pkgdown_2.0.6.9000           </span></span>
+<span><span class="co">#&gt; [39] vctrs_0.4.2                   Biostrings_2.65.6            </span></span>
+<span><span class="co">#&gt; [41] preprocessCore_1.59.0         xfun_0.33                    </span></span>
+<span><span class="co">#&gt; [43] stringr_1.4.1                 mime_0.12                    </span></span>
+<span><span class="co">#&gt; [45] lpSolve_5.6.16                lifecycle_1.0.3              </span></span>
+<span><span class="co">#&gt; [47] zlibbioc_1.43.0               MASS_7.3-58.1                </span></span>
+<span><span class="co">#&gt; [49] scales_1.2.1                  BiocStyle_2.25.0             </span></span>
+<span><span class="co">#&gt; [51] ragg_1.2.3                    hms_1.1.2                    </span></span>
+<span><span class="co">#&gt; [53] promises_1.2.0.1              RColorBrewer_1.1-3           </span></span>
+<span><span class="co">#&gt; [55] yaml_2.3.5                    curl_4.3.3                   </span></span>
+<span><span class="co">#&gt; [57] memoise_2.0.1                 sass_0.4.2                   </span></span>
+<span><span class="co">#&gt; [59] stringi_1.7.8                 RSQLite_2.2.18               </span></span>
+<span><span class="co">#&gt; [61] BiocVersion_3.16.0            highr_0.9                    </span></span>
+<span><span class="co">#&gt; [63] desc_1.4.2                    filelock_1.0.2               </span></span>
+<span><span class="co">#&gt; [65] rlang_1.0.6                   pkgconfig_2.0.3              </span></span>
+<span><span class="co">#&gt; [67] systemfonts_1.0.4             bitops_1.0-7                 </span></span>
+<span><span class="co">#&gt; [69] evaluate_0.17                 lattice_0.20-45              </span></span>
+<span><span class="co">#&gt; [71] purrr_0.3.5                   labeling_0.4.2               </span></span>
+<span><span class="co">#&gt; [73] bit_4.0.4                     tidyselect_1.1.2             </span></span>
+<span><span class="co">#&gt; [75] plyr_1.8.7                    magrittr_2.0.3               </span></span>
+<span><span class="co">#&gt; [77] R6_2.5.1                      generics_0.1.3               </span></span>
+<span><span class="co">#&gt; [79] DelayedArray_0.23.2           DBI_1.1.3                    </span></span>
+<span><span class="co">#&gt; [81] pillar_1.8.1                  withr_2.5.0                  </span></span>
+<span><span class="co">#&gt; [83] KEGGREST_1.37.3               RCurl_1.98-1.9               </span></span>
+<span><span class="co">#&gt; [85] crayon_1.5.2                  utf8_1.2.2                   </span></span>
+<span><span class="co">#&gt; [87] tzdb_0.3.0                    rmarkdown_2.16               </span></span>
+<span><span class="co">#&gt; [89] grid_4.2.1                    data.table_1.14.2            </span></span>
+<span><span class="co">#&gt; [91] blob_1.2.3                    digest_0.6.29                </span></span>
+<span><span class="co">#&gt; [93] xtable_1.8-4                  httpuv_1.6.6                 </span></span>
+<span><span class="co">#&gt; [95] R.utils_2.12.0                textshaping_0.3.6            </span></span>
+<span><span class="co">#&gt; [97] munsell_0.5.0                 bslib_0.4.0                  </span></span>
+<span><span class="co">#&gt; [99] quadprog_1.5-8</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
@@ -883,7 +883,7 @@ Still: it is not the recommended way. If using a <code>SummarizedExperiment</cod
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.9000.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer>

@@ -18,7 +18,7 @@ previously processed with run_quantiseqr()"><!-- mathjax --><script src="https:/
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quantiseqr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.1</span>
       </span>
     </div>
 
@@ -60,7 +60,7 @@ previously processed with <code>run_quantiseqr()</code></p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">extract_ti_from_se</span><span class="op">(</span><span class="va">se</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">extract_ti_from_se</span><span class="op">(</span><span class="va">se</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -68,20 +68,23 @@ previously processed with <code>run_quantiseqr()</code></p>
     <dl><dt>se</dt>
 <dd><p>A <code>SummarizedExperiment</code> object, or any of its derivates, which
 contains the quantifications extracted via <code>quantiseqr</code> in its <code>colData</code> slot.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A data.frame, formatted as required by downstream functions</p>
+    
+
+<p>A data.frame, formatted as required by downstream functions</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">dataset_racle</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">dataset_racle</span><span class="op">$</span><span class="va">expr_mat</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">dataset_racle</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">dataset_racle</span><span class="op">$</span><span class="va">expr_mat</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 32467     4</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># using a SummarizedExperiment object</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://bioconductor.org/packages/SummarizedExperiment" class="external-link">"SummarizedExperiment"</a></span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># using a SummarizedExperiment object</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://bioconductor.org/packages/SummarizedExperiment" class="external-link">"SummarizedExperiment"</a></span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: MatrixGenerics</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: matrixStats</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
@@ -121,22 +124,22 @@ contains the quantifications extracted via <code>quantiseqr</code> in its <code>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>     I, expand.grid, unname</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: IRanges</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: GenomeInfoDb</span>
-<span class="r-in"><span class="va">se_racle</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/RangedSummarizedExperiment-class.html" class="external-link">SummarizedExperiment</a></span><span class="op">(</span></span>
-<span class="r-in">  assays <span class="op">=</span> <span class="fu">List</span><span class="op">(</span></span>
-<span class="r-in">    abundance <span class="op">=</span> <span class="va">dataset_racle</span><span class="op">$</span><span class="va">expr_mat</span></span>
-<span class="r-in">  <span class="op">)</span>,</span>
-<span class="r-in">  colData <span class="op">=</span> <span class="fu">DataFrame</span><span class="op">(</span></span>
-<span class="r-in">    SampleName <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">dataset_racle</span><span class="op">$</span><span class="va">expr_mat</span><span class="op">)</span></span>
-<span class="r-in">  <span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">res_run_SE</span> <span class="op">&lt;-</span> <span class="fu">quantiseqr</span><span class="fu">::</span><span class="fu"><a href="run_quantiseq.html">run_quantiseq</a></span><span class="op">(</span></span>
-<span class="r-in">    expression_data <span class="op">=</span> <span class="va">se_racle</span>,</span>
-<span class="r-in">    signature_matrix <span class="op">=</span> <span class="st">"TIL10"</span>,</span>
-<span class="r-in">    is_arraydata <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span class="r-in">    is_tumordata <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span class="r-in">    scale_mRNA <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">se_racle</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/RangedSummarizedExperiment-class.html" class="external-link">SummarizedExperiment</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  assays <span class="op">=</span> <span class="fu">List</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    abundance <span class="op">=</span> <span class="va">dataset_racle</span><span class="op">$</span><span class="va">expr_mat</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span>,</span></span>
+<span class="r-in"><span>  colData <span class="op">=</span> <span class="fu">DataFrame</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    SampleName <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">dataset_racle</span><span class="op">$</span><span class="va">expr_mat</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">res_run_SE</span> <span class="op">&lt;-</span> <span class="fu">quantiseqr</span><span class="fu">::</span><span class="fu"><a href="run_quantiseq.html">run_quantiseq</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    expression_data <span class="op">=</span> <span class="va">se_racle</span>,</span></span>
+<span class="r-in"><span>    signature_matrix <span class="op">=</span> <span class="st">"TIL10"</span>,</span></span>
+<span class="r-in"><span>    is_arraydata <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>    is_tumordata <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>    scale_mRNA <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Running quanTIseq deconvolution module</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Gene expression normalization and re-annotation (arrays: FALSE)</span>
@@ -145,8 +148,8 @@ contains the quantifications extracted via <code>quantiseqr</code> in its <code>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Signature genes found in data set: 135/138 (97.83%)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Mixture deconvolution (method: lsei)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Deconvolution successful!</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">extract_ti_from_se</span><span class="op">(</span><span class="va">res_run_SE</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">extract_ti_from_se</span><span class="op">(</span><span class="va">res_run_SE</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Found quantifications for the TIL10 signature...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          Sample    B.cells Macrophages.M1 Macrophages.M2 Monocytes Neutrophils</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> LAU125   LAU125 0.02320356   0.0110013588    0.000000000 0.1774731   0.0000000</span>
@@ -163,7 +166,7 @@ contains the quantifications extracted via <code>quantiseqr</code> in its <code>
 <span class="r-out co"><span class="r-pr">#&gt;</span> LAU355  0.000000e+00</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> LAU1255 6.060809e-01</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> LAU1314 1.145087e-16</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -178,7 +181,7 @@ contains the quantifications extracted via <code>quantiseqr</code> in its <code>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>
