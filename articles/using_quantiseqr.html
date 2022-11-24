@@ -35,7 +35,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quantiseqr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.7.0</span>
       </span>
     </div>
 
@@ -71,18 +71,23 @@
 
       
 
-      </header><script src="using_quantiseqr_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip></h1>
 <p>Using quantiseqr</p>
-                        <h4 data-toc-skip class="author">Federico Marini<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>
+                        <h4 data-toc-skip class="author">Federico
+Marini<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>
 </h4>
             <address class="author_afil">
-      Institute of Medical Biostatistics, Epidemiology and Informatics (<a href="https://www.unimedizin-mainz.de/imbei/imbei/welcome-page.html?L=1" class="external-link">IMBEI, Mainz</a>)<br><h4 data-toc-skip class="author">Francesca Finotello<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>
+      Institute of Medical Biostatistics, Epidemiology and Informatics
+(<a href="https://www.unimedizin-mainz.de/imbei/imbei/welcome-page.html?L=1" class="external-link">IMBEI,
+Mainz</a>)<br><h4 data-toc-skip class="author">Francesca
+Finotello<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>
 </h4>
             <address class="author_afil">
-      Institute of Bioinformatics, Biocenter Medical University of Innsbruck (<a href="https://icbi.i-med.ac.at/index.html" class="external-link uri">https://icbi.i-med.ac.at/index.html</a>)<br><h4 data-toc-skip class="date">2022-10-07</h4>
+      Institute of Bioinformatics, Biocenter Medical University of
+Innsbruck (<a href="https://icbi.i-med.ac.at/index.html" class="external-link uri">https://icbi.i-med.ac.at/index.html</a>)<br><h4 data-toc-skip class="date">2022-11-24</h4>
       
       
       <div class="hidden name"><code>using_quantiseqr.Rmd</code></div>
@@ -101,7 +106,14 @@
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>This vignette describes how to use the <em><a href="https://bioconductor.org/packages/3.16/quantiseqr" class="external-link">quantiseqr</a></em> package for streamlining your workflow around the quanTIseq method. quanTIseq is a transcriptomics deconvolution method that uses an RNA-seq-derived signature matrix (called <em>TIL10</em>) for quantifying 10 different immune cell types in bulk tumor or blood transcriptomics data. quanTIseq has been extensively validated using real and simulated RNA-seq data, as well as flow cytometry and immunohistochemistry data.</p>
+<p>This vignette describes how to use the <em><a href="https://bioconductor.org/packages/3.17/quantiseqr" class="external-link">quantiseqr</a></em>
+package for streamlining your workflow around the quanTIseq method.
+quanTIseq is a transcriptomics deconvolution method that uses an
+RNA-seq-derived signature matrix (called <em>TIL10</em>) for quantifying
+10 different immune cell types in bulk tumor or blood transcriptomics
+data. quanTIseq has been extensively validated using real and simulated
+RNA-seq data, as well as flow cytometry and immunohistochemistry
+data.</p>
 <p>The TIL10 signature can quantify cell fractions for</p>
 <ul>
 <li>B cells</li>
@@ -116,8 +128,14 @@
 <li>Myeloid dendritic cells</li>
 <li>Other uncharacterized cells.</li>
 </ul>
-<p>For detailed information about quanTIseq methodology and its embedded TIL10 signature, please refer to its original publication <span class="citation">(Finotello et al. 2019)</span>, or consult the documentation for the quanTIseq pipeline (<a href="https://icbi.i-med.ac.at/software/quantiseq/doc/" class="external-link uri">https://icbi.i-med.ac.at/software/quantiseq/doc/</a>).</p>
-<p><code>quantiseqr</code> returns a cell type by sample quantification of these cell types, either as a simple data frame object, or alternatively, when providing an object derived from the <code>SummarizedExperiment</code> class, adds this information in the <code>colData</code> slot, where it can be further accessed.</p>
+<p>For detailed information about quanTIseq methodology and its embedded
+TIL10 signature, please refer to its original publication <span class="citation">(Finotello et al. 2019)</span>, or consult the
+documentation for the quanTIseq pipeline (<a href="https://icbi.i-med.ac.at/software/quantiseq/doc/" class="external-link uri">https://icbi.i-med.ac.at/software/quantiseq/doc/</a>).</p>
+<p><code>quantiseqr</code> returns a cell type by sample quantification
+of these cell types, either as a simple data frame object, or
+alternatively, when providing an object derived from the
+<code>SummarizedExperiment</code> class, adds this information in the
+<code>colData</code> slot, where it can be further accessed.</p>
 </div>
 <div class="section level2">
 <h2 id="gettingstarted">Getting started<a class="anchor" aria-label="anchor" href="#gettingstarted"></a>
@@ -129,10 +147,12 @@
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"quantiseqr"</span><span class="op">)</span></span></code></pre></div>
-<p>Once installed, the package can be loaded and attached to your current workspace as follows:</p>
+<p>Once installed, the package can be loaded and attached to your
+current workspace as follows:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"quantiseqr"</span><span class="op">)</span></span></code></pre></div>
-<p>In the following chunk, we load a set of additional packages that will be required throughout this vignette.</p>
+<p>In the following chunk, we load a set of additional packages that
+will be required throughout this vignette.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://dplyr.tidyverse.org" class="external-link">"dplyr"</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://ggplot2.tidyverse.org" class="external-link">"ggplot2"</a></span><span class="op">)</span></span>
@@ -141,28 +161,53 @@
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/seandavi/GEOquery" class="external-link">"GEOquery"</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/hadley/reshape" class="external-link">"reshape2"</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://bioconductor.org/packages/SummarizedExperiment" class="external-link">"SummarizedExperiment"</a></span><span class="op">)</span></span></code></pre></div>
-<p>In order to use <em><a href="https://bioconductor.org/packages/3.16/quantiseqr" class="external-link">quantiseqr</a></em> in your workflow, one fundamental input is required, to be provided to <code>run_quantiseqr()</code> as <code>expression_data</code>. This is an object containing the gene TPM expression values measured in the sample under investigation, and can be provided in different ways:</p>
+<p>In order to use <em><a href="https://bioconductor.org/packages/3.17/quantiseqr" class="external-link">quantiseqr</a></em>
+in your workflow, one fundamental input is required, to be provided to
+<code>run_quantiseqr()</code> as <code>expression_data</code>. This is
+an object containing the gene TPM expression values measured in the
+sample under investigation, and can be provided in different ways:</p>
 <ul>
-<li>as a simple gene expression matrix, or a data frame (with HGNC gene symbols as row names and sample identifiers as column names)</li>
-<li>as an <code>ExpressionSet</code> object (from the <em><a href="https://bioconductor.org/packages/3.16/Biobase" class="external-link">Biobase</a></em> package), where the HGNC gene symbols are provided in a column of the <code>fData</code> slot</li>
-<li>as a <code>SummarizedExperiment</code> object, or any of the derivative classes (e.g. <em><a href="https://bioconductor.org/packages/3.16/DESeq2" class="external-link">DESeq2</a></em>’s <code>DESeqDataSet</code>), in which the assay (default: “abundance”) is containing the TPMs as expected</li>
+<li>as a simple gene expression matrix, or a data frame (with HGNC gene
+symbols as row names and sample identifiers as column names)</li>
+<li>as an <code>ExpressionSet</code> object (from the <em><a href="https://bioconductor.org/packages/3.17/Biobase" class="external-link">Biobase</a></em>
+package), where the HGNC gene symbols are provided in a column of the
+<code>fData</code> slot</li>
+<li>as a <code>SummarizedExperiment</code> object, or any of the
+derivative classes (e.g. <em><a href="https://bioconductor.org/packages/3.17/DESeq2" class="external-link">DESeq2</a></em>’s
+<code>DESeqDataSet</code>), in which the assay (default: “abundance”) is
+containing the TPMs as expected</li>
 </ul>
 </div>
 <div class="section level2">
 <h2 id="some-use-cases-for-quantiseqr">Some use cases for <code>quantiseqr</code><a class="anchor" aria-label="anchor" href="#some-use-cases-for-quantiseqr"></a>
 </h2>
-<p>In this section, we illustrate the usage of <code>quantiseqr</code> on a variety of datasets. These differ with respect to their size and samples of origin, and we illustrate how the different parameters of <code>quantiseqr</code> should be set in the different scenarios.</p>
-<p>The fundamental input for <code>quantiseqr</code> is a gene expression matrix-like object, with features on the rows, and samples as the columns. <code>quantiseqr</code> can also directly handle <code>SummarizedExperiment</code> objects, as well as <code>ExpressionSet</code> objects, commonly used for microarray data. In case a <code>SummarizedExperiment</code> object is passed, the quantifications of the immune cell composition can be directly returned extending the <code>colData</code> of the provided input.</p>
+<p>In this section, we illustrate the usage of <code>quantiseqr</code>
+on a variety of datasets. These differ with respect to their size and
+samples of origin, and we illustrate how the different parameters of
+<code>quantiseqr</code> should be set in the different scenarios.</p>
+<p>The fundamental input for <code>quantiseqr</code> is a gene
+expression matrix-like object, with features on the rows, and samples as
+the columns. <code>quantiseqr</code> can also directly handle
+<code>SummarizedExperiment</code> objects, as well as
+<code>ExpressionSet</code> objects, commonly used for microarray data.
+In case a <code>SummarizedExperiment</code> object is passed, the
+quantifications of the immune cell composition can be directly returned
+extending the <code>colData</code> of the provided input.</p>
 <div class="section level3">
 <h3 id="use-case-1-metastatic-melanoma-patients-racle-et-al-2017">Use case 1: Metastatic melanoma patients (Racle et al 2017)<a class="anchor" aria-label="anchor" href="#use-case-1-metastatic-melanoma-patients-racle-et-al-2017"></a>
 </h3>
-<p><code>quantiseqr</code> ships with an example dataset with samples from four patients with metastatic melanoma published in <span class="citation">(Racle et al. 2017)</span>.</p>
+<p><code>quantiseqr</code> ships with an example dataset with samples
+from four patients with metastatic melanoma published in <span class="citation">(Racle et al. 2017)</span>.</p>
 <p>The dataset <code><a href="../reference/dataset_racle.html">quantiseqr::dataset_racle</a></code> contains:</p>
 <ul>
-<li>a gene expression matrix (<code>dataset_racle$expr_mat</code>) generated using bulk RNA-seq;</li>
-<li>‘gold standard’ estimates of immune cell fractions quantified with flow cytometry (<code>dataset_racle$ref</code>).</li>
+<li>a gene expression matrix (<code>dataset_racle$expr_mat</code>)
+generated using bulk RNA-seq;</li>
+<li>‘gold standard’ estimates of immune cell fractions quantified with
+flow cytometry (<code>dataset_racle$ref</code>).</li>
 </ul>
-<p>We are going to use the bulk RNA-seq data to run the deconvolution methods and will compare the results to the FACS data in the following steps.</p>
+<p>We are going to use the bulk RNA-seq data to run the deconvolution
+methods and will compare the results to the FACS data in the following
+steps.</p>
 <p>Let’s inspect the expression matrix first:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"dataset_racle"</span><span class="op">)</span></span>
@@ -215,7 +260,8 @@
 </tr>
 </tbody>
 </table>
-<p>The quantification of the immune cell types with <code>quantiseqr</code> can be done as in the chunk below:</p>
+<p>The quantification of the immune cell types with
+<code>quantiseqr</code> can be done as in the chunk below:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ti_racle</span> <span class="op">&lt;-</span> <span class="fu">quantiseqr</span><span class="fu">::</span><span class="fu"><a href="../reference/run_quantiseq.html">run_quantiseq</a></span><span class="op">(</span></span>
 <span>  expression_data <span class="op">=</span> <span class="va">dataset_racle</span><span class="op">$</span><span class="va">expr_mat</span>,</span>
@@ -232,32 +278,60 @@
 <span><span class="co">#&gt; Signature genes found in data set: 135/138 (97.83%)</span></span>
 <span><span class="co">#&gt; Mixture deconvolution (method: lsei)</span></span>
 <span><span class="co">#&gt; Deconvolution successful!</span></span></code></pre></div>
-<p>The call above means that we are passing the expression data as simple matrix (in <code>dataset_racle$expr_mat</code>) and quantifying the tumor immune cell composition using the (default) TIL10 signature. This is a dataset stemming from tumor RNA-seq samples. Therefore <code>is_tumordata</code> is set to <code>TRUE</code>, whereas <code>is_arraydata</code> is set to <code>FALSE</code> (default). With <code>scale_mRNA</code> set to <code>TRUE</code> (default), we are performing the correction of cell-type-specific mRNA content bias.</p>
-<p>The output of <code>quantiseqr</code> can be further processed and visualized in a tabular or graphical manner to facilitate the comparisons across samples/conditions.</p>
-<p>The estimates returned by <code>quantiseqr</code> can be interpreted as a cell-type fractions that can be compared between and within samples, making it possible to represent them as a stacked bar chart.</p>
+<p>The call above means that we are passing the expression data as
+simple matrix (in <code>dataset_racle$expr_mat</code>) and quantifying
+the tumor immune cell composition using the (default) TIL10 signature.
+This is a dataset stemming from tumor RNA-seq samples. Therefore
+<code>is_tumordata</code> is set to <code>TRUE</code>, whereas
+<code>is_arraydata</code> is set to <code>FALSE</code> (default). With
+<code>scale_mRNA</code> set to <code>TRUE</code> (default), we are
+performing the correction of cell-type-specific mRNA content bias.</p>
+<p>The output of <code>quantiseqr</code> can be further processed and
+visualized in a tabular or graphical manner to facilitate the
+comparisons across samples/conditions.</p>
+<p>The estimates returned by <code>quantiseqr</code> can be interpreted
+as a cell-type fractions that can be compared between and within
+samples, making it possible to represent them as a stacked bar
+chart.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/quantiplot.html">quantiplot</a></span><span class="op">(</span><span class="va">ti_racle</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="using_quantiseqr_files/figure-html/ex1-ti-plot-1.png" alt="Stacked barplot of quanTIseq cell fractions computed on the Racle dataset (patients with metastatic melanoma)." width="768"><p class="caption">
-Stacked barplot of quanTIseq cell fractions computed on the Racle dataset (patients with metastatic melanoma).
+Stacked barplot of quanTIseq cell fractions computed on the Racle
+dataset (patients with metastatic melanoma).
 </p>
 </div>
 <p>We observe that</p>
 <ul>
-<li>two samples (LAU355, LAU1314) appear to contain a large amount of CD4+ T cells and B cells</li>
-<li>the other two samples (LAU1255, LAU125) appear to contain a large amount of “uncharacterized cells”, likely quantifying tumor cell content</li>
+<li>two samples (LAU355, LAU1314) appear to contain a large amount of
+CD4+ T cells and B cells</li>
+<li>the other two samples (LAU1255, LAU125) appear to contain a large
+amount of “uncharacterized cells”, likely quantifying tumor cell
+content</li>
 <li>one sample (LAU125) appears to contain no CD8+ T cells.</li>
 </ul>
-<p>Estimating the amount of “uncharacterized cells” is a novel feature introduced by quanTIseq and EPIC <span class="citation">(Finotello et al. 2019, @EPIC2017)</span>. This estimate often corresponds to the fraction of tumor cells in the sample.</p>
+<p>Estimating the amount of “uncharacterized cells” is a novel feature
+introduced by quanTIseq and EPIC <span class="citation">Racle et al.
+(2017)</span>. This estimate often corresponds to the fraction of tumor
+cells in the sample.</p>
 <!-- compare with facs internal refs? -->
 </div>
 <div class="section level3">
 <h3 id="use-case-2-pbmcs-from-gse107572-finotello-et-al-2019">Use case 2: PBMCs from GSE107572 (Finotello et al 2019)<a class="anchor" aria-label="anchor" href="#use-case-2-pbmcs-from-gse107572-finotello-et-al-2019"></a>
 </h3>
-<p>Here we show how to use <code>quantiseqr</code> to deconvolute blood-derived immune-cell mixtures <span class="citation">(Finotello et al. 2019)</span>, for which also matching flow cytometry data are available.</p>
-<p>This is also presented as an example in <span class="citation">(Plattner, Finotello, and Rieder 2020)</span>, please refer to this later publication for additional details on the processing steps.</p>
-<p>The example dataset is available online at the Gene Expression Omnibus (accession number GSE107572), and is provided as preprocessed RNA-seq data from blood-derived immune-cell mixtures from nine healthy donors.<br>
-Flow cytometry estimates for the according immune subpopulations are also available.</p>
+<p>Here we show how to use <code>quantiseqr</code> to deconvolute
+blood-derived immune-cell mixtures <span class="citation">(Finotello et
+al. 2019)</span>, for which also matching flow cytometry data are
+available.</p>
+<p>This is also presented as an example in <span class="citation">(Plattner, Finotello, and Rieder 2020)</span>, please
+refer to this later publication for additional details on the processing
+steps.</p>
+<p>The example dataset is available online at the Gene Expression
+Omnibus (accession number GSE107572), and is provided as preprocessed
+RNA-seq data from blood-derived immune-cell mixtures from nine healthy
+donors.<br>
+Flow cytometry estimates for the according immune subpopulations are
+also available.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## While downloading by hand is possible, it is recommended to use GEOquery</span></span>
 <span><span class="co"># wget -c ftp://ftp.ncbi.nlm.nih.gov/geo/series/GSE107nnn/GSE107572/suppl/GSE107572%5Ftpm%5FPBMC%5FRNAseq%2Etxt%2Egz</span></span>
@@ -272,7 +346,7 @@ Flow cytometry estimates for the according immune subpopulations are also availa
 <span><span class="op">)</span></span>
 <span><span class="va">tpm_location</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">tpminfo_GSE107572</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
 <span><span class="va">tpm_location</span></span>
-<span><span class="co">#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmpoab6FC/GSE107572/GSE107572_tpm_PBMC_RNAseq.txt.gz"</span></span>
+<span><span class="co">#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmp6JHCwv/GSE107572/GSE107572_tpm_PBMC_RNAseq.txt.gz"</span></span>
 <span><span class="va">tpmdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.table</a></span><span class="op">(</span><span class="va">tpm_location</span>, header <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tpm_genesymbols</span> <span class="op">&lt;-</span> <span class="va">tpmdata</span><span class="op">$</span><span class="va">GENE</span></span>
@@ -293,7 +367,9 @@ Flow cytometry estimates for the according immune subpopulations are also availa
 <span><span class="co">#&gt; Signature genes found in data set: 153/153 (100%)</span></span>
 <span><span class="co">#&gt; Mixture deconvolution (method: lsei)</span></span>
 <span><span class="co">#&gt; Deconvolution successful!</span></span></code></pre></div>
-<p>To obtain an overview on immune cell type compositions, we can print out the results and plot them with the convenient <code>quantiplot</code> wrapper:</p>
+<p>To obtain an overview on immune cell type compositions, we can print
+out the results and plot them with the convenient
+<code>quantiplot</code> wrapper:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># printing out the percentages for the first 4 samples</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">signif</a></span><span class="op">(</span><span class="va">ti_PBMCs</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="fl">2</span><span class="op">:</span><span class="fl">12</span><span class="op">]</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
@@ -316,13 +392,24 @@ Flow cytometry estimates for the according immune subpopulations are also availa
 <span><span class="fu"><a href="../reference/quantiplot.html">quantiplot</a></span><span class="op">(</span><span class="va">ti_PBMCs</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="using_quantiseqr_files/figure-html/ex2-ti-plot-1.png" alt="Stacked barplot of quanTIseq cell fractions computed on the blood derived PBMCs dataset." width="672"><p class="caption">
-Stacked barplot of quanTIseq cell fractions computed on the blood derived PBMCs dataset.
+Stacked barplot of quanTIseq cell fractions computed on the blood
+derived PBMCs dataset.
 </p>
 </div>
-<p>Notably, for these samples, corresponding quantifications of the true cell fractions done by flow cytometry are also available.<br>
-In the chunk that follows, we retrieve that information and generate scatter plots to display how the estimated values from <code>quantiseqr</code> correlate with the ground truth values.<br>
-This is adapted by <span class="citation">(Plattner, Finotello, and Rieder 2020)</span> to match the output format generated by <code>quantiseqr</code> - and can be used as a template in case other types of matched ground-truth information are available.</p>
-<p>We start by retrieving the information from the GSE107572 entry via <code>GEOquery</code> (this will be cached locally after the first execution), and process the information matching it to the quantification of cell fractions we just obtained as <code>ti_PBMCs</code>.</p>
+<p>Notably, for these samples, corresponding quantifications of the true
+cell fractions done by flow cytometry are also available.<br>
+In the chunk that follows, we retrieve that information and generate
+scatter plots to display how the estimated values from
+<code>quantiseqr</code> correlate with the ground truth values.<br>
+This is adapted by <span class="citation">(Plattner, Finotello, and
+Rieder 2020)</span> to match the output format generated by
+<code>quantiseqr</code> - and can be used as a template in case other
+types of matched ground-truth information are available.</p>
+<p>We start by retrieving the information from the GSE107572 entry via
+<code>GEOquery</code> (this will be cached locally after the first
+execution), and process the information matching it to the
+quantification of cell fractions we just obtained as
+<code>ti_PBMCs</code>.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">GEOid</span> <span class="op">&lt;-</span> <span class="st">"GSE107572"</span></span>
 <span><span class="va">gds</span> <span class="op">&lt;-</span> <span class="fu"><a href="http://seandavi.github.io/GEOquery/reference/getGEO.html" class="external-link">getGEO</a></span><span class="op">(</span><span class="va">GEOid</span><span class="op">)</span></span>
@@ -350,7 +437,9 @@ This is adapted by <span class="citation">(Plattner, Finotello, and Rieder 2020)
 <span></span>
 <span><span class="va">ti_PBMCs</span> <span class="op">&lt;-</span> <span class="va">ti_PBMCs</span><span class="op">[</span><span class="va">csbjs</span>, <span class="va">ccells</span><span class="op">]</span></span>
 <span><span class="va">FACSdata</span> <span class="op">&lt;-</span> <span class="va">FACSdata</span><span class="op">[</span><span class="va">csbjs</span>, <span class="va">ccells</span><span class="op">]</span></span></code></pre></div>
-<p>Then we proceed to plot the agreement between the computed cell fractions and the estimated values extracted from flow cytometry experiments.</p>
+<p>Then we proceed to plot the agreement between the computed cell
+fractions and the estimated values extracted from flow cytometry
+experiments.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">palette</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#451C87"</span>, <span class="st">"#B3B300"</span>, <span class="st">"#CE0648"</span>, <span class="st">"#2363C5"</span>, <span class="st">"#AB4CA1"</span>, <span class="st">"#0A839B"</span>, <span class="st">"#DD8C24"</span>, <span class="st">"#ED6D42"</span><span class="op">)</span></span>
 <span></span>
@@ -393,16 +482,31 @@ This is adapted by <span class="citation">(Plattner, Finotello, and Rieder 2020)
 <span><span class="op">}</span></span></code></pre></div>
 <div class="figure">
 <img src="using_quantiseqr_files/figure-html/ex2-comparison-plot-1.png" alt="Scatterplot of quanTIseq cell fractions for the PBMCs dataset, plotted against the fractions estimated from flow cytometry. Each subplot display a specific cell type, and all cells are summarized in the lower right corner. The dashed grey line indicates the diagonal, corresponding to the identity line, while the black solid line is the linear model fit. The text annotation reports the r correlation coefficient, its significance, and the root mean squared error." width="864"><p class="caption">
-Scatterplot of quanTIseq cell fractions for the PBMCs dataset, plotted against the fractions estimated from flow cytometry. Each subplot display a specific cell type, and all cells are summarized in the lower right corner. The dashed grey line indicates the diagonal, corresponding to the identity line, while the black solid line is the linear model fit. The text annotation reports the r correlation coefficient, its significance, and the root mean squared error.
+Scatterplot of quanTIseq cell fractions for the PBMCs dataset, plotted
+against the fractions estimated from flow cytometry. Each subplot
+display a specific cell type, and all cells are summarized in the lower
+right corner. The dashed grey line indicates the diagonal, corresponding
+to the identity line, while the black solid line is the linear model
+fit. The text annotation reports the r correlation coefficient, its
+significance, and the root mean squared error.
 </p>
 </div>
 </div>
 <div class="section level3">
-<h3 id="use-case-3-expression-changes-in-melanoma-patients-on-vs--pre-kinase-inhibitor-treatment---gse75299-song-et-al-2017">Use case 3: Expression changes in melanoma patients on vs. pre kinase-inhibitor treatment - GSE75299 (Song et al 2017)<a class="anchor" aria-label="anchor" href="#use-case-3-expression-changes-in-melanoma-patients-on-vs--pre-kinase-inhibitor-treatment---gse75299-song-et-al-2017"></a>
+<h3 id="use-case-3-expression-changes-in-melanoma-patients-on-vs--pre-kinase-inhibitor-treatment---gse75299-song-et-al-2017">Use case 3: Expression changes in melanoma patients on vs. pre
+kinase-inhibitor treatment - GSE75299 (Song et al 2017)<a class="anchor" aria-label="anchor" href="#use-case-3-expression-changes-in-melanoma-patients-on-vs--pre-kinase-inhibitor-treatment---gse75299-song-et-al-2017"></a>
 </h3>
-<p>We use here the dataset provided in <span class="citation">(Song et al. 2017)</span>, where the transcriptomes of cancer cell lines and patients’ tumors were characterized with RNA-seq before and during treatment with kinase inhibitors.</p>
-<p>The original dataset is available via GEO at the accession GSE75299, but we will be loading a preprocessed version of it, containing the precomputed TPM expression values, made available via <code>ExperimentHub</code>.<br>
-This will enable us to performed a paired analysis on the same observation units (the patients) to appreciate differences in the cell proportions induced by the kinase-inhibitor treatment.</p>
+<p>We use here the dataset provided in <span class="citation">(Song et
+al. 2017)</span>, where the transcriptomes of cancer cell lines and
+patients’ tumors were characterized with RNA-seq before and during
+treatment with kinase inhibitors.</p>
+<p>The original dataset is available via GEO at the accession GSE75299,
+but we will be loading a preprocessed version of it, containing the
+precomputed TPM expression values, made available via
+<code>ExperimentHub</code>.<br>
+This will enable us to performed a paired analysis on the same
+observation units (the patients) to appreciate differences in the cell
+proportions induced by the kinase-inhibitor treatment.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"ExperimentHub"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Loading required package: AnnotationHub</span></span>
@@ -419,11 +523,11 @@ This will enable us to performed a paired analysis on the same observation units
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;     cache</span></span>
 <span><span class="va">eh</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ExperimentHub/man/ExperimentHub-class.html" class="external-link">ExperimentHub</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; snapshotDate(): 2022-10-03</span></span>
+<span><span class="co">#&gt; snapshotDate(): 2022-11-21</span></span>
 <span><span class="va">quantiseqdata_eh</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/AnnotationHub/man/AnnotationHub-class.html" class="external-link">query</a></span><span class="op">(</span><span class="va">eh</span>, <span class="st">"quantiseqr"</span><span class="op">)</span></span>
 <span><span class="va">quantiseqdata_eh</span></span>
 <span><span class="co">#&gt; ExperimentHub with 1 record</span></span>
-<span><span class="co">#&gt; # snapshotDate(): 2022-10-03</span></span>
+<span><span class="co">#&gt; # snapshotDate(): 2022-11-21</span></span>
 <span><span class="co">#&gt; # names(): EH6015</span></span>
 <span><span class="co">#&gt; # package(): quantiseqr</span></span>
 <span><span class="co">#&gt; # $dataprovider: GEO</span></span>
@@ -496,8 +600,12 @@ This will enable us to performed a paired analysis on the same observation units
 <span><span class="co">#&gt; [53] "quanTIseq_TIL10_NK.cells"        "quanTIseq_TIL10_T.cells.CD4"    </span></span>
 <span><span class="co">#&gt; [55] "quanTIseq_TIL10_T.cells.CD8"     "quanTIseq_TIL10_Tregs"          </span></span>
 <span><span class="co">#&gt; [57] "quanTIseq_TIL10_Dendritic.cells" "quanTIseq_TIL10_Other"</span></span></code></pre></div>
-<p>As visible from the output of the last chunk, the cell type composition is stored in the <code>colData</code> slot, if providing a <code>SummarizedExperiment</code> as input.<br>
-We first plot the cell fractions by sample, this time with a color palette resembling the one used in <span class="citation">(Plattner, Finotello, and Rieder 2020)</span>.</p>
+<p>As visible from the output of the last chunk, the cell type
+composition is stored in the <code>colData</code> slot, if providing a
+<code>SummarizedExperiment</code> as input.<br>
+We first plot the cell fractions by sample, this time with a color
+palette resembling the one used in <span class="citation">(Plattner,
+Finotello, and Rieder 2020)</span>.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># to extract the TIL10-relevant parts:</span></span>
 <span><span class="va">ti_quant</span> <span class="op">&lt;-</span> <span class="fu">quantiseqr</span><span class="fu">::</span><span class="fu"><a href="../reference/extract_ti_from_se.html">extract_ti_from_se</a></span><span class="op">(</span><span class="va">se_Song2017_MAPKi_treatment_tiquant</span><span class="op">)</span></span>
@@ -528,14 +636,19 @@ We first plot the cell fractions by sample, this time with a color palette resem
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">45</span>, hjust <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="using_quantiseqr_files/figure-html/ex3-ti-plot-1.png" alt="Stacked barplot of quanTIseq cell fractions computed on the Song et al. dataset, this time using a customized color palette." width="672"><p class="caption">
-Stacked barplot of quanTIseq cell fractions computed on the Song et al. dataset, this time using a customized color palette.
+Stacked barplot of quanTIseq cell fractions computed on the Song et
+al. dataset, this time using a customized color palette.
 </p>
 </div>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># we could have also used the compact wrapper</span></span>
 <span><span class="co">## quantiplot(se_Song2017_MAPKi_treatment_tiquant)</span></span></code></pre></div>
-<p>Similarly, we proceed by splitting the data in pre- and post-treatment, first filtering out the cell line samples (keeping the ones where <code>is_patient</code> is <code>TRUE</code>), then manipulating to long format and explicitly building up the plot object.</p>
+<p>Similarly, we proceed by splitting the data in pre- and
+post-treatment, first filtering out the cell line samples (keeping the
+ones where <code>is_patient</code> is <code>TRUE</code>), then
+manipulating to long format and explicitly building up the plot
+object.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">prepost_data</span> <span class="op">&lt;-</span> <span class="va">cdata</span><span class="op">[</span><span class="va">cdata</span><span class="op">$</span><span class="va">is_patient</span>, <span class="op">]</span></span>
 <span></span>
@@ -562,19 +675,37 @@ Stacked barplot of quanTIseq cell fractions computed on the Song et al. dataset
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">45</span>, hjust <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="using_quantiseqr_files/figure-html/ex3-ti-plot2-1.png" alt="Boxplot of quanTIseq cell fractions computed on the Song et al. dataset, showing the effect of the MAPKi treatment." width="672"><p class="caption">
-Boxplot of quanTIseq cell fractions computed on the Song et al. dataset, showing the effect of the MAPKi treatment.
+Boxplot of quanTIseq cell fractions computed on the Song et al. dataset,
+showing the effect of the MAPKi treatment.
 </p>
 </div>
 </div>
 <div class="section level3">
 <h3 id="use-case-4-running-on-simulated-data-for-validation">Use case 4: Running on simulated data for validation<a class="anchor" aria-label="anchor" href="#use-case-4-running-on-simulated-data-for-validation"></a>
 </h3>
-<p>We will now display the performance of <code>quantiseqr</code> on a dataset for which the ground truth mRNA fractions are known.<br>
-The large simulated dataset represents the RNA-seq expression data from breast tumors with different immune-infiltration scenarios, consisting of a total of 1700 samples, that were generated by mixing RNA-seq reads from purified immune cell types and from a MCF7 breast tumor cell line.</p>
-<p>These samples were generated considering different immune relative cell proportions, tumor purity values (0:10:100%), and at different sequencing depths (1, 2, 5, 10, 20, 50, and 100 million read pairs).</p>
-<p>Please refer to <a href="https://icbi.i-med.ac.at/software/quantiseq/doc/" class="external-link uri">https://icbi.i-med.ac.at/software/quantiseq/doc/</a> and to <span class="citation">(Finotello et al. 2019)</span> for more details.</p>
-<p>This dataset is coupled with a table where the original information on the used true fractions is available, and can be used to benchmark the performance of the deconvolution algorithm.</p>
-<p>In this case, we set the <code>scale_mRNA</code> parameter to <code>FALSE</code> because the samples were simulated without modelling any cell-type-specific mRNA bias, so quanTIseq does not have to correct for it. Instead, when analyzing real RNA-seq data, this parameter should always set to <code>TRUE</code> (default) to avoid that some cell types with higher (or lower) total mRNA abundance are systematically under (or over) estimated via deconvolution.</p>
+<p>We will now display the performance of <code>quantiseqr</code> on a
+dataset for which the ground truth mRNA fractions are known.<br>
+The large simulated dataset represents the RNA-seq expression data from
+breast tumors with different immune-infiltration scenarios, consisting
+of a total of 1700 samples, that were generated by mixing RNA-seq reads
+from purified immune cell types and from a MCF7 breast tumor cell
+line.</p>
+<p>These samples were generated considering different immune relative
+cell proportions, tumor purity values (0:10:100%), and at different
+sequencing depths (1, 2, 5, 10, 20, 50, and 100 million read pairs).</p>
+<p>Please refer to <a href="https://icbi.i-med.ac.at/software/quantiseq/doc/" class="external-link uri">https://icbi.i-med.ac.at/software/quantiseq/doc/</a> and to
+<span class="citation">(Finotello et al. 2019)</span> for more
+details.</p>
+<p>This dataset is coupled with a table where the original information
+on the used true fractions is available, and can be used to benchmark
+the performance of the deconvolution algorithm.</p>
+<p>In this case, we set the <code>scale_mRNA</code> parameter to
+<code>FALSE</code> because the samples were simulated without modelling
+any cell-type-specific mRNA bias, so quanTIseq does not have to correct
+for it. Instead, when analyzing real RNA-seq data, this parameter should
+always set to <code>TRUE</code> (default) to avoid that some cell types
+with higher (or lower) total mRNA abundance are systematically under (or
+over) estimated via deconvolution.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># downloading first the file from https://icbi.i-med.ac.at/software/quantiseq/doc/downloads/quanTIseq_SimRNAseq_mixture.txt</span></span>
 <span></span>
@@ -599,7 +730,10 @@ The large simulated dataset represents the RNA-seq expression data from breast t
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># save(ti_quant_sim1700mixtures, file = "data/ti_quant_sim1700mixtures.RData")</span></span></code></pre></div>
-<p>To avoid the download of a large file, we provide the precomputed object <code>ti_quant_sim1700mixtures</code> in the <code>quantiseqr</code> package - the chunk above is still fully functional once the mixture file has been retrieved.</p>
+<p>To avoid the download of a large file, we provide the precomputed
+object <code>ti_quant_sim1700mixtures</code> in the
+<code>quantiseqr</code> package - the chunk above is still fully
+functional once the mixture file has been retrieved.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">ti_quant_sim1700mixtures</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">ti_quant_sim1700mixtures</span><span class="op">)</span></span>
@@ -629,10 +763,12 @@ The large simulated dataset represents the RNA-seq expression data from breast t
 <span><span class="fu"><a href="../reference/quantiplot.html">quantiplot</a></span><span class="op">(</span><span class="va">ti_quant_sim1700mixtures</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, <span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="using_quantiseqr_files/figure-html/ex4-load-plot-1.png" alt="Stacked barplot of quanTIseq cell fractions computed on the first 100 samples from the simulated dataset." width="576"><p class="caption">
-Stacked barplot of quanTIseq cell fractions computed on the first 100 samples from the simulated dataset.
+Stacked barplot of quanTIseq cell fractions computed on the first 100
+samples from the simulated dataset.
 </p>
 </div>
-<p>We also read in the true proportions, known by design - this is provided as a text file inside <code>quantiseqr</code>.</p>
+<p>We also read in the true proportions, known by design - this is
+provided as a text file inside <code>quantiseqr</code>.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">true_prop_1700mix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.table</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"quanTIseq_SimRNAseq_read_fractions.txt.gz"</span>, package <span class="op">=</span> <span class="st">"quantiseqr"</span><span class="op">)</span>,</span>
@@ -653,7 +789,8 @@ Stacked barplot of quanTIseq cell fractions computed on the first 100 samples fr
 <span><span class="co">#&gt; 4 0.03437897  0.03677890 0.029279122 0.012719618     0.005069848 0.699979</span></span>
 <span><span class="co">#&gt; 5 0.02291954  0.02451951 0.019519610 0.008479830     0.003379932 0.799984</span></span>
 <span><span class="co">#&gt; 6 0.01145989  0.01225988 0.009759902 0.004239958     0.001689983 0.899991</span></span></code></pre></div>
-<p>In the following chunk we perform some preprocessing steps to facilitate the comparison, also in a graphical manner.</p>
+<p>In the following chunk we perform some preprocessing steps to
+facilitate the comparison, also in a graphical manner.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># merging the two sets to facilitate the visualization</span></span>
 <span><span class="co"># colnames(ti_quant_sim1700mixtures) &lt;- paste0("quantiseq_", colnames(ti_quant_sim1700mixtures))</span></span>
@@ -705,7 +842,8 @@ Stacked barplot of quanTIseq cell fractions computed on the first 100 samples fr
 <span>  <span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="using_quantiseqr_files/figure-html/ex4-compare-plot-1.png" alt="Scatterplot of quanTIseq cell fractions computed on the simulated dataset, plotted against the true fractions." width="672"><p class="caption">
-Scatterplot of quanTIseq cell fractions computed on the simulated dataset, plotted against the true fractions.
+Scatterplot of quanTIseq cell fractions computed on the simulated
+dataset, plotted against the true fractions.
 </p>
 </div>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
@@ -728,136 +866,190 @@ Scatterplot of quanTIseq cell fractions computed on the simulated dataset, plott
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="using_quantiseqr_files/figure-html/ex4-compare-plot2-1.png" alt="Scatterplot of quanTIseq cell fractions computed on the simulated dataset, plotted against the true fractions - this time using small multiples for each cell type. The light grey line is the identity line, 'y = x'" width="672"><p class="caption">
-Scatterplot of quanTIseq cell fractions computed on the simulated dataset, plotted against the true fractions - this time using small multiples for each cell type. The light grey line is the identity line, ‘y = x’
+Scatterplot of quanTIseq cell fractions computed on the simulated
+dataset, plotted against the true fractions - this time using small
+multiples for each cell type. The light grey line is the identity line,
+‘y = x’
 </p>
 </div>
-<p>This figure aims to replicate with live code the one available as <a href="https://static-content.springer.com/esm/art%3A10.1186%2Fs13073-019-0638-6/MediaObjects/13073_2019_638_MOESM2_ESM.pdf" class="external-link">Supplementary Figure 1</a>.</p>
+<p>This figure aims to replicate with live code the one available as <a href="https://static-content.springer.com/esm/art%3A10.1186%2Fs13073-019-0638-6/MediaObjects/13073_2019_638_MOESM2_ESM.pdf" class="external-link">Supplementary
+Figure 1</a>.</p>
 </div>
 </div>
 <div class="section level2">
 <h2 id="faqs">FAQs<a class="anchor" aria-label="anchor" href="#faqs"></a>
 </h2>
-<p><strong>Q: Do I have to provide my expression data formatted as TPMs? Why is that so?</strong></p>
-<p>A: The expression data is indeed expected to be provided as TPM values. <code>quantiseqr</code> might warn you if you are providing a different format (counts, normalized counts) - this does not mean that it will trigger an error as the computation is still able to proceed.<br>
-Still: it is not the recommended way. If using a <code>SummarizedExperiment</code> object coming from Salmon’s quantifications, the <code>tximeta</code>/<code>tximport</code> pipeline will provide an assay named “abundance”, which would be handled internally by the <code><a href="../reference/se_to_matrix.html">se_to_matrix()</a></code> function - you can simply call <code>quantiseqr()</code> and provide the <code>SummarizedExperiment</code> object as main parameter.</p>
-<p><strong>Q: Can I use <code>quantiseqr</code> with samples from model systems, i.e. not from human?</strong></p>
-<p>A: You might exploit orthology-based conversions among gene identifiers to use <code>quantiseqr</code> e.g. in mouse scenarios. Keep in mind, though, that the TIL10 signature has been explicitly designed and validated on human samples.</p>
-<p><strong>Q: My expression data is encoding the features in a different identifier than Gene Symbols. Can I use <code>quantiseqr</code> for that?</strong></p>
-<p>A: Sure, just make sure to convert the identifiers beforehand - you can use one of the many options available inside Bioconductor for streamlining this step (e.g. the <code>org.Hs.eg.db</code> and the function <code><a href="https://rdrr.io/pkg/AnnotationDbi/man/AnnotationDb-class.html" class="external-link">AnnotationDbi::mapIds()</a></code>).</p>
-<p><strong>Q: I’m interested in other such deconvolution methods. What other options are available?</strong></p>
-<p>A: You can check out the works of <span class="citation">(Sturm et al. 2019, @Sturm2020)</span> to find a collection of methods, provided in the <code>immunedeconv</code> package, and benchmarked in the above mentioned manuscripts.</p>
-<p><strong>Q: Can I provide my own signature like the <code>TIL10</code> and use that in <code>quantiseqr</code>?</strong></p>
-<p>A: No, for now it is only possible to use the TIL10 signature matrix.</p>
+<p><strong>Q: Do I have to provide my expression data formatted as TPMs?
+Why is that so?</strong></p>
+<p>A: The expression data is indeed expected to be provided as TPM
+values. <code>quantiseqr</code> might warn you if you are providing a
+different format (counts, normalized counts) - this does not mean that
+it will trigger an error as the computation is still able to
+proceed.<br>
+Still: it is not the recommended way. If using a
+<code>SummarizedExperiment</code> object coming from Salmon’s
+quantifications, the <code>tximeta</code>/<code>tximport</code> pipeline
+will provide an assay named “abundance”, which would be handled
+internally by the <code><a href="../reference/se_to_matrix.html">se_to_matrix()</a></code> function - you can simply
+call <code>quantiseqr()</code> and provide the
+<code>SummarizedExperiment</code> object as main parameter.</p>
+<p><strong>Q: Can I use <code>quantiseqr</code> with samples from model
+systems, i.e. not from human?</strong></p>
+<p>A: You might exploit orthology-based conversions among gene
+identifiers to use <code>quantiseqr</code> e.g. in mouse scenarios. Keep
+in mind, though, that the TIL10 signature has been explicitly designed
+and validated on human samples.</p>
+<p><strong>Q: My expression data is encoding the features in a different
+identifier than Gene Symbols. Can I use <code>quantiseqr</code> for
+that?</strong></p>
+<p>A: Sure, just make sure to convert the identifiers beforehand - you
+can use one of the many options available inside Bioconductor for
+streamlining this step (e.g. the <code>org.Hs.eg.db</code> and the
+function <code><a href="https://rdrr.io/pkg/AnnotationDbi/man/AnnotationDb-class.html" class="external-link">AnnotationDbi::mapIds()</a></code>).</p>
+<p><strong>Q: I’m interested in other such deconvolution methods. What
+other options are available?</strong></p>
+<p>A: You can check out the works of <span class="citation">Sturm,
+Finotello, and List (2020)</span> to find a collection of methods,
+provided in the <code>immunedeconv</code> package, and benchmarked in
+the above mentioned manuscripts.</p>
+<p><strong>Q: Can I provide my own signature like the <code>TIL10</code>
+and use that in <code>quantiseqr</code>?</strong></p>
+<p>A: No, for now it is only possible to use the TIL10 signature
+matrix.</p>
 </div>
 <div class="section level2">
-<h2 id="session-info">Session Info<a class="anchor" aria-label="anchor" href="#session-info"></a>
+<h2 class="unnumbered smaller" id="session-info">Session Info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; R version 4.2.1 (2022-06-23)</span></span>
+<span><span class="co">#&gt; R Under development (unstable) (2022-11-23 r83380)</span></span>
 <span><span class="co">#&gt; Platform: x86_64-apple-darwin17.0 (64-bit)</span></span>
 <span><span class="co">#&gt; Running under: macOS Big Sur ... 10.16</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Matrix products: default</span></span>
-<span><span class="co">#&gt; BLAS:   /Library/Frameworks/R.framework/Versions/4.2/Resources/lib/libRblas.0.dylib</span></span>
-<span><span class="co">#&gt; LAPACK: /Library/Frameworks/R.framework/Versions/4.2/Resources/lib/libRlapack.dylib</span></span>
+<span><span class="co">#&gt; BLAS:   /Library/Frameworks/R.framework/Versions/4.3/Resources/lib/libRblas.0.dylib</span></span>
+<span><span class="co">#&gt; LAPACK: /Library/Frameworks/R.framework/Versions/4.3/Resources/lib/libRlapack.dylib</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; locale:</span></span>
 <span><span class="co">#&gt; [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; time zone: UTC</span></span>
+<span><span class="co">#&gt; tzcode source: internal</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; attached base packages:</span></span>
 <span><span class="co">#&gt; [1] stats4    stats     graphics  grDevices utils     datasets  methods  </span></span>
 <span><span class="co">#&gt; [8] base     </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; other attached packages:</span></span>
-<span><span class="co">#&gt;  [1] ExperimentHub_2.5.0         AnnotationHub_3.5.2        </span></span>
-<span><span class="co">#&gt;  [3] BiocFileCache_2.5.1         dbplyr_2.2.1               </span></span>
-<span><span class="co">#&gt;  [5] SummarizedExperiment_1.27.3 GenomicRanges_1.49.1       </span></span>
-<span><span class="co">#&gt;  [7] GenomeInfoDb_1.33.7         IRanges_2.31.2             </span></span>
-<span><span class="co">#&gt;  [9] S4Vectors_0.35.4            MatrixGenerics_1.9.1       </span></span>
-<span><span class="co">#&gt; [11] matrixStats_0.62.0          reshape2_1.4.4             </span></span>
-<span><span class="co">#&gt; [13] GEOquery_2.65.2             Biobase_2.57.1             </span></span>
-<span><span class="co">#&gt; [15] BiocGenerics_0.43.4         tibble_3.1.8               </span></span>
-<span><span class="co">#&gt; [17] tidyr_1.2.1                 ggplot2_3.3.6              </span></span>
-<span><span class="co">#&gt; [19] dplyr_1.0.10                quantiseqr_1.5.1           </span></span>
+<span><span class="co">#&gt;  [1] ExperimentHub_2.7.0         AnnotationHub_3.7.0        </span></span>
+<span><span class="co">#&gt;  [3] BiocFileCache_2.7.0         dbplyr_2.2.1               </span></span>
+<span><span class="co">#&gt;  [5] SummarizedExperiment_1.29.1 GenomicRanges_1.51.1       </span></span>
+<span><span class="co">#&gt;  [7] GenomeInfoDb_1.35.5         IRanges_2.33.0             </span></span>
+<span><span class="co">#&gt;  [9] S4Vectors_0.37.0            MatrixGenerics_1.11.0      </span></span>
+<span><span class="co">#&gt; [11] matrixStats_0.63.0          reshape2_1.4.4             </span></span>
+<span><span class="co">#&gt; [13] GEOquery_2.67.0             Biobase_2.59.0             </span></span>
+<span><span class="co">#&gt; [15] BiocGenerics_0.45.0         tibble_3.1.8               </span></span>
+<span><span class="co">#&gt; [17] tidyr_1.2.1                 ggplot2_3.4.0              </span></span>
+<span><span class="co">#&gt; [19] dplyr_1.0.10                quantiseqr_1.7.0           </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
-<span><span class="co">#&gt;  [1] colorspace_2.0-3              ellipsis_0.3.2               </span></span>
-<span><span class="co">#&gt;  [3] rprojroot_2.0.3               XVector_0.37.1               </span></span>
-<span><span class="co">#&gt;  [5] fs_1.5.2                      farver_2.1.1                 </span></span>
-<span><span class="co">#&gt;  [7] bit64_4.0.5                   interactiveDisplayBase_1.35.0</span></span>
-<span><span class="co">#&gt;  [9] AnnotationDbi_1.59.1          fansi_1.0.3                  </span></span>
-<span><span class="co">#&gt; [11] xml2_1.3.3                    R.methodsS3_1.8.2            </span></span>
-<span><span class="co">#&gt; [13] cachem_1.0.6                  knitr_1.40                   </span></span>
-<span><span class="co">#&gt; [15] jsonlite_1.8.2                png_0.1-7                    </span></span>
-<span><span class="co">#&gt; [17] R.oo_1.25.0                   shiny_1.7.2                  </span></span>
-<span><span class="co">#&gt; [19] BiocManager_1.30.18           readr_2.1.3                  </span></span>
-<span><span class="co">#&gt; [21] compiler_4.2.1                httr_1.4.4                   </span></span>
-<span><span class="co">#&gt; [23] assertthat_0.2.1              Matrix_1.5-1                 </span></span>
-<span><span class="co">#&gt; [25] fastmap_1.1.0                 limma_3.53.10                </span></span>
-<span><span class="co">#&gt; [27] cli_3.4.1                     later_1.3.0                  </span></span>
-<span><span class="co">#&gt; [29] htmltools_0.5.3               tools_4.2.1                  </span></span>
-<span><span class="co">#&gt; [31] gtable_0.3.1                  glue_1.6.2                   </span></span>
-<span><span class="co">#&gt; [33] GenomeInfoDbData_1.2.9        rappdirs_0.3.3               </span></span>
-<span><span class="co">#&gt; [35] Rcpp_1.0.9                    limSolve_1.5.6               </span></span>
-<span><span class="co">#&gt; [37] jquerylib_0.1.4               pkgdown_2.0.6.9000           </span></span>
-<span><span class="co">#&gt; [39] vctrs_0.4.2                   Biostrings_2.65.6            </span></span>
-<span><span class="co">#&gt; [41] preprocessCore_1.59.0         xfun_0.33                    </span></span>
-<span><span class="co">#&gt; [43] stringr_1.4.1                 mime_0.12                    </span></span>
-<span><span class="co">#&gt; [45] lpSolve_5.6.16                lifecycle_1.0.3              </span></span>
-<span><span class="co">#&gt; [47] zlibbioc_1.43.0               MASS_7.3-58.1                </span></span>
-<span><span class="co">#&gt; [49] scales_1.2.1                  BiocStyle_2.25.0             </span></span>
-<span><span class="co">#&gt; [51] ragg_1.2.3                    hms_1.1.2                    </span></span>
-<span><span class="co">#&gt; [53] promises_1.2.0.1              RColorBrewer_1.1-3           </span></span>
-<span><span class="co">#&gt; [55] yaml_2.3.5                    curl_4.3.3                   </span></span>
-<span><span class="co">#&gt; [57] memoise_2.0.1                 sass_0.4.2                   </span></span>
-<span><span class="co">#&gt; [59] stringi_1.7.8                 RSQLite_2.2.18               </span></span>
-<span><span class="co">#&gt; [61] BiocVersion_3.16.0            highr_0.9                    </span></span>
-<span><span class="co">#&gt; [63] desc_1.4.2                    filelock_1.0.2               </span></span>
-<span><span class="co">#&gt; [65] rlang_1.0.6                   pkgconfig_2.0.3              </span></span>
-<span><span class="co">#&gt; [67] systemfonts_1.0.4             bitops_1.0-7                 </span></span>
-<span><span class="co">#&gt; [69] evaluate_0.17                 lattice_0.20-45              </span></span>
-<span><span class="co">#&gt; [71] purrr_0.3.5                   labeling_0.4.2               </span></span>
-<span><span class="co">#&gt; [73] bit_4.0.4                     tidyselect_1.1.2             </span></span>
-<span><span class="co">#&gt; [75] plyr_1.8.7                    magrittr_2.0.3               </span></span>
-<span><span class="co">#&gt; [77] R6_2.5.1                      generics_0.1.3               </span></span>
-<span><span class="co">#&gt; [79] DelayedArray_0.23.2           DBI_1.1.3                    </span></span>
-<span><span class="co">#&gt; [81] pillar_1.8.1                  withr_2.5.0                  </span></span>
-<span><span class="co">#&gt; [83] KEGGREST_1.37.3               RCurl_1.98-1.9               </span></span>
-<span><span class="co">#&gt; [85] crayon_1.5.2                  utf8_1.2.2                   </span></span>
-<span><span class="co">#&gt; [87] tzdb_0.3.0                    rmarkdown_2.16               </span></span>
-<span><span class="co">#&gt; [89] grid_4.2.1                    data.table_1.14.2            </span></span>
-<span><span class="co">#&gt; [91] blob_1.2.3                    digest_0.6.29                </span></span>
-<span><span class="co">#&gt; [93] xtable_1.8-4                  httpuv_1.6.6                 </span></span>
-<span><span class="co">#&gt; [95] R.utils_2.12.0                textshaping_0.3.6            </span></span>
-<span><span class="co">#&gt; [97] munsell_0.5.0                 bslib_0.4.0                  </span></span>
-<span><span class="co">#&gt; [99] quadprog_1.5-8</span></span></code></pre></div>
+<span><span class="co">#&gt;  [1] DBI_1.1.3                     bitops_1.0-7                 </span></span>
+<span><span class="co">#&gt;  [3] rlang_1.0.6                   magrittr_2.0.3               </span></span>
+<span><span class="co">#&gt;  [5] compiler_4.3.0                RSQLite_2.2.19               </span></span>
+<span><span class="co">#&gt;  [7] png_0.1-7                     systemfonts_1.0.4            </span></span>
+<span><span class="co">#&gt;  [9] vctrs_0.5.1                   quadprog_1.5-8               </span></span>
+<span><span class="co">#&gt; [11] stringr_1.4.1                 crayon_1.5.2                 </span></span>
+<span><span class="co">#&gt; [13] pkgconfig_2.0.3               fastmap_1.1.0                </span></span>
+<span><span class="co">#&gt; [15] XVector_0.39.0                ellipsis_0.3.2               </span></span>
+<span><span class="co">#&gt; [17] labeling_0.4.2                utf8_1.2.2                   </span></span>
+<span><span class="co">#&gt; [19] promises_1.2.0.1              rmarkdown_2.18               </span></span>
+<span><span class="co">#&gt; [21] tzdb_0.3.0                    preprocessCore_1.61.0        </span></span>
+<span><span class="co">#&gt; [23] ragg_1.2.4                    purrr_0.3.5                  </span></span>
+<span><span class="co">#&gt; [25] bit_4.0.5                     xfun_0.35                    </span></span>
+<span><span class="co">#&gt; [27] zlibbioc_1.45.0               cachem_1.0.6                 </span></span>
+<span><span class="co">#&gt; [29] jsonlite_1.8.3                limSolve_1.5.6               </span></span>
+<span><span class="co">#&gt; [31] blob_1.2.3                    later_1.3.0                  </span></span>
+<span><span class="co">#&gt; [33] highr_0.9                     DelayedArray_0.25.0          </span></span>
+<span><span class="co">#&gt; [35] interactiveDisplayBase_1.37.0 R6_2.5.1                     </span></span>
+<span><span class="co">#&gt; [37] bslib_0.4.1                   stringi_1.7.8                </span></span>
+<span><span class="co">#&gt; [39] RColorBrewer_1.1-3            limma_3.55.0                 </span></span>
+<span><span class="co">#&gt; [41] jquerylib_0.1.4               Rcpp_1.0.9                   </span></span>
+<span><span class="co">#&gt; [43] assertthat_0.2.1              knitr_1.41                   </span></span>
+<span><span class="co">#&gt; [45] R.utils_2.12.2                readr_2.1.3                  </span></span>
+<span><span class="co">#&gt; [47] httpuv_1.6.6                  Matrix_1.5-3                 </span></span>
+<span><span class="co">#&gt; [49] tidyselect_1.2.0              yaml_2.3.6                   </span></span>
+<span><span class="co">#&gt; [51] curl_4.3.3                    lattice_0.20-45              </span></span>
+<span><span class="co">#&gt; [53] plyr_1.8.8                    KEGGREST_1.39.0              </span></span>
+<span><span class="co">#&gt; [55] shiny_1.7.3                   withr_2.5.0                  </span></span>
+<span><span class="co">#&gt; [57] evaluate_0.18                 desc_1.4.2                   </span></span>
+<span><span class="co">#&gt; [59] xml2_1.3.3                    Biostrings_2.67.0            </span></span>
+<span><span class="co">#&gt; [61] lpSolve_5.6.17                pillar_1.8.1                 </span></span>
+<span><span class="co">#&gt; [63] BiocManager_1.30.19           filelock_1.0.2               </span></span>
+<span><span class="co">#&gt; [65] generics_0.1.3                rprojroot_2.0.3              </span></span>
+<span><span class="co">#&gt; [67] RCurl_1.98-1.9                BiocVersion_3.17.1           </span></span>
+<span><span class="co">#&gt; [69] hms_1.1.2                     munsell_0.5.0                </span></span>
+<span><span class="co">#&gt; [71] scales_1.2.1                  xtable_1.8-4                 </span></span>
+<span><span class="co">#&gt; [73] BiocStyle_2.27.0              glue_1.6.2                   </span></span>
+<span><span class="co">#&gt; [75] tools_4.3.0                   data.table_1.14.6            </span></span>
+<span><span class="co">#&gt; [77] fs_1.5.2                      grid_4.3.0                   </span></span>
+<span><span class="co">#&gt; [79] AnnotationDbi_1.61.0          colorspace_2.0-3             </span></span>
+<span><span class="co">#&gt; [81] GenomeInfoDbData_1.2.9        cli_3.4.1                    </span></span>
+<span><span class="co">#&gt; [83] rappdirs_0.3.3                textshaping_0.3.6            </span></span>
+<span><span class="co">#&gt; [85] fansi_1.0.3                   gtable_0.3.1                 </span></span>
+<span><span class="co">#&gt; [87] R.methodsS3_1.8.2             sass_0.4.4                   </span></span>
+<span><span class="co">#&gt; [89] digest_0.6.30                 farver_2.1.1                 </span></span>
+<span><span class="co">#&gt; [91] memoise_2.0.1                 htmltools_0.5.3              </span></span>
+<span><span class="co">#&gt; [93] pkgdown_2.0.6.9000            R.oo_1.25.0                  </span></span>
+<span><span class="co">#&gt; [95] lifecycle_1.0.3               httr_1.4.4                   </span></span>
+<span><span class="co">#&gt; [97] mime_0.12                     bit64_4.0.5                  </span></span>
+<span><span class="co">#&gt; [99] MASS_7.3-58.1</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+<h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<div id="refs" class="references">
-<div id="ref-quantiseq2019">
-<p>Finotello, Francesca, Clemens Mayer, Christina Plattner, Gerhard Laschober, Dietmar Rieder, Hubert Hackl, Anne Krogsdam, et al. 2019. “Molecular and Pharmacological Modulators of the Tumor Immune Contexture Revealed by Deconvolution of Rna-Seq Data.” <em>Genome Medicine</em> 11 (1): 34.</p>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-quantiseq2019" class="csl-entry">
+Finotello, Francesca, Clemens Mayer, Christina Plattner, Gerhard
+Laschober, Dietmar Rieder, Hubert Hackl, Anne Krogsdam, et al. 2019.
+<span>“Molecular and Pharmacological Modulators of the Tumor Immune
+Contexture Revealed by Deconvolution of RNA-Seq Data.”</span> <em>Genome
+Medicine</em> 11 (1): 34.
 </div>
-<div id="ref-Plattner2020">
-<p>Plattner, Christina, Francesca Finotello, and Dietmar Rieder. 2020. <em>Deconvoluting tumor-infiltrating immune cells from RNA-seq data using quanTIseq</em>. 1st ed. Vol. 636. Elsevier Inc. <a href="https://doi.org/10.1016/bs.mie.2019.05.056" class="external-link">https://doi.org/10.1016/bs.mie.2019.05.056</a>.</p>
+<div id="ref-Plattner2020" class="csl-entry">
+Plattner, Christina, Francesca Finotello, and Dietmar Rieder. 2020.
+<em><span class="nocase">Deconvoluting tumor-infiltrating immune cells
+from RNA-seq data using quanTIseq</span></em>. 1st ed. Vol. 636.
+Elsevier Inc. <a href="https://doi.org/10.1016/bs.mie.2019.05.056" class="external-link">https://doi.org/10.1016/bs.mie.2019.05.056</a>.
 </div>
-<div id="ref-EPIC2017">
-<p>Racle, Julien, Kaat de Jonge, Petra Baumgaertner, Daniel E Speiser, and David Gfeller. 2017. “Simultaneous enumeration of cancer and immune cell types from bulk tumor gene expression data.” <em>eLife</em> 6 (November): e26476. <a href="https://doi.org/10.7554/eLife.26476" class="external-link">https://doi.org/10.7554/eLife.26476</a>.</p>
+<div id="ref-EPIC2017" class="csl-entry">
+Racle, Julien, Kaat de Jonge, Petra Baumgaertner, Daniel E Speiser, and
+David Gfeller. 2017. <span>“<span class="nocase">Simultaneous
+enumeration of cancer and immune cell types from bulk tumor gene
+expression data</span>.”</span> <em>eLife</em> 6 (November): e26476. <a href="https://doi.org/10.7554/eLife.26476" class="external-link">https://doi.org/10.7554/eLife.26476</a>.
 </div>
-<div id="ref-Song2017">
-<p>Song, Chunying, Marco Piva, Lu Sun, Aayoung Hong, Gatien Moriceau, Xiangju Kong, Hong Zhang, et al. 2017. “Recurrent Tumor CellIntrinsic and Extrinsic Alterations During MAPKi-Induced Melanoma Regression and Early Adaptation.” <em>Cancer Discovery</em> 7 (11): 1248–65. <a href="https://doi.org/10.1158/2159-8290.cd-17-0401" class="external-link">https://doi.org/10.1158/2159-8290.cd-17-0401</a>.</p>
+<div id="ref-Song2017" class="csl-entry">
+Song, Chunying, Marco Piva, Lu Sun, Aayoung Hong, Gatien Moriceau,
+Xiangju Kong, Hong Zhang, et al. 2017. <span>“Recurrent Tumor
+Cell<span></span>intrinsic and <span></span>Extrinsic Alterations During
+<span>MAPKi</span>-Induced Melanoma Regression and Early
+Adaptation.”</span> <em>Cancer Discovery</em> 7 (11): 1248–65. <a href="https://doi.org/10.1158/2159-8290.cd-17-0401" class="external-link">https://doi.org/10.1158/2159-8290.cd-17-0401</a>.
 </div>
-<div id="ref-Sturm2020">
-<p>Sturm, Gregor, Francesca Finotello, and Markus List. 2020. “Immunedeconv: An R Package for Unified Access to Computational Methods for Estimating Immune Cell Fractions from Bulk RNA-Sequencing Data.” In, 2120:223–32. Berlin, Boston: DE GRUYTER. <a href="https://doi.org/10.1007/978-1-0716-0327-7_16" class="external-link">https://doi.org/10.1007/978-1-0716-0327-7_16</a>.</p>
+<div id="ref-Sturm2020" class="csl-entry">
+Sturm, Gregor, Francesca Finotello, and Markus List. 2020. <span>“<span class="nocase">Immunedeconv: An R Package for Unified Access to
+Computational Methods for Estimating Immune Cell Fractions from Bulk
+RNA-Sequencing Data</span>.”</span> In, 2120:223–32. Berlin, Boston: DE
+GRUYTER. <a href="https://doi.org/10.1007/978-1-0716-0327-7_16" class="external-link">https://doi.org/10.1007/978-1-0716-0327-7_16</a>.
 </div>
-<div id="ref-sturm2019">
-<p>Sturm, Gregor, Francesca Finotello, Florent Petitprez, Jitao David Zhang, Jan Baumbach, Wolf H Fridman, Markus List, and Tatsiana Aneichyk. 2019. “Comprehensive Evaluation of Transcriptome-Based Cell-Type Quantification Methods for Immuno-Oncology.” <em>Bioinformatics</em> 35 (14): i436–i445.</p>
+<div id="ref-sturm2019" class="csl-entry">
+Sturm, Gregor, Francesca Finotello, Florent Petitprez, Jitao David
+Zhang, Jan Baumbach, Wolf H Fridman, Markus List, and Tatsiana Aneichyk.
+2019. <span>“Comprehensive Evaluation of Transcriptome-Based Cell-Type
+Quantification Methods for Immuno-Oncology.”</span>
+<em>Bioinformatics</em> 35 (14): i436–45.
 </div>
 </div>
 </div>
-<div class="footnotes">
+<div class="footnotes footnotes-end-of-document">
 <hr>
 <ol>
 <li id="fn1"><p><a href="mailto:marinif@uni-mainz.de" class="email">marinif@uni-mainz.de</a><a href="#fnref1" class="footnote-back">↩︎</a></p></li>
