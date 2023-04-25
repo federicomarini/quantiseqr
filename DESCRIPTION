@@ -1,6 +1,6 @@
 Package: quantiseqr
 Title: Quantification of the Tumor Immune contexture from RNA-seq data
-Version: 1.7.0
+Version: 1.8.0
 Authors@R: 
     c(
         person(
