@@ -86,7 +86,7 @@ Finotello<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>
 </h4>
             <address class="author_afil">
       Institute of Bioinformatics, Biocenter Medical University of
-Innsbruck (<a href="https://icbi.i-med.ac.at/index.html" class="external-link uri">https://icbi.i-med.ac.at/index.html</a>)<br><h4 data-toc-skip class="date">2024-12-16</h4>
+Innsbruck (<a href="https://icbi.i-med.ac.at/index.html" class="external-link uri">https://icbi.i-med.ac.at/index.html</a>)<br><h4 data-toc-skip class="date">2024-12-19</h4>
       
 
       <div class="hidden name"><code>using_quantiseqr.Rmd</code></div>
@@ -149,7 +149,9 @@ alternatively, when providing an object derived from the
 <p>Once installed, the package can be loaded and attached to your
 current workspace as follows:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"quantiseqr"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"quantiseqr"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error in get(paste0(generic, ".", class), envir = get_method_env()) : </span></span>
+<span><span class="co">#&gt;   object 'type_sum.accel' not found</span></span></code></pre></div>
 <p>In the following chunk, we load a set of additional packages that
 will be required throughout this vignette.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -345,7 +347,7 @@ also available.</p>
 <span><span class="op">)</span></span>
 <span><span class="va">tpm_location</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">tpminfo_GSE107572</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
 <span><span class="va">tpm_location</span></span>
-<span><span class="co">#&gt; [1] "/var/folders/3s/b36dp_4s3wv3byw057j8bp940000gn/T//Rtmpea5Vkb/GSE107572/GSE107572_tpm_PBMC_RNAseq.txt.gz"</span></span>
+<span><span class="co">#&gt; [1] "/var/folders/95/0ydz4d79163427j3k5crp3fh0000gn/T//RtmpDm9mNp/GSE107572/GSE107572_tpm_PBMC_RNAseq.txt.gz"</span></span>
 <span><span class="va">tpmdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.table</a></span><span class="op">(</span><span class="va">tpm_location</span>, header <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tpm_genesymbols</span> <span class="op">&lt;-</span> <span class="va">tpmdata</span><span class="op">$</span><span class="va">GENE</span></span>
@@ -525,7 +527,7 @@ proportions induced by the kinase-inhibitor treatment.</p>
 <span><span class="va">quantiseqdata_eh</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/AnnotationHub/man/AnnotationHub-class.html" class="external-link">query</a></span><span class="op">(</span><span class="va">eh</span>, <span class="st">"quantiseqr"</span><span class="op">)</span></span>
 <span><span class="va">quantiseqdata_eh</span></span>
 <span><span class="co">#&gt; ExperimentHub with 1 record</span></span>
-<span><span class="co">#&gt; # snapshotDate(): 2024-12-13</span></span>
+<span><span class="co">#&gt; # snapshotDate(): 2024-12-19</span></span>
 <span><span class="co">#&gt; # names(): EH6015</span></span>
 <span><span class="co">#&gt; # package(): quantiseqr</span></span>
 <span><span class="co">#&gt; # $dataprovider: GEO</span></span>
@@ -889,7 +891,7 @@ Still: it is not the recommended way. If using a
 quantifications, the <code>tximeta</code>/<code>tximport</code> pipeline
 will provide an assay named “abundance”, which would be handled
 internally by the <code><a href="../reference/se_to_matrix.html">se_to_matrix()</a></code> function - you can simply
-call <code>quantiseqr()</code> and provide the
+call <code><a href="../reference/quantiseqr-pkg.html">quantiseqr()</a></code> and provide the
 <code>SummarizedExperiment</code> object as main parameter.</p>
 <p><strong>Q: Can I use <code>quantiseqr</code> with samples from model
 systems, i.e. not from human?</strong></p>
@@ -920,9 +922,9 @@ matrix.</p>
 </h2>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; R Under development (unstable) (2024-12-13 r87441)</span></span>
+<span><span class="co">#&gt; R Under development (unstable) (2024-12-18 r87448)</span></span>
 <span><span class="co">#&gt; Platform: aarch64-apple-darwin20</span></span>
-<span><span class="co">#&gt; Running under: macOS Sonoma 14.7.1</span></span>
+<span><span class="co">#&gt; Running under: macOS Sonoma 14.7.2</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Matrix products: default</span></span>
 <span><span class="co">#&gt; BLAS:   /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/lib/libRblas.0.dylib </span></span>
@@ -957,33 +959,32 @@ matrix.</p>
 <span><span class="co">#&gt;  [7] png_0.1-8               systemfonts_1.1.0       vctrs_0.6.5            </span></span>
 <span><span class="co">#&gt; [10] quadprog_1.5-8          stringr_1.5.1           pkgconfig_2.0.3        </span></span>
 <span><span class="co">#&gt; [13] crayon_1.5.3            fastmap_1.2.0           XVector_0.47.0         </span></span>
-<span><span class="co">#&gt; [16] labeling_0.4.3          utf8_1.2.4              rmarkdown_2.29         </span></span>
-<span><span class="co">#&gt; [19] tzdb_0.4.0              UCSC.utils_1.3.0        preprocessCore_1.69.0  </span></span>
-<span><span class="co">#&gt; [22] ragg_1.3.3              bit_4.5.0.1             purrr_1.0.2            </span></span>
-<span><span class="co">#&gt; [25] xfun_0.49               zlibbioc_1.53.0         cachem_1.1.0           </span></span>
-<span><span class="co">#&gt; [28] jsonlite_1.8.9          limSolve_1.5.7.1        blob_1.2.4             </span></span>
-<span><span class="co">#&gt; [31] DelayedArray_0.33.3     R6_2.5.1                bslib_0.8.0            </span></span>
-<span><span class="co">#&gt; [34] stringi_1.8.4           RColorBrewer_1.1-3      limma_3.63.2           </span></span>
-<span><span class="co">#&gt; [37] jquerylib_0.1.4         Rcpp_1.0.13-1           knitr_1.49             </span></span>
-<span><span class="co">#&gt; [40] R.utils_2.12.3          readr_2.1.5             rentrez_1.2.3          </span></span>
-<span><span class="co">#&gt; [43] Matrix_1.7-1            tidyselect_1.2.1        abind_1.4-8            </span></span>
-<span><span class="co">#&gt; [46] yaml_2.3.10             curl_6.0.1              lattice_0.22-6         </span></span>
-<span><span class="co">#&gt; [49] plyr_1.8.9              KEGGREST_1.47.0         withr_3.0.2            </span></span>
-<span><span class="co">#&gt; [52] evaluate_1.0.1          desc_1.4.3              xml2_1.3.6             </span></span>
-<span><span class="co">#&gt; [55] Biostrings_2.75.3       lpSolve_5.6.23          filelock_1.0.3         </span></span>
-<span><span class="co">#&gt; [58] pillar_1.9.0            BiocManager_1.30.25     BiocVersion_3.21.1     </span></span>
-<span><span class="co">#&gt; [61] hms_1.1.3               munsell_0.5.1           scales_1.3.0           </span></span>
-<span><span class="co">#&gt; [64] BiocStyle_2.35.0        glue_1.8.0              tools_4.5.0            </span></span>
-<span><span class="co">#&gt; [67] data.table_1.16.4       fs_1.6.5                XML_3.99-0.17          </span></span>
-<span><span class="co">#&gt; [70] grid_4.5.0              AnnotationDbi_1.69.0    colorspace_2.1-1       </span></span>
-<span><span class="co">#&gt; [73] GenomeInfoDbData_1.2.13 cli_3.6.3               rappdirs_0.3.3         </span></span>
-<span><span class="co">#&gt; [76] textshaping_0.4.1       fansi_1.0.6             S4Arrays_1.7.1         </span></span>
-<span><span class="co">#&gt; [79] gtable_0.3.6            R.methodsS3_1.8.2       sass_0.4.9             </span></span>
-<span><span class="co">#&gt; [82] digest_0.6.37           SparseArray_1.7.2       farver_2.1.2           </span></span>
-<span><span class="co">#&gt; [85] memoise_2.0.1           htmltools_0.5.8.1       pkgdown_2.1.1.9000     </span></span>
-<span><span class="co">#&gt; [88] R.oo_1.27.0             lifecycle_1.0.4         httr_1.4.7             </span></span>
-<span><span class="co">#&gt; [91] mime_0.12               statmod_1.5.0           bit64_4.5.2            </span></span>
-<span><span class="co">#&gt; [94] MASS_7.3-61</span></span></code></pre></div>
+<span><span class="co">#&gt; [16] labeling_0.4.3          rmarkdown_2.29          tzdb_0.4.0             </span></span>
+<span><span class="co">#&gt; [19] UCSC.utils_1.3.0        preprocessCore_1.69.0   ragg_1.3.3             </span></span>
+<span><span class="co">#&gt; [22] purrr_1.0.2             bit_4.5.0.1             xfun_0.49              </span></span>
+<span><span class="co">#&gt; [25] zlibbioc_1.53.0         cachem_1.1.0            jsonlite_1.8.9         </span></span>
+<span><span class="co">#&gt; [28] limSolve_1.5.7.1        blob_1.2.4              DelayedArray_0.33.3    </span></span>
+<span><span class="co">#&gt; [31] R6_2.5.1                bslib_0.8.0             stringi_1.8.4          </span></span>
+<span><span class="co">#&gt; [34] RColorBrewer_1.1-3      limma_3.63.2            jquerylib_0.1.4        </span></span>
+<span><span class="co">#&gt; [37] Rcpp_1.0.13-1           knitr_1.49              R.utils_2.12.3         </span></span>
+<span><span class="co">#&gt; [40] readr_2.1.5             rentrez_1.2.3           Matrix_1.7-1           </span></span>
+<span><span class="co">#&gt; [43] tidyselect_1.2.1        abind_1.4-8             yaml_2.3.10            </span></span>
+<span><span class="co">#&gt; [46] curl_6.0.1              lattice_0.22-6          plyr_1.8.9             </span></span>
+<span><span class="co">#&gt; [49] KEGGREST_1.47.0         withr_3.0.2             evaluate_1.0.1         </span></span>
+<span><span class="co">#&gt; [52] desc_1.4.3              xml2_1.3.6              Biostrings_2.75.3      </span></span>
+<span><span class="co">#&gt; [55] lpSolve_5.6.23          filelock_1.0.3          pillar_1.10.0          </span></span>
+<span><span class="co">#&gt; [58] BiocManager_1.30.25     BiocVersion_3.21.1      hms_1.1.3              </span></span>
+<span><span class="co">#&gt; [61] munsell_0.5.1           scales_1.3.0            BiocStyle_2.35.0       </span></span>
+<span><span class="co">#&gt; [64] glue_1.8.0              tools_4.5.0             data.table_1.16.4      </span></span>
+<span><span class="co">#&gt; [67] fs_1.6.5                XML_3.99-0.17           grid_4.5.0             </span></span>
+<span><span class="co">#&gt; [70] AnnotationDbi_1.69.0    colorspace_2.1-1        GenomeInfoDbData_1.2.13</span></span>
+<span><span class="co">#&gt; [73] cli_3.6.3               rappdirs_0.3.3          textshaping_0.4.1      </span></span>
+<span><span class="co">#&gt; [76] S4Arrays_1.7.1          gtable_0.3.6            R.methodsS3_1.8.2      </span></span>
+<span><span class="co">#&gt; [79] sass_0.4.9              digest_0.6.37           SparseArray_1.7.2      </span></span>
+<span><span class="co">#&gt; [82] farver_2.1.2            memoise_2.0.1           htmltools_0.5.8.1      </span></span>
+<span><span class="co">#&gt; [85] pkgdown_2.1.1.9000      R.oo_1.27.0             lifecycle_1.0.4        </span></span>
+<span><span class="co">#&gt; [88] httr_1.4.7              mime_0.12               statmod_1.5.0          </span></span>
+<span><span class="co">#&gt; [91] bit64_4.5.2             MASS_7.3-61</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
