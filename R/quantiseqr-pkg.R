@@ -17,8 +17,8 @@
 #' @importFrom rlang .data
 #'
 #' @name quantiseqr-pkg
-#' @docType package
-NULL
+#' @keywords internal
+"_PACKAGE"
 
 
 

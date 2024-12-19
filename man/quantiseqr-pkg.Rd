@@ -2,8 +2,20 @@
 % Please edit documentation in R/quantiseqr-pkg.R
 \docType{package}
 \name{quantiseqr-pkg}
+\alias{quantiseqr}
+\alias{quantiseqr-package}
 \alias{quantiseqr-pkg}
 \title{quantiseqr package}
 \description{
 pkg description
 }
+\author{
+\strong{Maintainer}: Federico Marini \email{marinif@uni-mainz.de} (\href{https://orcid.org/0000-0003-3252-7758}{ORCID})
+
+Authors:
+\itemize{
+  \item Francesca Finotello \email{francesca.finotello@i-med.ac.at} (\href{https://orcid.org/0000-0003-0712-4658}{ORCID})
+}
+
+}
+\keyword{internal}
