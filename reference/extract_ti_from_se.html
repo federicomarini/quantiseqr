@@ -18,7 +18,7 @@ previously processed with run_quantiseqr()"><!-- mathjax --><script src="https:/
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quantiseqr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.17.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.19.0</span>
       </span>
     </div>
 
@@ -126,7 +126,7 @@ contains the quantifications extracted via <code>quantiseqr</code> in its <code>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>     I, expand.grid, unname</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: IRanges</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: GenomeInfoDb</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: Seqinfo</span>
 <span class="r-in"><span><span class="va">se_racle</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">SummarizedExperiment</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  assays <span class="op">=</span> <span class="fu">List</span><span class="op">(</span></span></span>
 <span class="r-in"><span>    abundance <span class="op">=</span> <span class="va">dataset_racle</span><span class="op">$</span><span class="va">expr_mat</span></span></span>
@@ -159,16 +159,11 @@ contains the quantifications extracted via <code>quantiseqr</code> in its <code>
 <span class="r-out co"><span class="r-pr">#&gt;</span> LAU355   LAU355 0.43141254   0.0005513951    0.000000000 0.0000000   0.0000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> LAU1255 LAU1255 0.02499868   0.0278718306    0.002192758 0.0000000   0.1864949</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> LAU1314 LAU1314 0.49243066   0.0020238340    0.013047188 0.0000000   0.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           NK.cells T.cells.CD4 T.cells.CD8      Tregs Dendritic.cells</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> LAU125  0.04899147  0.01012092  0.00000000 0.02337843               0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> LAU355  0.00000000  0.44238123  0.02927432 0.09638052               0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> LAU1255 0.00000000  0.00000000  0.09247654 0.05988438               0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> LAU1314 0.00000000  0.37709982  0.05259234 0.06280617               0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                Other</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> LAU125  7.058312e-01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> LAU355  0.000000e+00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> LAU1255 6.060809e-01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> LAU1314 1.145087e-16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           NK.cells T.cells.CD4 T.cells.CD8      Tregs Dendritic.cells     Other</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> LAU125  0.04899147  0.01012092  0.00000000 0.02337843               0 0.7058312</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> LAU355  0.00000000  0.44238123  0.02927432 0.09638052               0 0.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> LAU1255 0.00000000  0.00000000  0.09247654 0.05988438               0 0.6060809</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> LAU1314 0.00000000  0.37709982  0.05259234 0.06280617               0 0.0000000</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
@@ -184,7 +179,7 @@ contains the quantifications extracted via <code>quantiseqr</code> in its <code>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.9000.</p>
 </div>
 
       </footer></div>
