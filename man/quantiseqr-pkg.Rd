@@ -14,6 +14,7 @@ pkg description
 
 Authors:
 \itemize{
+  \item Federico Marini \email{marinif@uni-mainz.de} (\href{https://orcid.org/0000-0003-3252-7758}{ORCID})
   \item Francesca Finotello \email{francesca.finotello@i-med.ac.at} (\href{https://orcid.org/0000-0003-0712-4658}{ORCID})
 }
 
