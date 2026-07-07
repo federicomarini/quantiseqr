@@ -2,6 +2,12 @@
 
 ## Other notes
 
+* Adapted the code in the vignette to the newly released version of GEOquery (>= 2.81.21)
+
+# quantiseqr 1.6.0
+
+## Other notes
+
 * Fixed the behavior of the `mapGenes` function when no duplicate names are found, avoiding unnecessary remapping and having a consistent behavior with the original implementation
 
 # quantiseqr 1.0.0
