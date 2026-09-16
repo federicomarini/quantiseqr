@@ -242,7 +242,8 @@ quantiplot <- function(obj) {
                        value = "fraction", -"cell_type")
 
   # plot as stacked bar chart
-  p <- ggplot(ti_df_long, aes_string(x = "sample", y = "fraction", fill = "cell_type")) +
+  p <- ggplot(ti_df_long,
+              aes(x = .data$sample, y = .data$fraction, fill = .data$cell_type)) +
     geom_bar(stat = "identity") +
     coord_flip() +
     scale_fill_brewer(palette = "Paired") +
@@ -439,7 +440,7 @@ mapGenes <- function(mydata) {
   } else {
     # message("no dupes")
     outdata <- as.data.frame(mydata)
-    rownames(outdata) <- newgenes 
+    rownames(outdata) <- newgenes
   }
 
   return(outdata)
