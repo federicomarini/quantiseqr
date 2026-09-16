@@ -359,7 +359,7 @@ prepost_data_tidy <- tidyr::pivot_longer(
   as.data.frame(prepost_data), 
   cols = quanTIseq_TIL10_B.cells:quanTIseq_TIL10_Dendritic.cells)
 
-prepost_data_tidy$groups <- factor(prepost_data_tidy$mapki.treatment.ch1, levels = c("none", "on-treatment"))
+prepost_data_tidy$groups <- factor(prepost_data_tidy$`mapki treatment:ch1`, levels = c("none", "on-treatment"))
 
 prepost_data_tidy$name <- factor(gsub("quanTIseq_TIL10_", "", prepost_data_tidy$name),
   levels = c(
